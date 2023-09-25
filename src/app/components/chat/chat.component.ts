@@ -1,8 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
+export interface User {
+  userName: string;
+  phoneNumber: number;
+  nickname: string;
+  gender: string;
+}
 
 @Component({
   selector: 'app-chat',
@@ -10,16 +20,22 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
   styleUrls: ['./chat.component.css']
 })
 export class ChatComponent implements OnInit {
+  private unsubscribe$ = new Subject<void>();
   showAddFriendDiv = false;
   showUserProfiledDiv = false;
   isFriendRequest = false;
   FriendRequestList: any[] = [];
-  UserList: any[] = [];
-  tempPhone = '9360733323';
+  UserList: User[] = [];
+  tempPhone: any;
+  nickNameForm!: FormGroup;
+  isNickNameDiolog: boolean = false;
 
-  constructor(private db: AngularFireDatabase,
+  constructor(
+    private firebaseService: FirebaseService,
     private title: Title,
     private userService: FirebaseService,
+    private db: AngularFireDatabase,
+    private fb: FormBuilder,
     private router: Router) { }
 
   toggleBottomDiv() {
@@ -41,43 +57,36 @@ export class ChatComponent implements OnInit {
     if (!localStorage.getItem('token')) {
       this.router.navigateByUrl('login');
     } else {
-
-    //  this.tempPhone = localStorage.getItem('token');
+      this.tempPhone = localStorage.getItem('token');
       console.log(this.tempPhone);
-      this.db.list('/users', (ref) => ref.orderByChild('phoneNumber').equalTo((this.tempPhone)))
-      .valueChanges()
-      .subscribe((data) => {
-        if (data && data.length > 0) {
-          console.log('Data for phone number', this.tempPhone, ':', data[0]);
-          // You can access the specific array element using data[0]
-        } else {
-          console.log('No data found for phone number', this.tempPhone);
-        }
-      });
-      this.getUser(this.tempPhone);
-
+      this.getUser(this.tempPhone)
+      
       this.FriendRequestList = [
         {
           friendrequest: [
             {
-              username: "Sankar",
+              userName: "Sankar",
               nickname: "sankar_org",
-              phonenumber: 9876345623
+              phoneNumber: 9876345623
             },
             {
-              username: "Vasanth",
+              usernNme: "Vasanth",
               nickname: "mass_vasanth",
-              phonenumber: 9360733323
+              phoneNumber: 9360733323
             },
             {
-              username: "Priya",
+              userName: "Priya",
               nickname: "priya_queen",
-              phonenumber: 7373370386
+              phoneNumber: 7373370386
             }
           ]
         }
       ];
     }
+    this.nickNameForm = this.fb.group({
+      nickname: [''],
+      gender: ['']
+    });
   }
 
   logOut() {
@@ -86,12 +95,17 @@ export class ChatComponent implements OnInit {
   }
 
   getUser(phoneNumber: any) {
-    console.log("get User Starts");
-
-    this.userService.login(phoneNumber).subscribe((Response: any) => {
-      console.log(Response);
+    const usersRef = this.db.list('users', (ref) =>
+    ref.orderByChild('phoneNumber').equalTo(Number(phoneNumber))
+  );
+  const users$: Observable<any[]> = usersRef.valueChanges();
+  users$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((users) => {
+      this.UserList = users;   
+      if(!this.UserList[0].nickname) {
+        this.isNickNameDiolog = true;
+      }   
     });
   }
-
-
 }

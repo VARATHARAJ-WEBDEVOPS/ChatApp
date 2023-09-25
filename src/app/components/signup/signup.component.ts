@@ -69,6 +69,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     users$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((users) => {
+        console.log(users);
+        
         if (users.length > 0) {
           this.toastService.showToast('Already a user', false);
           this.phoneNumber = '';
