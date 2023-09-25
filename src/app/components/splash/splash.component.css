@@ -1,0 +1,19 @@
+.splash {
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 204, 255, 0.137);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3vh;
+}
+
+.splash img {
+    width: 15vh;
+    margin: 2vh;
+}

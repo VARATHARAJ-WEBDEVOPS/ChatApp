@@ -1,0 +1,29 @@
+<div class="login">
+    <h2>AmorChat</h2>
+    <div style="width: 80%; text-align: center; padding: 2vh;">
+        <p style="color: rgba(0, 0, 0, 0.384); font-size: 1.5vh;">Sign up your AmorChat account</p>
+    </div>
+    <div class="txtbox" [style.border]="showErrorUserName ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+        <div class="top">
+            <p [style.color]="showErrorUserName ? 'red' : '#66a9e0'">User Name</p>
+        </div>
+        <input type="text" id="userName" [(ngModel)]="userName" >
+    </div>
+    <div class="txtbox" [style.border]="showErrorPhnNO ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+        <div class="top">
+            <p [style.color]="showErrorPhnNO ? 'red' : '#66a9e0'">Phone Number</p>
+        </div>
+        <input type="number" id="phoneNumber" [(ngModel)]="phoneNumber">
+    </div>
+    <div class="txtbox"  [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+        <div class="top">
+            <p [style.color]="showError ? 'red' : '#66a9e0'">Password</p>
+        </div>
+        <input type="password" id="password" [(ngModel)]="password">
+    </div>
+    <button (click)="validation()">SIGN UP</button>
+    <hr>
+    <p style="color: rgba(0, 0, 0, 0.384); font-size: 1.5vh; margin-top: 2vh;">Aready have an AmorChat account</p>
+    <span (click)="navigate()"> LOG IN</span>
+</div>
+

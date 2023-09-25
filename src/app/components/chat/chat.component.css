@@ -1,0 +1,331 @@
+.chat {
+    width: 100%;
+    height: 100vh;
+}
+
+.chat .nav {
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 6vh;
+    background-color: #fff;
+    border-bottom: 0.2vh solid #ebf1f8;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.chat .empty {
+    width: 100%;
+    height: 6vh;
+}
+
+.chat .nav h2 {
+    font-weight: 500;
+    font-size: 2.5vh;
+}
+
+.chat .nav .side {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.chat .nav .side .profile {
+    width: 4.5vh;
+    height: 4.5vh;
+    background-color: #66a9e0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat .nav .side .profile h1 {
+    font-size: 1.5vh;
+    font-weight: 700;
+    color: #fff;
+}
+
+.chat .nav .side .addFriends {
+    width: 4.5vh;
+    height: 4.5vh;
+    background-color: #dfdfdf;
+    border-radius: 50%;
+    margin-inline: 2vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat .chatListContainer {
+    width: 100%;
+    height: 94vh;
+}
+
+.addFriendsContainer {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #f7f8fa;
+    top: 0;
+    animation: slide-up 0.3s ease-out;
+  }
+  
+  @keyframes slide-up {
+    0% {
+      transform: translateY(100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .addFriendsContainer .header{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3vh;
+  }
+
+  .addFriendsContainer .header .backButton {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 27%;
+  }
+
+  .addFriendsContainer .header .pageTitle{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 53%;
+  }
+
+  .addFriendsContainer .header .pageTitle h1,h1 {
+    font-size: 2.1vh;
+    font-weight: 600;
+  }
+
+  .bold-icon {
+    stroke: #000;
+    stroke-width: 1.5;
+}
+
+.addFriendsContainer .searchBar {
+    margin-top: 1.6vh;
+    width: 91%;
+    height: 4.5vh;
+    background-color: #ebecee;
+    border-radius: 10vh;
+    align-items: center;
+    display: flex;
+}
+
+.addFriendsContainer .searchBar input {
+    width: 80%;
+    height: 100%;
+    border: none;
+    background: none;
+    font-size: 1.7vh;
+    margin-left: 2.7vh;
+}
+
+.inviteLove {
+    margin-top: 2vh;
+    width: 90%;
+    height: 6vh;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1vh;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.103);
+}
+
+.inviteLove p {
+  font-size: 1.8vh;
+}
+
+.friendRequestContainer {
+    width: 90%;
+    margin-top: 4vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.friendRequestContainer h2 {
+    font-size: 1.7vh;
+}
+
+.friendRequestContainer .friendRequestBox, .friendRequestContainer .friendRequestVisible {
+  margin-top: 1vh;
+  width: 100%;
+  min-height: 6vh;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1vh;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.103);
+}
+
+.friendRequestContainer .friendRequestVisible{
+  height: 8vh;
+  display: flex;
+  align-items: center;
+}
+
+.friendRequestVisible .profile {
+  background-color: #66a9e0;
+  height: 6vh;
+  width: 6vh;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  color: #fff;
+}
+
+.friendRequestVisible .profile h1{
+  font-size: 2.3vh;
+}
+
+.friendRequestVisible .names {
+  width: 18vh;
+}
+
+.friendRequestVisible .names h4{
+  font-weight: 300;
+  padding: 0.3vh;
+  margin-left: 1vh;
+  font-size: 1.3vh;
+}
+
+.friendRequestVisible .accept {
+  width: 11.5vh;
+  height: 4.2vh;
+  background-color: #eaeef1;
+  border-radius: 8vh;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.friendRequestVisible .accept h2 {
+  font-size: 1.7vh;
+  font-weight: 600;
+}
+
+.friendRequestVisible .cancel {
+  padding: 1vh;
+  margin-left: 0.8vh;
+}
+
+.userProfileContainer {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  background-color: #66a9e0;
+  top: 0;
+  animation: slide-left 0.3s ease-out; /* Use a different animation name */
+}
+
+@keyframes slide-left {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.userProfileContainer .top{
+  width: 100%;
+  height: 30%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.userProfileContainer .top .backButton{
+  position: absolute;
+  top: 3vh;
+  left: 3vh;
+  width: 4vh;
+  height: 4vh;
+  background-color: #fff;
+  display: flex; justify-content: center; align-items: center;
+  border-radius: 50%;
+}
+
+.userProfileContainer .top h1 {
+  color: #fff;
+  font-size: 12vh;
+}
+
+.userProfileContainer .bottom {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f7f8fa;
+  border-top-right-radius: 3.4vh;
+  border-top-left-radius: 3.4vh;
+}
+
+.userProfileContainer .bottom .userDetails {
+  width: 90%;
+  height: 40%;
+  margin-top: 2vh;
+  display: flex;
+  
+} 
+
+.userProfileContainer .bottom .userDetails h1 {
+  font-size: 4vh;
+  color: #3d3d3d;
+  margin-block: 0.5vh;
+}
+
+.userProfileContainer .bottom .userDetails p {
+  color: #727272;
+  font-size: 1.5vh;
+}
+
+.spacing {
+  margin-block: 3vh;
+}
+
+.editButton {
+  width: 90%;
+  height: 6vh;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1vh;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.103);
+  margin-bottom: 1.9vh;
+}
+
+.buttonsSection {
+  width: 90%;
+  height: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

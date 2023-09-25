@@ -1,0 +1,60 @@
+.login {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    background-color: rgba(255, 255, 255, 0.466);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login h2 {
+    font-weight: 500;
+    font-size: 3vh;
+}
+
+.login .txtbox {
+    width: 70%;
+    border: 0.2vh solid #66a9e0;
+    position: relative;
+    border-radius: 10px;
+    padding: 1vh;
+    height: 4.5vh;
+    margin-block: 2vh;
+}
+
+.login .txtbox .top {
+    position: absolute;
+    top: -0.7vh;
+    left: 8%;
+    background-color:  white;
+}
+
+.login .txtbox .top P{
+    font-size: 1.4vh;
+    color: #66a9e0;
+}
+
+.login .txtbox input{
+    border: none;
+    width: 96%;
+    height: 100%;
+    font-size: 2vh;
+    padding-left: 4%;
+}
+
+.login button, span {
+    border: none;
+    font-size: 1.5vh;
+    padding: 2vh;
+    margin-block: 2vh;
+    border-radius: 1vh;
+    background-color: #66a9e0;
+    color: #fff;
+
+}
+
+hr {
+    width: 60%;
+    margin-block: 2vh;
+}
