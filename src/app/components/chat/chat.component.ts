@@ -23,12 +23,22 @@ export class ChatComponent implements OnInit {
   private unsubscribe$ = new Subject<void>();
   showAddFriendDiv = false;
   showUserProfiledDiv = false;
+  showErrorNickName: boolean = false;
+  showErrorGender: boolean = false;
+  isNickNameDiolog: boolean = false;
+  showErrorDob: boolean = false;
   isFriendRequest = false;
+  isGenderMale = false;
+  isGenderFemale = false;
   FriendRequestList: any[] = [];
   UserList: User[] = [];
   tempPhone: any;
   nickNameForm!: FormGroup;
-  isNickNameDiolog: boolean = false;
+  birthdate: string = ''; 
+  age!: number; 
+  nextBirthday: Date | null = null;
+  nickname: string = '';
+  gender: string = '';
 
   constructor(
     private firebaseService: FirebaseService,
@@ -46,6 +56,18 @@ export class ChatComponent implements OnInit {
     this.showUserProfiledDiv = !this.showUserProfiledDiv;
   }
 
+  toggleMale() {
+    this.isGenderFemale = false;
+    this.isGenderMale = true;
+    this.gender = 'male';
+  }
+
+  toggleFemale() {
+    this.isGenderMale = false;
+    this.isGenderFemale = true;
+    this.gender = 'female';
+  }
+
   share() {
     const textToShare = 'Check out this link: https://amorchat-v1.web.app/';
     const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
@@ -60,7 +82,7 @@ export class ChatComponent implements OnInit {
       this.tempPhone = localStorage.getItem('token');
       console.log(this.tempPhone);
       this.getUser(this.tempPhone)
-      
+     //analytics().setUserProperties({ gender });
       this.FriendRequestList = [
         {
           friendrequest: [
@@ -85,7 +107,10 @@ export class ChatComponent implements OnInit {
     }
     this.nickNameForm = this.fb.group({
       nickname: [''],
-      gender: ['']
+      gender: [''],
+      age: [''],
+      dob: [''],
+      nxtBday: ['']
     });
   }
 
@@ -107,5 +132,44 @@ export class ChatComponent implements OnInit {
         this.isNickNameDiolog = true;
       }   
     });
+  }
+
+  nickNameValidation() {
+    this.showErrorNickName = false;
+    this.showErrorDob = false;
+    this.isGenderFemale = false;
+    this.isGenderMale  = false;
+
+
+    if (this.nickname === "") {
+      this.showErrorNickName = true;      
+    } 
+
+    if (this.gender === "") {
+      this.showErrorGender = true;      
+    } 
+    
+    if (this.age === undefined) {
+      this.showErrorDob = true;
+    }
+
+
+  }
+
+
+
+  calculateAge() {
+    const today = new Date();
+    const birthDate = new Date(this.birthdate);
+    const ageDiff = today.getFullYear() - birthDate.getFullYear();
+
+    if (today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) {
+      this.age = ageDiff - 1; 
+    } else {
+      this.age = ageDiff;
+    }
+     // Calculate next year's birthday
+     const nextYear = today.getFullYear() + 1;
+     this.nextBirthday = new Date(nextYear, birthDate.getMonth(), birthDate.getDate());
   }
 }

@@ -19,17 +19,34 @@
     <div class="empty"></div>
     <div class="nicknameBack" *ngIf="isNickNameDiolog">
         <div class="nickNameDiolog">
-            <input type="text" placeholder="Enter Your Nick Name">
+            <input type="text" placeholder="Enter Your Nick Name" name="nickname" [(ngModel)]="nickname"
+                [style.border]="showErrorNickName ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
             <p style="font-size: 1.8vh;padding: 1vh;">Gender</p>
-            <div class="gender">
-                <div class="male">
+            <div class="gender" [style.border]="showErrorNickName ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+                <div class="male" (click)="toggleMale()" [style.background-color]="isGenderMale ? '#0099ff' : ''">
                     <p>Male</p>
                 </div>
-                <div class="female" style="border-left: 0.2vh solid #66a9e0">
+                <div class="female" (click)="toggleFemale() " [style.background-color]="isGenderFemale ? '#ff00ea' : ''"
+                    [style.border-left]="showErrorNickName ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
                     <p>Female</p>
                 </div>
             </div>
-            <button>Conform</button>
+            <div class="age-calculator">
+                <label for="birthdate" style="padding: 1.4vh; font-size: 1.7vh;">Date of Birth:</label>
+                <input type="date" id="birthdate" [(ngModel)]="birthdate" (change)="calculateAge()"
+                    [style.border]="showErrorDob ? '0.2vh solid red' : '0.2vh solid #66a9e0'" />
+                <p *ngIf="age">is this your age Age? {{ age }} years</p>
+                <p *ngIf="birthdate">DOB {{ birthdate }} years</p>
+                <p *ngIf="birthdate">Nxt Bday: {{ nextBirthday | date: 'dd/MM/yyyy' }} years</p>
+
+
+                <!-- Use a template variable to conditionally display a placeholder-like text -->
+               
+
+
+              
+            </div>
+            <button (click)="nickNameValidation()">Conform</button>
         </div>
     </div>
     <div class="chatListContainer">
@@ -87,7 +104,8 @@
                         <svg style="margin-right: 0.6vh; margin-bottom:0.4vh; width:1.9vh; height: 1.9vh;"
                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plugin "
                             viewBox="0 0 16 16">
-                            <path d="M1 8a7 7 0 1 1 2.898 5.673c-.167-.121-.216-.406-.002-.62l1.8-1.8a3.5 3.5 0 0 0 4.572-.328l1.414-1.415a.5.5 0 0 0 0-.707l-.707-.707 1.559-1.563a.5.5 0 1 0-.708-.706l-1.559 1.562-1.414-1.414 1.56-1.562a.5.5 0 1 0-.707-.706l-1.56 1.56-.707-.706a.5.5 0 0 0-.707 0L5.318 5.975a3.5 3.5 0 0 0-.328 4.571l-1.8 1.8c-.58.58-.62 1.6.121 2.137A8 8 0 1 0 0 8a.5.5 0 0 0 1 0Z" />
+                            <path
+                                d="M1 8a7 7 0 1 1 2.898 5.673c-.167-.121-.216-.406-.002-.62l1.8-1.8a3.5 3.5 0 0 0 4.572-.328l1.414-1.415a.5.5 0 0 0 0-.707l-.707-.707 1.559-1.563a.5.5 0 1 0-.708-.706l-1.559 1.562-1.414-1.414 1.56-1.562a.5.5 0 1 0-.707-.706l-1.56 1.56-.707-.706a.5.5 0 0 0-.707 0L5.318 5.975a3.5 3.5 0 0 0-.328 4.571l-1.8 1.8c-.58.58-.62 1.6.121 2.137A8 8 0 1 0 0 8a.5.5 0 0 0 1 0Z" />
                         </svg>
                         <h2>Accept</h2>
                     </div>
