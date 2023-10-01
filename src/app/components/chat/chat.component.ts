@@ -6,12 +6,17 @@ import { takeUntil } from 'rxjs/operators';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 
-export interface User {
-  userName: string;
-  phoneNumber: number;
-  nickname: string;
-  gender: string;
+export class User {
+  key: any;
+  userName!: string;
+  phoneNumber!: number;
+  nickname!: string;
+  gender!: string;
+  age!: string;
+  dob!: string;
+  nxtBday!: string;
 }
 
 @Component({
@@ -21,24 +26,27 @@ export interface User {
 })
 export class ChatComponent implements OnInit {
   private unsubscribe$ = new Subject<void>();
-  showAddFriendDiv = false;
   showUserProfiledDiv = false;
   showErrorNickName: boolean = false;
   showErrorGender: boolean = false;
   isNickNameDiolog: boolean = false;
   showErrorDob: boolean = false;
-  isFriendRequest = false;
   isGenderMale = false;
   isGenderFemale = false;
-  FriendRequestList: any[] = [];
   UserList: User[] = [];
   tempPhone: any;
   nickNameForm!: FormGroup;
-  birthdate: string = ''; 
-  age!: number; 
+  birthdate: string = '';
+  age!: number;
   nextBirthday: Date | null = null;
   nickname: string = '';
   gender: string = '';
+  selectedDay: string = '';
+  selectedMonth: string = '';
+  selectedYear: string = '';
+  days: string[] = [];
+  months: string[] = [];
+  years: string[] = [];
 
   constructor(
     private firebaseService: FirebaseService,
@@ -46,130 +54,136 @@ export class ChatComponent implements OnInit {
     private userService: FirebaseService,
     private db: AngularFireDatabase,
     private fb: FormBuilder,
-    private router: Router) { }
+    private router: Router,
+    private analytics: AngularFireAnalytics
+    ) { }
 
-  toggleBottomDiv() {
-    this.showAddFriendDiv = !this.showAddFriendDiv;
+
+  navigateProfile() {
+    this.router.navigateByUrl('profile');
   }
 
-  toggleProfileBottomDiv() {
-    this.showUserProfiledDiv = !this.showUserProfiledDiv;
+  navigateAddfriend() {
+    this.router.navigateByUrl('addfriend');
   }
 
   toggleMale() {
+    this.gender = "male";
     this.isGenderFemale = false;
     this.isGenderMale = true;
-    this.gender = 'male';
   }
 
   toggleFemale() {
+    this.gender = "female";
     this.isGenderMale = false;
     this.isGenderFemale = true;
-    this.gender = 'female';
   }
 
-  share() {
-    const textToShare = 'Check out this link: https://amorchat-v1.web.app/';
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
-    window.open(whatsappUrl, '_blank');
-  }
 
   ngOnInit(): void {
     this.title.setTitle("AmorChat | chat");
     if (!localStorage.getItem('token')) {
       this.router.navigateByUrl('login');
     } else {
-      this.tempPhone = localStorage.getItem('token');
-      console.log(this.tempPhone);
-      this.getUser(this.tempPhone)
-     //analytics().setUserProperties({ gender });
-      this.FriendRequestList = [
-        {
-          friendrequest: [
-            {
-              userName: "Sankar",
-              nickname: "sankar_org",
-              phoneNumber: 9876345623
-            },
-            {
-              usernNme: "Vasanth",
-              nickname: "mass_vasanth",
-              phoneNumber: 9360733323
-            },
-            {
-              userName: "Priya",
-              nickname: "priya_queen",
-              phoneNumber: 7373370386
-            }
-          ]
-        }
+      
+     this.tempPhone = localStorage.getItem('token');
+      this.getUser(this.tempPhone);
+      
+      for (let i = 1; i <= 31; i++) {
+        this.days.push(i.toString());
+      }
+  
+      this.months = [
+        'January', 'February', 'March', 'April',
+        'May', 'June', 'July', 'August',
+        'September', 'October', 'November', 'December'
       ];
+  
+      const currentYear = new Date().getFullYear();
+      for (let i = currentYear; i >= currentYear - 100; i--) {
+        this.years.push(i.toString());
+      }
+     
     }
     this.nickNameForm = this.fb.group({
       nickname: [''],
       gender: [''],
       age: [''],
-      dob: [''],
-      nxtBday: ['']
+      dob: ['']
     });
   }
 
-  logOut() {
-    localStorage.setItem('token', "");
-    this.router.navigateByUrl('login');
-  }
 
   getUser(phoneNumber: any) {
     const usersRef = this.db.list('users', (ref) =>
-    ref.orderByChild('phoneNumber').equalTo(Number(phoneNumber))
-  );
-  const users$: Observable<any[]> = usersRef.valueChanges();
-  users$
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((users) => {
-      this.UserList = users;   
-      if(!this.UserList[0].nickname) {
-        this.isNickNameDiolog = true;
-      }   
-    });
+      ref.orderByChild('phoneNumber').equalTo(Number(phoneNumber))
+    );
+    const users$: Observable<any[]> = usersRef.snapshotChanges();
+
+    users$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((snapshot) => {
+        this.UserList = snapshot.map((user) => {
+         
+      
+          const key = user.key;
+          const data = user.payload.val();
+          return { key, ...data };
+          
+        });
+        localStorage.setItem("userList", JSON.stringify(this.UserList[0]));    
+        this.isNickNameDiolog = false;
+
+        if (!this.UserList[0].nickname) {
+          this.isNickNameDiolog = true;
+        }
+      });
   }
 
-  nickNameValidation() {
+  nickNameValidation(): void {
+    this.calculateAge()
+    
     this.showErrorNickName = false;
     this.showErrorDob = false;
-    this.isGenderFemale = false;
-    this.isGenderMale  = false;
-
+    this.showErrorGender = false;
 
     if (this.nickname === "") {
-      this.showErrorNickName = true;      
-    } 
-
+      this.showErrorNickName = true;
+    }
     if (this.gender === "") {
-      this.showErrorGender = true;      
-    } 
-    
+      this.showErrorGender = true;
+    }
     if (this.age === undefined) {
       this.showErrorDob = true;
     }
+    if (this.nickname && this.gender && this.age) {
 
+      this.nickNameForm.value.nickname = this.nickname;
+      this.nickNameForm.value.gender = this.gender;
+      this.nickNameForm.value.age = this.age;
+      this.nickNameForm.value.dob = this.birthdate;
+      console.log(this.nickNameForm.value);
 
+      this.firebaseService.updateItem(this.UserList[0].key, this.nickNameForm.value).then(()=>{
+        localStorage.removeItem('userList');
+        this.getUser(this.tempPhone);
+        const UserGender = this.UserList[0].gender;
+      this.analytics.setUserProperties({ UserGender });
+      });
+    }
   }
 
 
-
   calculateAge() {
+    this.birthdate = (`${this.selectedDay}/${this.selectedMonth}/${this.selectedYear}`);
     const today = new Date();
     const birthDate = new Date(this.birthdate);
     const ageDiff = today.getFullYear() - birthDate.getFullYear();
 
     if (today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) {
-      this.age = ageDiff - 1; 
+      this.age = ageDiff - 1;
     } else {
       this.age = ageDiff;
-    }
-     // Calculate next year's birthday
-     const nextYear = today.getFullYear() + 1;
-     this.nextBirthday = new Date(nextYear, birthDate.getMonth(), birthDate.getDate());
+    }    
   }
 }

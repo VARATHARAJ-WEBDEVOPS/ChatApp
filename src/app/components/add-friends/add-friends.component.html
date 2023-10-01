@@ -1,0 +1,121 @@
+<div class="addFriendsContainer">
+    <div class="header">
+        <div class="backButton" routerLink="/chat">
+            <svg xmlns="http://www.w3.org/2000/svg" style="width: 3vh; height: 3vh;" fill="#454545"
+                class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                <path
+                    d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
+            </svg>
+        </div>
+        <div class="pageTitle">
+            <h1>Add Friends</h1>
+        </div>
+    </div>
+    <div class="searchBar">
+        <svg style="margin-left: 2.9vh; width: 2vh; height: 2vh; " xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+            <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018Z" />
+            <path
+                d="M13 6.5a6.471 6.471 0 0 1-1.258 3.844c.04.03.078.062.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1.007 1.007 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5ZM6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z" />
+        </svg>
+        <input type="text" (focus)="handleInputFocus()" (blur)="handleInputBlur()"
+            placeholder="Search Contact / Nick Name"  [(ngModel)]="query" (keyup)="search()" >
+    </div>
+    <div *ngIf="isSearchResults" class="SearchResults">
+        <h2>Search Results</h2>
+        <div class="emptySearchResult" *ngIf="searchResults.length === 0">
+            <p style="font-size: 1.6vh;">User Not Found</p>
+        </div>
+        <div class="SearchResultsVisible"  *ngFor="let result of searchResults">
+            <div class="profile">
+                <h1 style="color: #fff;">{{result.userName.charAt(0)}}</h1>
+            </div>
+            <div class="names">
+                
+                <h4 style="font-size: 1.9vh;">{{result.userName}} 
+                    <span *ngIf="result.gender === 'female'; else maleIcon">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke: #ff00ea; stroke-width: 1.5;"
+                            class="bi bi-gender-female" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z" />
+                        </svg>
+                    </span>
+                    <ng-template #maleIcon>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke:  #66a9e0; stroke-width: 1.5;"
+                            class="bi bi-gender-male" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+                        </svg>
+                    </ng-template>
+                </h4>
+
+                <h4>@{{result.nickname}}</h4>
+                <h4>{{result.phoneNumber}}</h4>
+            </div>
+            <div class="accept" style="  width: 13vh; height: 4.8vh; z-index: 1000;" (click)="sendFriendRequest(result.key)">
+                <svg style="margin-right: 0.6vh; margin-bottom:0.4vh; width:1.9vh; height: 1.9vh;"
+                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plugin "
+                    viewBox="0 0 16 16">
+                    <path d="M1 8a7 7 0 1 1 2.898 5.673c-.167-.121-.216-.406-.002-.62l1.8-1.8a3.5 3.5 0 0 0 4.572-.328l1.414-1.415a.5.5 0 0 0 0-.707l-.707-.707 1.559-1.563a.5.5 0 1 0-.708-.706l-1.559 1.562-1.414-1.414 1.56-1.562a.5.5 0 1 0-.707-.706l-1.56 1.56-.707-.706a.5.5 0 0 0-.707 0L5.318 5.975a3.5 3.5 0 0 0-.328 4.571l-1.8 1.8c-.58.58-.62 1.6.121 2.137A8 8 0 1 0 0 8a.5.5 0 0 0 1 0Z" />
+                </svg>
+                <h2>Request</h2>
+            </div>
+           
+        </div>
+    </div>
+    <div class="inviteLove" (click)="share()" *ngIf="!isSearchResults">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 3vh; height: 3vh;" fill="#000"
+            class="bi bi-postcard-heart" viewBox="0 0 16 16">
+            <path
+                d="M8 4.5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7Zm3.5.878c1.482-1.42 4.795 1.392 0 4.622-4.795-3.23-1.482-6.043 0-4.622ZM2.5 5a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3Z" />
+            <path fill-rule="evenodd"
+                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H2Z" />
+        </svg>
+        <p style="margin-left: 1vh;">Invite your buddy! via whatsApp</p>
+    </div>
+    <div class="friendRequestContainer" *ngIf="!isSearchResults">
+        <h2>Friend Requests</h2>
+        <div class="friendRequestBox"  *ngIf="FriendRequestList.length === 0">
+            <p style="font-size: 1.6vh;">Request List is Empty</p>
+        </div>
+        <div class="friendRequestVisible" *ngFor="let req of FriendRequestList">
+            <div class="profile">
+                <h1 style="color: #fff;">S</h1>
+            </div>
+            <div class="names">
+                <h4 style="font-size: 1.9vh;">{{req.userName}}
+                    <span *ngIf="req.gender === 'female'; else maleIcon">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke: #ff00ea; stroke-width: 1.5;"
+                            class="bi bi-gender-female" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z" />
+                        </svg>
+                    </span>
+                    <ng-template #maleIcon>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke:  #66a9e0; stroke-width: 1.5;"
+                            class="bi bi-gender-male" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+                        </svg>
+                    </ng-template>
+                </h4>
+                <h4>@{{req.nickname}}</h4>
+                <h4>{{req.phoneNumber}}</h4>
+            </div>
+            <div class="accept" (click)="createFriendList(req.key)">
+                <svg style="margin-right: 0.6vh; margin-bottom:0.4vh; width:1.9vh; height: 1.9vh;"
+                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plugin " viewBox="0 0 16 16">
+                    <path                        d="M1 8a7 7 0 1 1 2.898 5.673c-.167-.121-.216-.406-.002-.62l1.8-1.8a3.5 3.5 0 0 0 4.572-.328l1.414-1.415a.5.5 0 0 0 0-.707l-.707-.707 1.559-1.563a.5.5 0 1 0-.708-.706l-1.559 1.562-1.414-1.414 1.56-1.562a.5.5 0 1 0-.707-.706l-1.56 1.56-.707-.706a.5.5 0 0 0-.707 0L5.318 5.975a3.5 3.5 0 0 0-.328 4.571l-1.8 1.8c-.58.58-.62 1.6.121 2.137A8 8 0 1 0 0 8a.5.5 0 0 0 1 0Z" />
+                </svg>
+                <h2>Accept</h2>
+            </div>
+            <div class="cancel" (click)="removeFriendReq(req.key)">
+                <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x"
+                    style="width:2vh; height: 2vh; stroke-width: 1.5; stroke:  #b4b6b8 ;" viewBox="0 0 16 16">
+                    <path
+                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>

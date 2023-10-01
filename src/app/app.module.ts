@@ -6,7 +6,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { NgToastModule } from 'ng-angular-popup';
 import { CommonModule } from '@angular/common';
-import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/compat/analytics';
+import { AngularFireAnalyticsModule, CONFIG , ScreenTrackingService, UserTrackingService } from '@angular/fire/compat/analytics';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +17,9 @@ import { MesssageComponent } from './components/messsage/messsage.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { AddFriendsComponent } from './components/add-friends/add-friends.component';
+import { MyFriendsListsComponent } from './components/my-friends-lists/my-friends-lists.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBng3IW71ar3S_vE4Sr6c7jli1JvPW55Ws",
@@ -38,7 +41,10 @@ const firebaseConfig = {
     MesssageComponent,
     SignupComponent,
     ToastComponent,
-    ChatComponent
+    ChatComponent,
+    ProfileComponent,
+    AddFriendsComponent,
+    MyFriendsListsComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +57,14 @@ const firebaseConfig = {
     CommonModule,
     AngularFireAnalyticsModule
   ],
-  providers: [ScreenTrackingService, UserTrackingService],
+  providers: [
+    ScreenTrackingService, 
+    UserTrackingService,
+    {
+    provide: CONFIG,
+      useValue: { send_page_view: true, allow_ad_personalization_signals: false }
+    }
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

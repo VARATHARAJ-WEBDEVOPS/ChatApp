@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
   }
 
   navigate() {
+    this.password = "";
     this.router.navigateByUrl('/signup');
   }
 
@@ -36,15 +37,16 @@ export class LoginComponent implements OnInit {
       if (users.length === 1) {
         const user = users[0];
         if (user.password === this.password) {
-          console.log('Authentication successful');
+          this.password = "";
           this.toastService.showToast('Login successful', true);
           localStorage.setItem('token', this.phoneNumber);
           this.clearData();
           this.router.navigateByUrl('chat');
+
         } else {
+          this.password = "";
           console.log('Incorrect password');
           this.toastService.showToast('Incorrect password', false);
-          this.password = "";
           this.showError = true;
         }
       } else {

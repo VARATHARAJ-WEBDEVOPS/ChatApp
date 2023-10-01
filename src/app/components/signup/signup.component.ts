@@ -38,10 +38,13 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle("AmorChat | Signup");
+    if(localStorage.getItem('token')){
+      this.router.navigateByUrl('chat');
+    }
     this.addItemForm = this.fb.group({
       userName: [''],
       phoneNumber: [''],
-      password: ['']
+      password: [''],
     });
   }
 
