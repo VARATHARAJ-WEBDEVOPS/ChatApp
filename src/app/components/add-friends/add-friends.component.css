@@ -69,7 +69,7 @@
     margin-top: 2vh;
     width: 90%;
     height: 6vh;
-    background-color: #fff;
+    background-color: rgb(253, 130, 151);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,6 +80,7 @@
 
 .inviteLove p {
   font-size: 1.8vh;
+  color: #fff;
 }
 
 .friendRequestContainer {
@@ -98,6 +99,7 @@
 
 .friendRequestContainer h2, .SearchResults h2 {
     font-size: 1.7vh;
+    color: #66a9e0;
 }
 
 .friendRequestContainer .friendRequestBox, .SearchResults .emptySearchResult, .friendRequestContainer .friendRequestVisible , .SearchResults .SearchResultsVisible {
@@ -136,6 +138,7 @@
 
 .friendRequestVisible .names, .SearchResultsVisible .names {
   width: 18vh;
+  margin-bottom: 1.3vh;
 }
 
 .friendRequestVisible .names h4, .SearchResultsVisible .names h4{
@@ -148,20 +151,63 @@
 .friendRequestVisible .accept, .SearchResultsVisible .accept {
   width: 11.5vh;
   height: 4.2vh;
-  background-color: #eaeef1;
+  color: #fff;
+  background-color: rgb(253, 130, 151);
   border-radius: 8vh;
   align-items: center;
   justify-content: center;
   display: flex;
+  box-shadow:
+  -5px 5px 10px rgba(0, 0, 0, 0.2),
+  5px -5px 8px #fff,
+  inset 5px -5px 10px #00000048;
 }
 
 .friendRequestVisible .accept h2 , .SearchResultsVisible .accept h2{
   font-size: 1.7vh;
   font-weight: 600;
+  color: #fff;
 }
 
 .friendRequestVisible .cancel , .SearchResultsVisible .cancel {
   padding: 1vh;
   margin-left: 0.8vh;
+  color: #fff;
 }
 
+input::placeholder {
+  font-size: 1.5vh;
+}
+
+.TipTour {
+  border-radius: 1vh;
+  width: 90%;
+  background-color: #66a9e0;
+  position: absolute;
+  bottom: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.TipTour h1{
+  padding-top: 2vh;
+  color: #fff;
+  font-size: 1.6vh;
+}
+
+.TipTour p{
+  text-align: center;
+  font-size: 1.6vh;
+  color: #fff;
+  line-height: 2vh;
+  padding: 2vh;
+}
+
+.header i {
+  font-size: 2.5vh;
+}

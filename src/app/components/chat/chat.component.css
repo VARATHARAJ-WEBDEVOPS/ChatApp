@@ -1,24 +1,101 @@
+.background {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: #2a2c41;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.menuContainer {
+  width: 75%;
+  height: 100%;
+}
+
+.logo {
+  width: 100%;
+  margin-top: 5vh;
+}
+
+.logo img {
+  width: 10vh;
+  height: 10vh;
+  border-radius: 50%;
+  margin-left: 2vh;
+}
+
+.menuTexts {
+  margin-top: 4vh;
+  width: 90%;
+  padding: 5%;
+  line-height: 4vh;
+  font-size: 2vh;
+  color: #ff724c;
+  text-align: justify;
+}
+
+.menuTexts a{
+  color: #fff;
+  text-decoration: none;
+}
+
 .chat {
-    width: 100%;
-    height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow:
+    -5px -5px 10px rgba(0, 0, 0, 0.2),
+    5px 5px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.5s , height 0.5s ; 
+  background-color: #fff;
+}
+
+.noFriends {
+  margin-top: 5vh;
+  font-size: 2vh;
+}
+
+.ismenu {
+  transform: translateY(5vh) translateX(75%);
+  height: 80vh;
+  border-radius: 2vh;
+}
+
+#menu {
+  font-size: 3vh;
+  padding-inline: 2.5vh;
+  transition: transform 0.5s;
+  color: #525252;  
+}
+
+.custom-border-radius {
+  border-top-left-radius: 2vh;
 }
 
 .chat .nav {
-    z-index: 100;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 6vh;
-    background-color: #fff;
-    border-bottom: 0.2vh solid #ebf1f8;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  z-index: 100;
+  width: 100%;
+  height: 7%;
+  background-color: #fff;
+  border-bottom: 0.2vh solid #ebf1f8;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow:
+    0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.side {
+  padding-right: 2.5vh;
 }
 
 .chat .empty {
-    width: 100%;
-    height: 6vh;
+  width: 100%;
+  height: 6vh;
 }
 
 .chat .nicknameBack {
@@ -52,10 +129,13 @@
   border-radius: 1vh;
   margin-bottom: 2vh;
   border: 2.2px solid #66a9e0;
-  background: none
+  background: none;
+  box-shadow:
+    inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+    5px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
-.chat .nickNameDiolog .gender{
+.chat .nickNameDiolog .gender {
   width: 80%;
   height: 6vh;
   border-radius: 1vh;
@@ -63,6 +143,10 @@
   justify-content: center;
   display: flex;
   border: 0.2vh solid #66a9e0;
+  box-shadow:
+    inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+    5px 5px 10px rgba(0, 0, 0, 0.2);
+
 }
 
 .chat .nickNameDiolog .age-calculator {
@@ -81,65 +165,78 @@
   height: 5vh;
   background-color: #66a9e0;
   color: #fff;
-  margin-top: 4vh;
+  margin-top: 5.5vh;
   border-radius: 1vh;
+  box-shadow:
+    -5px 5px 10px rgba(0, 0, 0, 0.2),
+    5px -5px 8px #fff,
+    inset 5px -5px 10px #00000048;
 }
 
-.male , .female {
-  display: flex; 
+.male,
+.female {
+  display: flex;
   width: 50%;
   height: 100%;
   justify-content: center;
   align-items: center;
 }
 
-.male p, .female p {
+.male p,
+.female p {
   font-size: 1.6vh;
 }
 
 .chat .nav h2 {
-    font-weight: 500;
-    font-size: 2.5vh;
+  font-weight: 500;
+  font-size: 2.5vh;
 }
 
 .chat .nav .side {
-    width: 60%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  width: 60%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .chat .nav .side .profile {
-    width: 4.5vh;
-    height: 4.5vh;
-    background-color: #66a9e0;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 4.5vh;
+  height: 4.5vh;
+  background-color: #66a9e0;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow:
+    inset 1px -1px 5px #00000048,
+    inset -1px 1px 5px #00000048;
 }
 
-.chat .nav .side .profile h1 {
-    font-size: 1.5vh;
-    font-weight: 700;
-    color: #fff;
+.chat .nav .side .profile p {
+  font-size: 1.5vh;
+  color: #fff;
 }
 
 .chat .nav .side .addFriends {
-    width: 4.5vh;
-    height: 4.5vh;
-    background-color: #dfdfdf;
-    border-radius: 50%;
-    margin-inline: 2vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 4.5vh;
+  height: 4.5vh;
+  border-radius: 1vh;
+  margin-inline: 2vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chat .chatListContainer {
-    width: 100%;
-    height: 94vh;
+  width: 100%;
+  min-height: 40vh;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  transition: transform 1s ease-in-out;
 }
 
 .dob-picker {
@@ -156,6 +253,181 @@
   align-items: center;
   text-align: center;
   margin: 0.5vh;
-  border: 1px solid #ccc;
+  border: 1px solid #66a9e0;
+  background-color: #66a9e0;
+  color: #fff;
   border-radius: 5px;
+  box-shadow:
+    -5px 5px 10px rgba(0, 0, 0, 0.2),
+    5px -5px 8px #fff,
+    inset 5px -5px 10px #00000048;
+}
+
+.myfriendButton {
+  border-radius: 50%;
+  width: 8vh;
+  height: 8vh;
+  position: fixed;
+  bottom: 12vh;
+  right: 10%;
+  transform: translateX(-10%);
+  background-color: #66a9e0;
+  box-shadow:
+    -5px 5px 10px rgba(0, 0, 0, 0.2),
+    5px -5px 8px #fff,
+    inset 5px -5px 10px #00000048;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.5s ease-in-out;
+}
+
+.chatsContact {
+  width: 90%;
+  height: 11vh;
+  box-shadow:
+    -1px 1px 5px rgba(0, 0, 0, 0.2),
+    1px -1px 5px #fff;
+  margin-block: 1vh;
+  border-radius: 3vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.friendProfile {
+  width: 8.5vh;
+  height: 8.5vh;
+  background-color: #66a9e0;
+  margin: 2vh;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffff;
+  font-size: 3vh;
+  box-shadow:
+    inset 1px -1px 5px rgba(0, 0, 0, 0.2),
+    inset -1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.friendName {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.friendName h2 {
+  font-size: 2.5vh;
+  padding-block: 1vh;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.friendName h6 {
+  font-size: 1.7vh;
+  padding-block: 1vh;
+  font-weight: 100;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.time {
+  position: absolute;
+  right: 5%;
+  transform: translate(-5%, -50%);
+  top: 50%;
+  font-size: 1.2vh;
+}
+
+/* .count {
+  position: absolute;
+  right: 5%;
+  transform: translate(-5%, -90%);
+  top: 90%;
+  font-size: 1.2vh;
+  width: 2.5vh;
+  height: 2.5vh;
+  background-color: rgb(253, 130, 151);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  box-shadow:
+  -5px 5px 10px rgba(0, 0, 0, 0.2),
+  5px -5px 8px #fff,
+  inset 5px -5px 10px #00000048;
+} */
+
+
+.searchBar {
+  width: 91%;
+  height: 6vh;
+  background-color: #ebecee;
+  border-radius: 10vh;
+  align-items: center;
+  display: flex;
+  margin-bottom: 2vh;
+  transition: transform 0.5s ease-in-out;
+}
+
+.searchBar input {
+  width: 80%;
+  height: 100%;
+  border: none;
+  background: none;
+  font-size: 1.7vh;
+  margin-left: 2.7vh;
+}
+
+.loading {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loading img {
+  width: 50vh;
+  height: 35vh;
+}
+
+.loading p {
+  font-size: 1.8vh;
+}
+
+.TipTour {
+  max-width: 60%;
+  border-radius: 1vh;
+  background-color: #66a9e0;
+  position: absolute;
+  bottom: 10vh;
+  left: 4vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.TipTour p{
+  text-align: center;
+  font-size: 1.6vh;
+  color: #fff;
+  line-height: 2vh;
+  padding: 2vh;
+}
+
+.TipTour h1{
+  padding-top: 2vh;
+  font-size: 1.6vh;
+  color: #fff !important;
 }

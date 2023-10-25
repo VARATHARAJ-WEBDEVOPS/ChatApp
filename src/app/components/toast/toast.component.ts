@@ -30,16 +30,8 @@ export class ToastComponent {
     return this.toastService.success;
   }
 
-  get error() {
-    return this.toastService.error;
-  }
-
   get message() {
     return this.toastService.message;
-  }
-
-  get progressWidth() {
-    return this.toastService.progressWidth;
   }
 
   hideToast() {

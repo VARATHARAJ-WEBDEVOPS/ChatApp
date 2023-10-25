@@ -1,3 +1,5 @@
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
 @font-face {
     font-family: Gotham;
     src: url('assets/fonts/GothamMedium.ttf');
@@ -33,7 +35,6 @@ body {
     margin: 0;
 }
 
-/* Global CSS or a shared CSS file */
 .slide-in-from-right {
     right: 0; /* The final position, animating from right to left */
   }

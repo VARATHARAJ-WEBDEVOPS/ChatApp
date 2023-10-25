@@ -1,0 +1,12 @@
+<div class="notification">
+    <div class="header">
+        <i class="bi bi-caret-left-fill" routerLink="/chat"></i>
+        <h1>Activities</h1>
+    </div>
+    <div class="Container">
+        <div class="message" *ngFor="let mgs of notifications">
+            <div class="time"> {{mgs.time | date: 'dd.MM.yyyy | h:mm a' }} </div>
+            <div class="notify">{{mgs.message}}</div>
+        </div>
+    </div>
+</div>

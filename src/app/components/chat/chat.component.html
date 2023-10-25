@@ -1,70 +1,139 @@
-<div class="chat">
-    <div class="nav">
-        <h2>AmorChat</h2>
-        <div class="side">
-            <div class="addFriends" (click)=" navigateAddfriend()">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    style="width: 2.7vh; height: 2.7vh; padding-bottom: 0.4vh; padding-left: 0.2vh" fill="#525252b9"
-                    class="bi bi-person-plus-fill" viewBox="0 0 16 16">
-                    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                    <path fill-rule="evenodd"
-                        d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+<div class="background">
+
+    <div class="menuContainer">
+        <div class="logo">
+            <img src="./assets/images/chainsyslogo.png" alt="chainsyslogo"  class="logo">
+        </div>
+        <div class="menuTexts">
+            "I embarked on the creative journey of crafting AmorChat, a charming chat web application, while honing my skills at Chain Sys Madurai. To explore more of my work and discover my creative portfolio, please visit the enchanting realm of my projects <a href="https://varatharaj-portfolio.web.app/" target="_blank">"https://varatharaj-portfolio.web.app/"</a>. It's a testament to my passion and dedication in the world of web development."
+        </div>        
+    </div>
+
+    <div class="chat" [ngClass]="{'ismenu': ismenu}">
+
+        <div class="loading" *ngIf="isloading">
+            <img src="./assets/images/loading.gif" alt="loading-sign" />
+            <p>fetching contacts...</p>
+        </div>
+
+        <div class="nav" [ngClass]="{'custom-border-radius': ismenu}">
+            <i class="bi bi-list" id="menu" (click)="toggleManu()" *ngIf="!ismenu"></i>
+            <i class="bi bi-x-lg" id="menu" (click)="toggleManu()" *ngIf="ismenu"></i>
+            
+            <h2 style="color: #525252;">AmorChat</h2>
+            <div class="side">
+                <div class="addFriends" (click)="navigateNotification()">
+                    <i style="color: #525252b9; font-size: 3vh;" class="bi bi-bell-fill"></i>
+                </div>
+                <div class="profile" (click)=" navigateProfile()">
+                    <p *ngIf="UserList && UserList.length > 0">{{ UserList[0].userName.charAt(0).toUpperCase() }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="empty"></div>
+        <div class="nicknameBack" *ngIf="isNickNameDiolog">
+            <div class="nickNameDiolog">
+                <input type="text" placeholder="Enter Your Nick Name" (input)="changeUpper()" name="nickname"
+                    [(ngModel)]="nickname"
+                    [style.border]="showErrorNickName ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+                <p style="font-size: 1.8vh;padding: 1vh;">Gender</p>
+
+                <div class="gender" [style.border]="showErrorGender ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+                    <div class="male" (click)="toggleMale()" [style.background-color]="isGenderMale ? '#0099ff' : ''">
+                        <p [style.color]="isGenderMale ? '#fff' : '#767676'">Male</p>
+                    </div>
+                    <div class="female" (click)="toggleFemale() "
+                        [style.background-color]="isGenderFemale ? '#ff00ea' : ''"
+                        [style.border-left]="showErrorGender ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+                        <p [style.color]="isGenderFemale ? '#fff' : '#767676'">Female</p>
+                    </div>
+                </div>
+
+                <div class="age-calculator">
+                    <label style="padding: 1.2vh; font-size: 1.8vh;">Date of Birth:</label>
+
+                </div>
+
+                <div class="dob-picker">
+                    <select class="dob-select" style="width: 20%; height: 4.5vh;" [(ngModel)]="selectedDay"
+                        [style.border]="showErrorDob ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+                        <option value="" disabled selected>Day</option>
+                        <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+                    </select>
+
+                    <select class="dob-select" style="width: 30%; height: 4.5vh;" [(ngModel)]="selectedMonth"
+                        [style.border]="showErrorDob ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+                        <option value="" disabled selected>Month</option>
+                        <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+                    </select>
+
+                    <select class="dob-select" style="width: 25%; height: 4.5vh;" [(ngModel)]="selectedYear"
+                        [style.border]="showErrorDob ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+                        <option value="" disabled selected>Year</option>
+                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                    </select>
+                </div>
+
+
+                <button (click)="nickNameValidation()">Conform</button>
+            </div>
+        </div>
+
+        <div class="chatListContainer">
+            <div class="searchBar">
+                <svg  style="margin-left: 2.9vh; width: 2vh; height: 2vh; " xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+                    <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018Z" />
+                    <path
+                        d="M13 6.5a6.471 6.471 0 0 1-1.258 3.844c.04.03.078.062.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1.007 1.007 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5ZM6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z" />
                 </svg>
+                <input type="text" [(ngModel)]="searchTerm" (input)="searchProducts()"  placeholder="Search Friend">
             </div>
-            <div class="profile" (click)=" navigateProfile()">
-                <h1>{{UserList[0].userName.charAt(0).toUpperCase()}}</h1>
-
+            <div class="noFriends" *ngIf="!isloading && chatContact.length === 0">
+                <p>No friends</p>
+            </div>
+            <div class="chatsContact" (click)="openChatingpage(req)" *ngFor="let req of chatContact">
+                <div class="friendProfile" (click)="openProfile(req)">
+                    <h3>{{req.userName.charAt(0)}}</h3>
+                </div>
+                <div class="friendName">
+                    <h2 style="color: #525252e5;">{{req.userName}}
+                        <span *ngIf="req.gender === 'female'; else maleIcon">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke: #ff00ea; stroke-width: 1.5;"
+                                class="bi bi-gender-female" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z" />
+                            </svg>
+                        </span>
+                        <ng-template #maleIcon>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke:  #66a9e0; stroke-width: 1.5;"
+                                class="bi bi-gender-male" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+                            </svg>
+                        </ng-template>
+                    </h2>
+                    <h6 *ngIf="!req.lastmessage" style="color: #525252b4;">No messages</h6>
+                    <h6 *ngIf="req.lastmessage" style="color: #525252b4;">{{req.lastmessage}}</h6>
+                </div>
+                <div class="time" style="color: #525252;">{{req.lasttime}}</div>
+                <!--     <div class="count" *ngIf="req.count > 0">{{req.count}}</div>   -->
             </div>
         </div>
-    </div>
-    <div class="empty"></div>
-    <div class="nicknameBack" *ngIf="isNickNameDiolog">
-        <div class="nickNameDiolog">
-            <input type="text" placeholder="Enter Your Nick Name" name="nickname" [(ngModel)]="nickname"
-                [style.border]="showErrorNickName ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
-            <p style="font-size: 1.8vh;padding: 1vh;">Gender</p>
 
-            <div class="gender" [style.border]="showErrorGender ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
-                <div class="male" (click)="toggleMale()" [style.background-color]="isGenderMale ? '#0099ff' : ''">
-                    <p [style.color]="isGenderMale ? '#fff' : '#767676'">Male</p>
-                </div>
-                <div class="female" (click)="toggleFemale() " [style.background-color]="isGenderFemale ? '#ff00ea' : ''"
-                    [style.border-left]="showErrorGender ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
-                    <p [style.color]="isGenderFemale ? '#fff' : '#767676'">Female</p>
-                </div>
-            </div>
-
-            <div class="age-calculator">
-                <label style="padding: 1.2vh; font-size: 1.8vh;">Date of Birth:</label>
-
-            </div>
-
-            <div class="dob-picker">
-                <select class="dob-select" style="width: 20%; height: 4.5vh;" [(ngModel)]="selectedDay"
-                    [style.border]="showErrorDob ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
-                    <option value="" disabled selected>Day</option>
-                    <option *ngFor="let day of days" [value]="day">{{ day }}</option>
-                </select>
-
-                <select class="dob-select" style="width: 30%; height: 4.5vh;" [(ngModel)]="selectedMonth"
-                    [style.border]="showErrorDob ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
-                    <option value="" disabled selected>Month</option>
-                    <option *ngFor="let month of months" [value]="month">{{ month }}</option>
-                </select>
-
-                <select class="dob-select" style="width: 25%; height: 4.5vh;" [(ngModel)]="selectedYear"
-                    [style.border]="showErrorDob ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
-                    <option value="" disabled selected>Year</option>
-                    <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-                </select>
-            </div>
-
-
-            <button (click)="nickNameValidation()">Conform</button>
+        <div class="myfriendButton" (click)="navigateAddfriend()">
+            <i style="font-size: 3vh; color: #fff;" class="bi bi-person-fill-add"></i>
+        </div>
+        <div class="TipTour"  *ngIf="!isloading && chatContact.length === 0">
+            <h1>
+                New User Tour <i class="bi bi-lightbulb"></i>!
+            </h1>
+            <p>
+                Experience a journey of friendship by clicking this button to  adding new friends.
+            </p>
+           
         </div>
     </div>
-    <div class="chatListContainer">
-
-    </div>
-
 </div>

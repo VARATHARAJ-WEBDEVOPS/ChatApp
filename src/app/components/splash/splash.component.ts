@@ -13,7 +13,7 @@ export class SplashComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle("AmorChat | Splashscreen");
     setTimeout(() => {
-     this.router.navigateByUrl('login');
+     this.router.navigateByUrl('signup');
     }, 2000); 
   }
 

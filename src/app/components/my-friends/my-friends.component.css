@@ -1,0 +1,145 @@
+* {
+    fill: #454545;
+    color: #454545;
+  }
+  
+  .red-icon path {
+    fill: red;
+}
+
+  
+  .myFriendsContainer {
+      width: 100%;
+      min-height: 100vh;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      background-color: #f7f8fa;
+    }
+  
+    .bold-icon {
+      stroke: #000;
+      stroke-width: 1.5;
+  }
+
+  
+.myFriendsContainer .searchBar {
+    width: 91%;
+    height: 6vh;
+    background-color: #ebecee;
+    border-radius: 10vh;
+    align-items: center;
+    display: flex;
+    margin-bottom: 2vh;
+    margin-top: 12vh;
+}
+
+.myFriendsContainer .searchBar input {
+    width: 80%;
+    height: 100%;
+    border: none;
+    background: none;
+    font-size: 1.7vh;
+    margin-left: 2.7vh;
+}
+
+.inviteLove {
+    margin-top: 2vh;
+    width: 90%;
+    height: 6vh;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1vh;
+    margin-bottom: 2vh;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.103);
+}
+
+.friendRequestContainer {
+    width: 90%;
+    margin-top: 3vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.inviteLove p {
+  font-size: 1.8vh;
+}
+
+.SearchResults {
+    width: 90%;
+    margin-top: 4vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .friendRequestContainer h2, .SearchResults h2 {
+      font-size: 1.7vh;
+  }
+  
+  .friendRequestContainer .friendRequestBox, .SearchResults .emptySearchResult, .friendRequestContainer .friendRequestVisible , .SearchResults .SearchResultsVisible {
+    margin-top: 1vh;
+    margin-bottom: 2.4vh;
+    width: 100%;
+    min-height: 6vh;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1vh;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.103);
+  }
+  
+  .friendRequestContainer .friendRequestVisible , .SearchResultsVisible{
+    height: 8vh;
+    display: flex;
+    align-items: center;
+  }
+  
+  .friendRequestVisible .profile, .SearchResultsVisible .profile {
+    background-color: #66a9e0;
+    height: 6vh;
+    width: 6vh;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: #fff;
+  }
+  
+  .friendRequestVisible .profile h1, .SearchResultsVisible .profile h1{
+    font-size: 2.3vh;
+  }
+  
+  .friendRequestVisible .names, .SearchResultsVisible .names {
+    width: 20vh;
+    margin-bottom: 1vh;
+  }
+  
+  .friendRequestVisible .names h4, .SearchResultsVisible .names h4{
+    font-weight: 300;
+    padding: 0.3vh;
+    margin-left: 1vh;
+    font-size: 1.3vh;
+  }
+  
+  .friendRequestVisible .accept, .SearchResultsVisible .accept {
+    width: 11.5vh;
+    height: 4.2vh;
+    background-color: #eaeef1;
+    border-radius: 8vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  
+  .friendRequestVisible .accept h2 , .SearchResultsVisible .accept h2{
+    font-size: 1.7vh;
+    font-weight: 600;
+  }
+  
+  .friendRequestVisible .cancel , .SearchResultsVisible .cancel {
+    padding: 1vh;
+    margin-left: 0.8vh;
+  }

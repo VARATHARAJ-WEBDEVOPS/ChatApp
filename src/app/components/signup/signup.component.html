@@ -7,7 +7,7 @@
         <div class="top">
             <p [style.color]="showErrorUserName ? 'red' : '#66a9e0'">User Name</p>
         </div>
-        <input type="text" id="userName" [(ngModel)]="userName" >
+        <input type="text" id="userName" [(ngModel)]="userName" class="username" (input)="changeUpper()">
     </div>
     <div class="txtbox" [style.border]="showErrorPhnNO ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
         <div class="top">

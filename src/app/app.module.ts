@@ -6,6 +6,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { NgToastModule } from 'ng-angular-popup';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AngularFireAnalyticsModule, CONFIG , ScreenTrackingService, UserTrackingService } from '@angular/fire/compat/analytics';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -20,16 +21,22 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AddFriendsComponent } from './components/add-friends/add-friends.component';
 import { MyFriendsListsComponent } from './components/my-friends-lists/my-friends-lists.component';
+import { MyFriendsComponent } from './components/my-friends/my-friends.component';
+import { ChatingComponent } from './components/chating/chating.component';
+import { NotificationComponent } from './components/notification/notification.component';
+import { DatePipePipe } from './date-pipe.pipe';
+import { EditpageComponent } from './components/editpage/editpage.component';
+import { FriendProfileComponent } from './components/friend-profile/friend-profile.component';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBng3IW71ar3S_vE4Sr6c7jli1JvPW55Ws",
-  authDomain: "messenger-7f2cf.firebaseapp.com",
-  databaseURL: "https://messenger-7f2cf-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "messenger-7f2cf",
-  storageBucket: "messenger-7f2cf.appspot.com",
-  messagingSenderId: "586032486460",
-  appId: "1:586032486460:web:779d32bd01fd0f4ffb0b39",
-  measurementId: "G-J3DV1V6D7Z"
+  apiKey: "AIzaSyBnqwvPQV9ZyuTpM6qZJlLxH1uQr8b4XKo",
+  authDomain: "amorchat-v1.firebaseapp.com",
+  databaseURL: "https://amorchat-v1-default-rtdb.firebaseio.com",
+  projectId: "amorchat-v1",
+  storageBucket: "amorchat-v1.appspot.com",
+  messagingSenderId: "47176735470",
+  appId: "1:47176735470:web:00b77ca7790cc96434b1ff",
+  measurementId: "G-52B4RW2LW9"
 };
 
 @NgModule({
@@ -44,7 +51,13 @@ const firebaseConfig = {
     ChatComponent,
     ProfileComponent,
     AddFriendsComponent,
-    MyFriendsListsComponent
+    MyFriendsListsComponent,
+    MyFriendsComponent,
+    ChatingComponent,
+    NotificationComponent,
+    DatePipePipe,
+    EditpageComponent,
+    FriendProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +68,8 @@ const firebaseConfig = {
     BrowserAnimationsModule,
     NgToastModule,
     CommonModule,
-    AngularFireAnalyticsModule
+    AngularFireAnalyticsModule,
+    ReactiveFormsModule
   ],
   providers: [
     ScreenTrackingService, 

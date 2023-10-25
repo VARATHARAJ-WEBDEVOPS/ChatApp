@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { NgToastService } from 'ng-angular-popup';
 import { Title } from '@angular/platform-browser';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Observable, Subject } from 'rxjs';
@@ -17,9 +16,9 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class SignupComponent implements OnInit, OnDestroy {
 
-  userName!: string;
-  phoneNumber!: string;
-  password!: string;
+  userName: string = "";
+  phoneNumber: string = "";
+  password: string = "";
   addItemForm!: FormGroup;
   showError: boolean = false;
   showErrorPhnNO: boolean = false;
@@ -29,16 +28,20 @@ export class SignupComponent implements OnInit, OnDestroy {
   constructor(
     private db: AngularFireDatabase,
     private title: Title,
-    public toast: NgToastService,
     private toastService: ToastService,
     private fb: FormBuilder,
     private firebaseService: FirebaseService,
-    private router: Router) {
+    private router: Router,
+    private renderer: Renderer2) {
+  }
+
+  changeUpper() {
+    this.userName = this.userName.toLowerCase();
   }
 
   ngOnInit(): void {
     this.title.setTitle("AmorChat | Signup");
-    if(localStorage.getItem('token')){
+    if (localStorage.getItem('token')) {
       this.router.navigateByUrl('chat');
     }
     this.addItemForm = this.fb.group({
@@ -46,6 +49,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       phoneNumber: [''],
       password: [''],
     });
+
   }
 
   navigate() {
@@ -57,7 +61,6 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.addItemForm.value.phoneNumber = this.phoneNumber;
     this.addItemForm.value.password = this.password;
     this.firebaseService.createItem(this.addItemForm.value)
-    this.toastService.showToast('Signup successful', true);
     localStorage.setItem('token', this.phoneNumber);
     this.router.navigateByUrl("chat");
   }
@@ -73,9 +76,9 @@ export class SignupComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((users) => {
         console.log(users);
-        
+
         if (users.length > 0) {
-          this.toastService.showToast('Already a user', false);
+          this.toastService.showToast('Phone Number Already userd', true);
           this.phoneNumber = '';
           this.showErrorPhnNO = true;
         } else {
@@ -96,20 +99,31 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.showError = false;
 
     const phoneNumberPattern = /^[0-9]{10}$/;
+    const hasNumbersOrSymbols = /[0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\]/.test(this.password);
+    const hasNumbersOrSymbolsForUserName = /[0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\]/.test(this.userName);
 
-    if (this.userName == null) {
+    if (!this.userName) {
       this.showErrorUserName = true;
-    }
-
-    if (this.phoneNumber == null || !phoneNumberPattern.test(this.phoneNumber)) {
+    } else if (hasNumbersOrSymbolsForUserName) {
+      this.showErrorUserName = true;
+      this.toastService.showToast('Symbols & Numbers Not Allowed for UserName', true);
+    } else if (this.userName && this.userName.length < 4) {
+      this.showErrorUserName = true;
+      this.toastService.showToast('( User Name ) Need Atleast 4 charecters', true);
+    } else if (!this.phoneNumber) {
       this.showErrorPhnNO = true;
-    }
-
-    if (!this.password) {
+    } else if (!phoneNumberPattern.test(this.phoneNumber)) {
+      this.showErrorPhnNO = true;
+      this.toastService.showToast('Invalid Phone Number', true);
+    } else if (!this.password) {
       this.showError = true;
-    }
-
-    if (this.userName && this.phoneNumber && this.password && phoneNumberPattern.test(this.phoneNumber)) {
+    } else if (this.password.length < 8) {
+      this.showError = true;
+      this.toastService.showToast('( Password ) Need Atleast 8 characters', true);
+    } else if (hasNumbersOrSymbols) {
+      this.showError = true;
+      this.toastService.showToast('Symbols & Numbers Not Allowed', true);
+    }else if (this.userName  && this.phoneNumber && this.password && phoneNumberPattern.test(this.phoneNumber)) {
       this.showErrorUserName = false;
       this.showErrorPhnNO = false;
       this.showError = false;

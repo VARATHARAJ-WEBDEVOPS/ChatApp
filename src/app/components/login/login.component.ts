@@ -37,21 +37,19 @@ export class LoginComponent implements OnInit {
       if (users.length === 1) {
         const user = users[0];
         if (user.password === this.password) {
-          this.password = "";
-          this.toastService.showToast('Login successful', true);
           localStorage.setItem('token', this.phoneNumber);
           this.clearData();
-          this.router.navigateByUrl('chat');
+        this.router.navigateByUrl('chat');
 
         } else {
           this.password = "";
           console.log('Incorrect password');
-          this.toastService.showToast('Incorrect password', false);
+       //   this.toastService.showToast('Incorrect password', false);
           this.showError = true;
         }
       } else {
         console.log('User not found');
-        this.toastService.showToast('User not found', false);
+   //     this.toastService.showToast('User not found', false);
         this.clearData();
       }
     });

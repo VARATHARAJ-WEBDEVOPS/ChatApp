@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ToastService {
   show = false;
   success = false;
@@ -21,7 +21,7 @@ export class ToastService {
 
     setTimeout(() => {
       this.hideToast();
-    }, 2000); 
+    }, 3000); 
   }
 
   hideToast() {
