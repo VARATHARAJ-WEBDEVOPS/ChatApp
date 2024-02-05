@@ -1,0 +1,63 @@
+<div class="overAll">
+
+    <div class="header">
+        <div class="backIcon" (click)="backToChat()">
+            <i class="bi bi-caret-left-fill"></i>
+        </div>
+        <div class="profile">
+            <div class="profileRound">
+                <h1>AI</h1>
+            </div>
+            <div class="name">
+                <h1>Amor AI</h1>
+            </div>
+        </div>
+
+        <div class="mode-toggle" style="z-index: 100;">
+            <input type="checkbox" id="mode-switch" class="toggle-input" (change)="toggleTheme()">
+            <label for="mode-switch" class="toggle-label">
+                <img class="sun" src="./assets/images/lock.png" alt="Sun">
+                <img class="moon" style="filter: contrast(150%);" src="./assets/images/unlock.png" alt="Moon">
+            </label>
+        </div>
+    </div>
+
+    <div class="chatting" #contentsss style="margin-top: 9vh; margin-bottom: 10vh;">
+        <div class="messageContainer">
+            <div class="messages"    *ngFor="let mgs of Conversation " (click)="resetSelection(); isShowEditContainer = false">
+                <div class="myMessageContainer" [style]="mgs.send === '' ? 'display: none' : 'display: flex'">
+                    <div class="myMessage">
+                        <p *ngIf="!secure">{{mgs.key}}</p>
+                        <p *ngIf="secure">{{mgs.send}}</p>
+                    </div>
+                    <p class="myTime">{{mgs.time}}</p>
+                </div>
+                <div class="sendMessageContainer" [style]="mgs.received === '' ? 'display: none' : 'display: flex'">
+                    <div class="sendMessage">
+                        <p *ngIf="!secure">{{mgs.key}}</p>
+                        <p *ngIf="secure">{{mgs.received}}</p>
+                    </div>
+                    <p class="sendTime">{{mgs.time}}</p>
+                </div>
+            </div>
+            <div (click)="resetSelection(); isShowEditContainer = false"
+                style="width: 100%; height: 100vh; background-color: #ecf1fa;"></div>
+        </div>
+
+        <div class="footer">
+            <div class="textBox">
+                <input type="text" [(ngModel)]="message" name="message" placeholder="Message">
+            </div>
+            <div class="sendButton" (click)="sendMessage()">
+                <i class="bi bi-chat-heart-fill"></i>
+                <p>send</p>
+            </div>
+        </div>
+
+        <div class="passwordDiolog" *ngIf="passwordDiolog" style="z-index: 1000;">
+            <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
+                placeholder="Enter your password" [(ngModel)]="CheckPassword">
+            <button (click)="conformPassword()">Conform</button>
+        </div>
+    </div>
+</div>

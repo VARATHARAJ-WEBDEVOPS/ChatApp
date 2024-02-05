@@ -398,6 +398,13 @@
 }
 
 @media (min-width: 992px) {
+
+    .myMessage,p {
+        font-size: 2vh;
+    }
+    .sendMessage , p{
+        font-size: 2vh;
+    }
 .header{
     width: 50%;
     position: relative;

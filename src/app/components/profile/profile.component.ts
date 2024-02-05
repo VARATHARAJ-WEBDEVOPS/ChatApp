@@ -30,6 +30,11 @@ export class ProfileComponent implements OnInit {
 
   async ngOnInit() {
     this.title.setTitle("AmorChat | Profile");
+
+    if (!localStorage.getItem('token')) {
+      this.router.navigateByUrl('login');
+    } 
+    
     console.log(localStorage.getItem('userList'));
     const userListString = localStorage.getItem('userList');
 

@@ -1,111 +1,118 @@
-<div class="header">
-    <div class="backIcon" (click)="backToChat()">
-        <i class="bi bi-caret-left-fill"></i>
-    </div>
-    <div class="profile">
-        <div class="profileRound" (click)="openProfile(paramValue)">
-            <h1>{{ paramValue.userName.charAt(0).toUpperCase() }}</h1>
+<div class="overAll">
+
+
+    <div class="header">
+        <div class="backIcon" (click)="backToChat()">
+            <i class="bi bi-caret-left-fill"></i>
         </div>
-        <div class="name">
-            <h1>{{paramValue.userName}}</h1>
-            <p>@ {{paramValue.nickname}}</p>
+        <div class="profile">
+            <div class="profileRound" (click)="openProfile(paramValue)">
+                <h1>{{ paramValue.userName.charAt(0).toUpperCase() }}</h1>
+            </div>
+            <div class="name">
+                <h1>{{paramValue.userName}}</h1>
+                <p>@ {{paramValue.nickname}}</p>
+            </div>
+        </div>
+
+        <div class="mode-toggle" style="z-index: 100;">
+            <input type="checkbox" id="mode-switch" class="toggle-input" (change)="toggleTheme()">
+            <label for="mode-switch" class="toggle-label">
+                <img class="sun" src="./assets/images/lock.png" alt="Sun">
+                <img class="moon" style="filter: contrast(150%);" src="./assets/images/unlock.png" alt="Moon">
+            </label>
         </div>
     </div>
 
-    <div class="mode-toggle" style="z-index: 100;">
-        <input type="checkbox" id="mode-switch" class="toggle-input" (change)="toggleTheme()">
-        <label for="mode-switch" class="toggle-label">
-            <img class="sun" src="./assets/images/lock.png" alt="Sun">
-            <img class="moon" style="filter: contrast(150%);" src="./assets/images/unlock.png" alt="Moon">
-        </label>
-    </div>
-</div>
-
-<div class="chatting" #contentsss style="margin-top: 9vh; margin-bottom: 10vh;">
+    <div class="chatting" #contentsss style="margin-top: 9vh; margin-bottom: 10vh;">
 
 
-    <div class="messageContainer">
-        <div class="messages" (click)="resetSelection(); isShowEditContainer = false" *ngFor="let mgs of Conversation ">
+        <div class="messageContainer">
+            <div class="messages" (click)="resetSelection(); isShowEditContainer = false"
+                *ngFor="let mgs of Conversation ">
 
-            <div class="sendMessageContainer" [style]="mgs.received === '' ? 'display: none' : 'display: flex'">
-                <div class="sendMessage" [style]="mgs.isDeleted ? 'display: none' : 'display: flex'">
+                <div class="sendMessageContainer" [style]="mgs.received === '' ? 'display: none' : 'display: flex'">
+                    <div class="sendMessage" [style]="mgs.isDeleted ? 'display: none' : 'display: flex'">
 
-                    <p *ngIf="!secure">{{mgs.key}}</p>
-                    <p *ngIf="secure">{{mgs.received}}</p>
+                        <p *ngIf="!secure">{{mgs.key}}</p>
+                        <p *ngIf="secure">{{mgs.received}}</p>
 
-                </div>
-
-                <p class="sendTime">{{mgs.time}}</p>
-                <p class="sendIsEdit" *ngIf="mgs.isEdited  && secure">| Edited</p>
-
-            </div>
-            <div class="sendMessageContainer" [style]="!mgs.isDeleted ? 'display: none' : 'display: flex'">
-
-                <div class="sendDeleteMessage" [style]="!mgs.hisMgs ? 'display: none' : 'display: flex'">
-
-                    <p>This Message has been Deleted by {{paramValue.userName}}</p>
-
-                </div>
-                <p class="sendTime"  [style]="mgs.myMgs ? 'display: none' : 'display: flex'">{{mgs.time}}</p>
-            </div>
-
-            <div class="myMessageContainer" [style]="mgs.send === '' ? 'display: none' : 'display: flex'">
-                <div class="myMessage" (mousedown)="onMouseDown($event)" (touchstart)="onTouchStart($event, mgs.key)"
-                    (touchend)="onTouchEnd($event, mgs.key)" (mouseup)="onMouseUp($event)">
-                    <div *ngIf="isEditontainer[mgs.key] && isShowEditContainer" class="editDeldteContainer">
-                        <i class="bi bi-pencil-square" style="color: #66a9e0;" (click)="editAction(mgs)"></i>
-                        <i class="bi bi-trash3-fill" style="color: rgb(253, 130, 151);" (click)="deleteAction(mgs)"></i>
                     </div>
-                    <p *ngIf="!secure">{{mgs.key}}</p>
-                    <p *ngIf="secure">{{mgs.send}}</p>
-                  
-                </div>
-                <p class="myTime">{{mgs.time}}</p>
-                <p class="myIsEdit" *ngIf="mgs.isEdited && secure">Edited |</p>
-            </div>
 
-            <div class="myMessageContainer" [style]="!mgs.isDeleted ? 'display: none' : 'display: flex'">
-                <div class="myDeleteMessage" [style]="!mgs.myMgs ? 'display: none' : 'display: flex'">
-
-                    <p>This Message has been Deleted by you</p>
+                    <p class="sendTime">{{mgs.time}}</p>
+                    <p class="sendIsEdit" *ngIf="mgs.isEdited  && secure">| Edited</p>
 
                 </div>
-                <p class="myTime" [style]="!mgs.myMgs ? 'display: none' : 'display: flex'">{{mgs.time}}</p>
+                <div class="sendMessageContainer" [style]="!mgs.isDeleted ? 'display: none' : 'display: flex'">
+
+                    <div class="sendDeleteMessage" [style]="!mgs.hisMgs ? 'display: none' : 'display: flex'">
+
+                        <p>This Message has been Deleted by {{paramValue.userName}}</p>
+
+                    </div>
+                    <p class="sendTime" [style]="mgs.myMgs ? 'display: none' : 'display: flex'">{{mgs.time}}</p>
+                </div>
+
+                <div class="myMessageContainer" [style]="mgs.send === '' ? 'display: none' : 'display: flex'">
+                    <div class="myMessage" (mousedown)="onMouseDown($event)"
+                        (touchstart)="onTouchStart($event, mgs.key)" (touchend)="onTouchEnd($event, mgs.key)"
+                        (mouseup)="onMouseUp($event)">
+                        <div *ngIf="isEditontainer[mgs.key] && isShowEditContainer" class="editDeldteContainer">
+                            <i class="bi bi-pencil-square" style="color: #66a9e0;" (click)="editAction(mgs)"></i>
+                            <i class="bi bi-trash3-fill" style="color: rgb(253, 130, 151);"
+                                (click)="deleteAction(mgs)"></i>
+                        </div>
+                        <p *ngIf="!secure">{{mgs.key}}</p>
+                        <p *ngIf="secure">{{mgs.send}}</p>
+
+                    </div>
+                    <p class="myTime">{{mgs.time}}</p>
+                    <p class="myIsEdit" *ngIf="mgs.isEdited && secure">Edited |</p>
+                </div>
+
+                <div class="myMessageContainer" [style]="!mgs.isDeleted ? 'display: none' : 'display: flex'">
+                    <div class="myDeleteMessage" [style]="!mgs.myMgs ? 'display: none' : 'display: flex'">
+
+                        <p>This Message has been Deleted by you</p>
+
+                    </div>
+                    <p class="myTime" [style]="!mgs.myMgs ? 'display: none' : 'display: flex'">{{mgs.time}}</p>
+                </div>
+            </div>
+            <div (click)="resetSelection(); isShowEditContainer = false"
+                style="width: 100%; height: 100vh; background-color: #ecf1fa;"></div>
+        </div>
+
+        <div class="footer">
+            <div class="textBox">
+                <input type="text" [(ngModel)]="message" name="message" placeholder="Message">
+            </div>
+            <div class="sendButton" (click)="sendMessage()">
+                <i class="bi bi-chat-heart-fill"></i>
+                <p>send</p>
             </div>
         </div>
-        <div (click)="resetSelection(); isShowEditContainer = false"
-            style="width: 100%; height: 100vh; background-color: #ecf1fa;"></div>
-    </div>
 
-    <div class="footer">
-        <div class="textBox">
-            <input type="text" [(ngModel)]="message" name="message" placeholder="Message">
+        <div class="passwordDiolog" *ngIf="passwordDiolog" style="z-index: 1000;">
+            <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
+                placeholder="Enter your password" [(ngModel)]="CheckPassword">
+            <button (click)="conformPassword()">Conform</button>
         </div>
-        <div class="sendButton" (click)="sendMessage()">
-            <i class="bi bi-chat-heart-fill"></i>
-            <p>send</p>
+
+        <div class="passwordDiolog" *ngIf="editDiolog" style="z-index: 1000;">
+            <input type="text" placeholder="Edit your Message..." [(ngModel)]="editedMessage">
+            <div class="editButtons">
+                <button (click)="editDiolog = false" style="background-color: rgb(253, 130, 151);">Cancel</button>
+                <button (click)="changesMyMgs()">Edit</button>
+            </div>
         </div>
-    </div>
 
-    <div class="passwordDiolog" *ngIf="passwordDiolog" style="z-index: 1000;">
-        <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
-            placeholder="Enter your password" [(ngModel)]="CheckPassword">
-        <button (click)="conformPassword()">Conform</button>
-    </div>
-
-    <div class="passwordDiolog" *ngIf="editDiolog" style="z-index: 1000;">
-        <input type="text" placeholder="Edit your Message..." [(ngModel)]="editedMessage">
-        <div class="editButtons">
-            <button (click)="editDiolog = false" style="background-color: rgb(253, 130, 151);">Cancel</button>
-            <button (click)="changesMyMgs()">Edit</button>
-        </div>
-    </div>
-
-    <div class="passwordDiolog" *ngIf="deleteDiolog" style="z-index: 1000;">
-        <p style="font-size: 1.6vh;">Are you sure to delete</p>
-        <div class="editButtons">
-            <button (click)="deleteDiolog = false" style="background-color: rgb(253, 130, 151);">Cancel</button>
-            <button (click)="deleteMyMgs()">Delete</button>
+        <div class="passwordDiolog" *ngIf="deleteDiolog" style="z-index: 1000;">
+            <p style="font-size: 1.6vh;">Are you sure to delete</p>
+            <div class="editButtons">
+                <button (click)="deleteDiolog = false" style="background-color: rgb(253, 130, 151);">Cancel</button>
+                <button (click)="deleteMyMgs()">Delete</button>
+            </div>
         </div>
     </div>
 </div>

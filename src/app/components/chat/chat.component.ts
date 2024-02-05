@@ -243,11 +243,14 @@ export class ChatComponent implements OnInit {
   }
 
   navigateMyFriends() {
-    this.router.navigateByUrl('myfriend')
+    this.router.navigateByUrl('myfriend');
+  }
+
+  openAIChatingpage(){
+    this.router.navigateByUrl('/aichat');
   }
 
   openChatingpage(res: any) {
-    console.log(res);
     localStorage.setItem('currectChattingFriend', JSON.stringify(res));
     this.router.navigateByUrl('chatting');
   }

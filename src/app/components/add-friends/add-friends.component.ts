@@ -39,6 +39,7 @@ export class AddFriendsComponent implements OnInit {
 
   changeUpper() {
     this.query = this.query.toLowerCase();
+    this.search();
   }
 
   search() {
@@ -49,6 +50,8 @@ export class AddFriendsComponent implements OnInit {
       this.firebaseService.searchPartial(this.query).subscribe((res) => {
         this.searchResults = res.filter((result) => result.phoneNumber !== this.userdata.phoneNumber
           && result.nickname !== this.userdata.nickname);
+          console.log(this.searchResults);
+          
       });
     }
   }
@@ -59,6 +62,8 @@ export class AddFriendsComponent implements OnInit {
 
     if (userDataFromLocalStorage !== null) {
       this.userdata = JSON.parse(userDataFromLocalStorage);
+      console.log(this.userdata);
+      
     }
 
     this.userKey = this.userdata.key;

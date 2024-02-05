@@ -1,67 +1,86 @@
-<div class="profile">
-    <div class="profilePic">    
-        <h1 style="font-size: 4vh; color: #66a9e0;">{{ UserList[0].userName.charAt(0).toUpperCase() }}</h1>  
-    </div>
+<div class="overAll">
 
-      <svg routerLink="/chat" xmlns="http://www.w3.org/2000/svg"style="width: 3vh; height: 3vh; position: absolute; top: 5vh; left: 5vh;" fill="#fff" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
-        <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
-      </svg>
+    <div class="profile">
+       
+        <div class="profilePic">
+            <h1 style="font-size: 4vh; color: #66a9e0;">{{ UserList[0].userName.charAt(0).toUpperCase() }}</h1>
+        </div>
 
-    <svg routerLink="/editprofile" xmlns="http://www.w3.org/2000/svg" style="  position: absolute; top: 5vh; left: 50%; transform: translateX(-50%);" width="3vh" height="3vh" fill="#fff" class="bi bi-pencil-square" viewBox="0 0 16 16">
-        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
-      </svg>
+        <svg routerLink="/chat" xmlns="http://www.w3.org/2000/svg"
+            style="width: 3vh; height: 3vh; position: absolute; top: 5vh; left: 5vh;" fill="#fff"
+            class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+            <path
+                d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
+        </svg>
 
-    <div class="top">
-        <p style="font-size: 6vh;padding: 1vh; color: #fff; font-weight: 100;">{{ UserList[0].userName }}</p>
-        <p style="font-size: 2vh; padding: 1vh; color: #fff;">@{{ UserList[0].nickname }}</p>
-        <p style="font-size: 2vh; padding: 1vh; color: #fff;">{{ UserList[0].phoneNumber }}</p>
-    </div>
-    <div class="bottom">
-<div style="display: flex; width: 100%; height: 7vh;  margin-top: 13vh; ">
-    <div class="" style="display: flex;flex-direction: column; width: 50%;  align-items: center;">
-        <p style="font-size: 1.7vh;  font-weight: 600; color: #454545 !important;">Gender</p>
-        <p>
-            <span *ngIf="UserList[0].gender === 'female'; else maleIcon">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    style="padding-left: 1vh; padding-top: 1vh; width: 4vh; height: 4vh; stroke: #ff00ea; stroke-width: 1.5;"
-                    class="bi bi-gender-female" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z" />
-                </svg>
-            </span>
-            <ng-template #maleIcon>
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    style="padding-left: 1vh; padding-top: 1vh; width: 4vh; height: 4vh; stroke:  #66a9e0; stroke-width: 1.5;"
-                    class="bi bi-gender-male" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
-                </svg>
-            </ng-template>
-        </p>
-    </div>
-    <div class="" style="display: flex;flex-direction: column; width: 50%;  align-items: center; margin-top: 9vh;">
-        <i class="bi bi-cake2" style="font-size: 3vh;padding-bottom: 0.9vh;  font-weight: 600; color: #454545 !important;"></i>
-        <p style="font-size: 4vh; color: #66a9e0;" >{{ UserList[0].dob | date: 'dd/MMM' }}</p>
-    </div>
-    <div class="" style="display: flex;flex-direction: column; width: 50%;  align-items: center;">
-        <p style="font-size: 1.7vh;padding-bottom: 0.9vh;  font-weight: 600; color: #454545 !important;">Age</p>
-        <p style="font-size: 4vh; color: #66a9e0;" >{{ UserList[0].age }}</p>
-    </div>
-</div>
-<div style="display: flex; width: 100%; height: 10vh; margin-top: 3vh; justify-content: center; align-items: center;" (click)="navigateMyfriendList()">
+        <svg routerLink="/editprofile" xmlns="http://www.w3.org/2000/svg"
+            style="  position: absolute; top: 5vh; left: 50%; transform: translateX(-50%);" width="3vh" height="3vh"
+            fill="#fff" class="bi bi-pencil-square" viewBox="0 0 16 16">
+            <path
+                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+            <path fill-rule="evenodd"
+                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+        </svg>
 
-</div>
-<div style="display: flex; width: 100%; margin-top: 3vh;   justify-content: center; align-items: center;">
-  <div class="inviteLove" style="width: 40%;   background-color: #66a9e0;   box-shadow:
+        <div class="top" style="z-index: 1000;">
+            <p style="font-size: 6vh;padding: 1vh; color: #fff; font-weight: 100;">{{ UserList[0].userName }}</p>
+            <p style="font-size: 2vh; padding: 1vh; color: #fff;">@{{ UserList[0].nickname }}</p>
+            <p style="font-size: 2vh; padding: 1vh; color: #fff;">{{ UserList[0].phoneNumber }}</p>
+        </div>
+        <div class="bottom">
+            <div style="display: flex; width: 100%; height: 7vh;  margin-top: 13vh; ">
+                <div class="" style="display: flex;flex-direction: column; width: 50%;  align-items: center;">
+                    <p style="font-size: 1.7vh;  font-weight: 600; color: #454545 !important;">Gender</p>
+                    <p>
+                        <span *ngIf="UserList[0].gender === 'female'; else maleIcon">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                style="padding-left: 1vh; padding-top: 1vh; width: 4vh; height: 4vh; stroke: #ff00ea; stroke-width: 1.5;"
+                                class="bi bi-gender-female" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z" />
+                            </svg>
+                        </span>
+                        <ng-template #maleIcon>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                style="padding-left: 1vh; padding-top: 1vh; width: 4vh; height: 4vh; stroke:  #66a9e0; stroke-width: 1.5;"
+                                class="bi bi-gender-male" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+                            </svg>
+                        </ng-template>
+                    </p>
+                </div>
+                <div class=""
+                    style="display: flex;flex-direction: column; width: 50%;  align-items: center; margin-top: 9vh;">
+                    <i class="bi bi-cake2"
+                        style="font-size: 3vh;padding-bottom: 0.9vh;  font-weight: 600; color: #454545 !important;"></i>
+                    <p style="font-size: 4vh; color: #66a9e0;">{{ UserList[0].dob | date: 'dd/MMM' }}</p>
+                </div>
+                <div class="" style="display: flex;flex-direction: column; width: 50%;  align-items: center;">
+                    <p style="font-size: 1.7vh;padding-bottom: 0.9vh;  font-weight: 600; color: #454545 !important;">Age
+                    </p>
+                    <p style="font-size: 4vh; color: #66a9e0;">{{ UserList[0].age }}</p>
+                </div>
+            </div>
+            <div style="display: flex; width: 100%; height: 10vh; margin-top: 3vh; justify-content: center; align-items: center;"
+                (click)="navigateMyfriendList()">
+
+            </div>
+            <div style="display: flex; width: 100%; margin-top: 3vh;   justify-content: center; align-items: center;">
+                <div class="inviteLove" style="width: 40%;   background-color: #66a9e0;   box-shadow:
   -5px 5px 10px rgba(0, 0, 0, 0.2),
   5px -5px 8px #fff;
-  "  (click)="logOut()">
-        <svg xmlns="http://www.w3.org/2000/svg" style="width: 2.5vh; height: 2.5vh;" fill="#fff"
-            class="bi bi-box-arrow-left" viewBox="0 0 16 16">
-            <path fill-rule="evenodd"                        d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z" />
-            <path fill-rule="evenodd"                        d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z" />
-        </svg>
-        <p style="margin-left: 1vh; font-size: 1.8vh; color: #fff;  ">Log out</p>
-    </div>
-</div>
+  " (click)="logOut()">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width: 2.5vh; height: 2.5vh;" fill="#fff"
+                        class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z" />
+                        <path fill-rule="evenodd"
+                            d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z" />
+                    </svg>
+                    <p style="margin-left: 1vh; font-size: 1.8vh; color: #fff;  ">Log out</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

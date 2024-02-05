@@ -1,52 +1,56 @@
-<div class="editPage" >
+<div class="overAll">
 
-    <div class="passwordDiolog" *ngIf="passwordDiolog" style="z-index: 1000;">
-        <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
-            placeholder="Enter your current password" [(ngModel)]="CurrentPassword">
+
+    <div class="editPage">
+
+        <div class="passwordDiolog" *ngIf="passwordDiolog" style="z-index: 1000;">
+            <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
+                placeholder="Enter your current password" [(ngModel)]="CurrentPassword">
             <div class="editButtons">
                 <button (click)="passwordDiolog = false" style="background-color: rgb(253, 130, 151);">Cancel</button>
                 <button (click)="conformPassword()">Conform</button>
             </div>
-    </div>
+        </div>
 
-    <div class="header">
-        <i *ngIf="Edited" routerLink="/profile" class="bi bi-arrow-left"></i>
-        <i *ngIf="!Edited" (click)="isunsaveDiolog = true"  class="bi bi-arrow-left"></i>
-        <p>Edit profile</p>
-        <i *ngIf="!Edited" style="position: absolute; right: 3vh; color: #0c91ea; font-size: 3.3vh;" class="bi bi-check-lg" (click)="passwordDiolog = true"></i>
-    </div>
-    
-    <div class="inputDiv" [style.border-bottom]="showErrorUserName ? '0.5px solid red' : '0.5px solid #fff'">
-            <div class="name" [style.color]="showErrorUserName ? 'red' : '#ffffff9f'" >
+        <div class="header">
+            <i *ngIf="Edited" routerLink="/profile" class="bi bi-arrow-left"></i>
+            <i *ngIf="!Edited" (click)="isunsaveDiolog = true" class="bi bi-arrow-left"></i>
+            <p>Edit profile</p>
+            <i *ngIf="!Edited" style="position: absolute; right: 3vh; color: #0c91ea; font-size: 3.3vh;"
+                class="bi bi-check-lg" (click)="passwordDiolog = true"></i>
+        </div>
+
+        <div class="inputDiv" [style.border-bottom]="showErrorUserName ? '0.5px solid red' : '0.5px solid #fff'">
+            <div class="name" [style.color]="showErrorUserName ? 'red' : '#ffffff9f'">
                 Username
             </div>
-            <input type="text" (input)="checkEdit()" [(ngModel)]="userName" >
+            <input type="text" (input)="checkEdit()" [(ngModel)]="userName">
             <p class="ErrorText">{{showErrorUserNameMessage}}</p>
         </div>
-       
-        <div class="inputDiv" [style.border-bottom]="showErrorNickName ? '0.5px solid red' : '0.5px solid #fff'" >
-            <div class="name" [style.color]="showErrorNickName ? 'red' : '#ffffff9f'"  >
+
+        <div class="inputDiv" [style.border-bottom]="showErrorNickName ? '0.5px solid red' : '0.5px solid #fff'">
+            <div class="name" [style.color]="showErrorNickName ? 'red' : '#ffffff9f'">
                 Nickname
             </div>
-            <input type="text" (input)="checkEdit()" [(ngModel)]="nickname"  >
+            <input type="text" (input)="checkEdit()" [(ngModel)]="nickname">
             <p class="ErrorText">{{showErrorNickNameMessage}}</p>
         </div>
 
         <div class="inputDiv" [style.border-bottom]="showErrorPhnNO ? '0.5px solid red' : '0.5px solid #fff'">
-            <div class="name"  [style.color]="showErrorPhnNO ? 'red' : '#ffffff9f'">
+            <div class="name" [style.color]="showErrorPhnNO ? 'red' : '#ffffff9f'">
                 Phone Number
             </div>
-            <input type="number"  (input)="checkEdit()" [(ngModel)]="phoneNumber">
+            <input type="number" (input)="checkEdit()" [(ngModel)]="phoneNumber">
             <p class="ErrorText">{{showErrorPhnNOMessage}}</p>
         </div>
         <div class="inputDiv" [style.border-bottom]="showError ? '0.5px solid red' : '0.5px solid #fff'">
             <div class="name" [style.color]="showError ? 'red' : '#ffffff9f'">
                 Change password
             </div>
-            <input type="password"  (input)="checkPassword()" [(ngModel)]="password">
+            <input type="password" (input)="checkPassword()" [(ngModel)]="password">
             <p class="ErrorText">{{showErrorMessage}}</p>
         </div>
-       
+
 
         <div class="gendderContainer">
             <p class="GenderName">Gender</p>
@@ -63,40 +67,41 @@
 
         <div class="dobContainier">
             <p class="dobName">Date of birth</p>
-            <p class="dobName" style="font-size: 1.8vh; color: #fff;" > Current - {{tempForm.value.dob}}</p>
+            <p class="dobName" style="font-size: 1.8vh; color: #fff;"> Current - {{tempForm.value.dob}}</p>
             <div class="dob-picker">
-                <select class="dob-select" style="width: 20%; height: 4.5vh;" [(ngModel)]="selectedDay" (change)="checkDOB()"
-                    [style.border]="showErrorDob ? '0.2vh solid red' : '0.5px solid #fff'">
+                <select class="dob-select" style="width: 20%; height: 4.5vh;" [(ngModel)]="selectedDay"
+                    (change)="checkDOB()" [style.border]="showErrorDob ? '0.2vh solid red' : '0.5px solid #fff'">
                     <option value="" disabled selected>Day</option>
                     <option *ngFor="let day of days" [value]="day">{{ day }}</option>
                 </select>
 
-                <select class="dob-select" style="width: 30%; height: 4.5vh;" [(ngModel)]="selectedMonth" (change)="checkDOB()"
-                    [style.border]="showErrorDob ? '0.2vh solid red' : '0.5px solid #fff'">
+                <select class="dob-select" style="width: 30%; height: 4.5vh;" [(ngModel)]="selectedMonth"
+                    (change)="checkDOB()" [style.border]="showErrorDob ? '0.2vh solid red' : '0.5px solid #fff'">
                     <option value="" disabled selected>Month</option>
                     <option *ngFor="let month of months" [value]="month">{{ month }}</option>
                 </select>
 
-                <select class="dob-select" style="width: 25%; height: 4.5vh;" [(ngModel)]="selectedYear" (change)="checkDOB()"
-                    [style.border]="showErrorDob ? '0.2vh solid red' : '0.5px solid #fff'">
+                <select class="dob-select" style="width: 25%; height: 4.5vh;" [(ngModel)]="selectedYear"
+                    (change)="checkDOB()" [style.border]="showErrorDob ? '0.2vh solid red' : '0.5px solid #fff'">
                     <option value="" disabled selected>Year</option>
                     <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                 </select>
             </div>
         </div>
-   
-</div>
-<div class="unsaveDiolog" *ngIf="isunsaveDiolog">
-    <div class="texts">
-        <h1>Unsaved changes</h1>
-        <p>You have unsaved changes. <br>
-        Are you sure you want to <br>
-    cancel?</p>
+
     </div>
-    <div class="yesButton" routerLink="/profile">
-        Yes
-    </div>
-    <div class="noButton" (click)="isunsaveDiolog = false">
-       No
+    <div class="unsaveDiolog" *ngIf="isunsaveDiolog">
+        <div class="texts">
+            <h1>Unsaved changes</h1>
+            <p>You have unsaved changes. <br>
+                Are you sure you want to <br>
+                cancel?</p>
+        </div>
+        <div class="yesButton" routerLink="/profile">
+            Yes
+        </div>
+        <div class="noButton" (click)="isunsaveDiolog = false">
+            No
+        </div>
     </div>
 </div>

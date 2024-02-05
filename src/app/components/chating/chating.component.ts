@@ -52,7 +52,7 @@ export class ChatingComponent implements OnInit {
 
   onMouseDown(event: MouseEvent) {   //for desktop
     this.pressTimeout = setTimeout(() => {
-      alert('Long press event occurred');
+      alert('Edit and Delete Support Only Mobile Browsers');
     }, 500);
   }
 
