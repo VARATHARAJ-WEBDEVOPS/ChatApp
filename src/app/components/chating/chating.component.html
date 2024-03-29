@@ -85,7 +85,7 @@
 
         <div class="footer">
             <div class="textBox">
-                <input type="text" [(ngModel)]="message" name="message" placeholder="Message">
+                <input type="text" [(ngModel)]="message" name="message" (keyup.enter)="sendMessage()" placeholder="Message">
             </div>
             <div class="sendButton" (click)="sendMessage()">
                 <i class="bi bi-chat-heart-fill"></i>

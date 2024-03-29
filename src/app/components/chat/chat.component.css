@@ -41,6 +41,20 @@
   text-decoration: none;
 }
 
+.notifyTab {
+  width: 2vh;
+  height: 2vh;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 0.3vh;
+  right: 1vh;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .chat {
   position: absolute;
   top: 0;
@@ -52,6 +66,7 @@
     5px 5px 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.5s , height 0.5s ; 
   background-color: #fff;
+  overflow: scroll;
 }
 
 .noFriends {
@@ -219,13 +234,14 @@
 }
 
 .chat .nav .side .addFriends {
-  width: 4.5vh;
+  width: 6vh;
   height: 4.5vh;
   border-radius: 1vh;
   margin-inline: 2vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .chat .chatListContainer {

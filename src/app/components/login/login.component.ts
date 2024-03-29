@@ -17,6 +17,8 @@ export class LoginComponent implements OnInit {
   users!: any[];
   showError: boolean = false;
   showErrorPhnNO: boolean = false;
+  showTip: boolean = false;
+  message: string = '';
 
   constructor(private title: Title, private toastService: ToastService, public router: Router, private firebase: FirebaseService) { }
 
@@ -39,17 +41,17 @@ export class LoginComponent implements OnInit {
         if (user.password === this.password) {
           localStorage.setItem('token', this.phoneNumber);
           this.clearData();
-        this.router.navigateByUrl('chat');
+          this.router.navigateByUrl('chat');
 
         } else {
           this.password = "";
           console.log('Incorrect password');
-       //   this.toastService.showToast('Incorrect password', false);
+          //   this.toastService.showToast('Incorrect password', false);
           this.showError = true;
         }
       } else {
         console.log('User not found');
-   //     this.toastService.showToast('User not found', false);
+        //     this.toastService.showToast('User not found', false);
         this.clearData();
       }
     });
@@ -59,6 +61,39 @@ export class LoginComponent implements OnInit {
     this.phoneNumber = "";
     this.password = "";
   }
+
+  openPhnTip() {
+    this.message = 'It must need 10 numbers'
+    this.showTip = true;
+    console.log(this.showTip);
+  }
+
+  validatePhn() {
+    const phoneNumberPattern = /^[0-9]{10}$/;
+
+    if (phoneNumberPattern.test(this.phoneNumber)) {
+      this.showTip = false;
+    } else {
+      this.showTip = true;
+    }
+  }
+
+  closePhnTip() {
+    this.showTip = false;
+  }
+
+  openPassTip() {
+    this.message = 'It must need 10 numbers'
+    this.showTip = true;
+    console.log(this.showTip);
+
+  }
+
+  closePassTip() {
+    this.showTip = false;
+    console.log(this.showTip);
+  }
+
 
   validation() {
     // Reset error flags initially

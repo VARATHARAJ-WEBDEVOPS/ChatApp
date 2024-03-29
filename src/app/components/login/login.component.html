@@ -1,27 +1,35 @@
 <div class="overAll">
 
-<div class="login">
-    <h2>AmorChat</h2>
-    <div style="width: 80%; text-align: center; padding: 2vh;">
-        <p style="color: rgba(0, 0, 0, 0.384); font-size: 1.5vh;">Log in your AmorChat account</p>
-    </div>
-    <div class="txtbox" [style.border]="showErrorPhnNO ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
-
-        <div class="top">
-            <p [style.color]="showErrorPhnNO ? 'red' : '#66a9e0'">Phone Number</p>
+    <div class="login">
+        <h2>AmorChat</h2>
+        <div style="width: 80%; text-align: center; padding: 2vh;">
+            <p style="color: rgba(0, 0, 0, 0.384); font-size: 1.5vh;">Log in your AmorChat account</p>
         </div>
-        <input type="number" id="phoneNumber" [(ngModel)]="phoneNumber">
-    </div>
-    <div class="txtbox" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+        <div class="txtbox"[style.border]="showErrorPhnNO ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
 
-        <div class="top">
-            <p [style.color]="showError ? 'red' : '#66a9e0'">Password</p>
+            <div class="top">
+                <p [style.color]="showErrorPhnNO ? 'red' : '#66a9e0'">Phone Number</p>
+            </div>
+            <input (keyup)="validatePhn()" (focus)="openPhnTip()" (blur)="closePhnTip()"  type="number" id="phoneNumber" [(ngModel)]="phoneNumber">
         </div>
-        <input type="password" id="password" [(ngModel)]="password">
+        <div class="txtbox" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
+
+            <div class="top">
+                <p [style.color]="showError ? 'red' : '#66a9e0'">Password</p>
+            </div>
+            <input  type="password" id="password" [(ngModel)]="password">
+        </div>
+        <button (click)="validation()">LOGIN</button>
+        <hr>
+        <p style="color: rgba(0, 0, 0, 0.384); font-size: 1.5vh; margin-top: 2vh;">Don't have an AmorChat account</p>
+        <span (click)="navigate()"> Sign up</span>
     </div>
-    <button (click)="validation()">LOGIN</button>
-    <hr>
-    <p style="color: rgba(0, 0, 0, 0.384); font-size: 1.5vh; margin-top: 2vh;">Don't have an AmorChat account</p>
-    <span (click)="navigate()"> Sign up</span>
+    
 </div>
+
+<div class="toast" *ngIf="showTip">
+    <div class="toast-body">
+        {{ message }}
+    
+    </div>
 </div>
