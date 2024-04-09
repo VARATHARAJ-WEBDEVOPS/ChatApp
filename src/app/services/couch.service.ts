@@ -49,18 +49,27 @@ export class CouchService {
     });
   }
 
-  updateNickName(_id: string, doc: any ) {
-    const url = `${this.CouchURL}/${this.databaseName}/${_id}`;
+  updateNickName(_id: string,_rev: string, doc: any ) {
+    const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
     return this.http.put(url, doc, {
+      headers: {
+        'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
+      }
+    }); ``
+  }
+
+  createNotification( doc: any ) {
+    const createUrl = `${this.CouchURL}/${this.databaseName}`;
+    return this.http.post(createUrl, doc, {
       headers: {
         'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
       }
     });
   }
 
-  createUnreadNotification( doc: any ) {
-    const createUrl = `${this.CouchURL}/${this.databaseName}`;
-    return this.http.post(createUrl, doc, {
+  getNotifications(user_id: string) {
+    const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/notificationSearch?key="${user_id}"`;
+    return this.http.get(url, {
       headers: {
         'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
       }

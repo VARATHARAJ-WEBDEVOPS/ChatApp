@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CouchService } from 'src/app/services/couch.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
@@ -11,24 +12,27 @@ export class NotificationComponent implements OnInit {
   notifications!: any[];
   unreadedMessages!: any[];
   key: string = '';
-  constructor(private firebaseService: FirebaseService) { }
+  constructor(private firebaseService: FirebaseService,
+    private couchService: CouchService
+  ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     const userdataGetting = localStorage.getItem('userList');
 
     if (userdataGetting !== null) {
 
       this.userData = JSON.parse(userdataGetting);
-      console.log(this.userData);
+      // console.log(this.userData);
     }
-    this.key = this.userData.key
-    console.log("key" + this.key);
+    await this.getNotifications(); 
+  }
 
-    this.gettingUnreadedNotifications();
+  getNotifications() {
+    this.couchService.getNotifications(this.userData._id).subscribe((res: any) => {
+      // console.log(res.rows.map((row: any)=>row.value));
 
-
-    this.firebaseService.getNotifications(this.userData.key).subscribe((res) => {
-      this.notifications = res.sort((a, b) => {
+      
+           this.notifications = res.rows.map((row: any)=>row.value).sort((a: any, b: any) => {
         try {
           const dateA = new Date(a.time);
           const dateB = new Date(b.time);
@@ -45,24 +49,26 @@ export class NotificationComponent implements OnInit {
           return 0;
         }
       });
+    // console.log(this.notifications);
+
     });
+    
   }
 
-  gettingUnreadedNotifications() {
-    this.firebaseService.gettingUnreadedNotifications(this.key).subscribe((res) => {
-      this.unreadedMessages = res
-      console.log(this.unreadedMessages);
-      this.putNotifyIntoNotification();
-    })
-  }
+  // gettingUnreadedNotifications() {
+  //   this.firebaseService.gettingUnreadedNotifications(this.key).subscribe((res) => {
+  //     this.unreadedMessages = res;
+  //     this.putNotifyIntoNotification();
+  //   })
+  // }
 
-  async putNotifyIntoNotification() {
-    for (let i = 0; i <= this.unreadedMessages.length; i++) {
-      await this.firebaseService.createNotification(this.userData.key, this.unreadedMessages[i]);
-      this.firebaseService.removeUnreadNotification(this.userData.key, this.unreadedMessages[i].key);
-    }
-    this.unreadedMessages = [];
-  }
+  // async putNotifyIntoNotification() {
+  //   for (let i = 0; i <= this.unreadedMessages.length; i++) {
+  //     await this.firebaseService.createNotification(this.userData.key, this.unreadedMessages[i]);
+  //     this.firebaseService.removeUnreadNotification(this.userData.key, this.unreadedMessages[i].key);
+  //   }
+  //   this.unreadedMessages = [];
+  // }
 
   clearingUnreadMessages(key: string) {
    

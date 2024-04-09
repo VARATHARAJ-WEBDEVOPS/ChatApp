@@ -9,6 +9,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CouchService } from 'src/app/services/couch.service';
 import { v4 as uuidv4 } from 'uuid';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-signup',
@@ -30,11 +31,9 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   constructor(
     private couchService: CouchService,
-    private db: AngularFireDatabase,
     private title: Title,
     private toastService: ToastService,
     private fb: FormBuilder,
-    private firebaseService: FirebaseService,
     private router: Router) {
   }
 
@@ -63,7 +62,8 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/login');
   }
 
-  onSubmit() {
+onSubmit() {
+
     const customId = 'user_2_' + uuidv4();   
 
     this.addItemForm.value._id = customId;
@@ -71,12 +71,14 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.addItemForm.value.phoneNumber = this.phoneNumber;
     this.addItemForm.value.password = this.password;
 
+   const encryptedPassword = CryptoJS.AES.encrypt(this.password, 'secret key').toString();
+
     const couchFormat = {
       _id: 'user_2_' + uuidv4(),
       data: {
         userName: this.userName,
         phoneNumber: this.phoneNumber,
-        password: this.password,
+        password: encryptedPassword,
         nickname: null,
         age: null,
         gender: null,
@@ -86,7 +88,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
 
     this.couchService.createAccount(couchFormat).subscribe(res => {
-      console.log(res);
+    
 
     });
 
@@ -97,7 +99,6 @@ export class SignupComponent implements OnInit, OnDestroy {
   checkUserExistence() {
     const phoneNumber = this.phoneNumber;
     this.couchService.checkExistingUser(phoneNumber).subscribe((response: any) => {
-      console.log(response);
       
         if (response.rows.length != 0) {
             this.toastService.showToast('Phone Number Already used', true);
@@ -105,7 +106,7 @@ export class SignupComponent implements OnInit, OnDestroy {
           
         } else {
             console.log('User does not exist');
-            console.log(this.onSubmit());
+            this.onSubmit();
         }
     });
 }

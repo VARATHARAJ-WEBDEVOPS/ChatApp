@@ -59,43 +59,68 @@ export class EditpageComponent implements OnInit {
   ) {
 
     this.tempForm = this.fb.group({
-      age: [''],
-      dob: [''],
-      gender: [''],
-      key: [''],
-      nickname: [''],
-      password: [''],
-      phoneNumber: [''],
-      userName: ['']
+      // age: [''],
+      // dob: [''],
+      // gender: [''],
+      // key: [''],
+      // nickname: [''],
+      // password: [''],
+      // phoneNumber: [''],
+      // userName: ['']
+      
+        _id: "",
+        _rev: "",
+        data: {
+          userName: "",
+          phoneNumber: null,
+          password: "",
+          nickname: "",
+          age: null,
+          gender: "",
+          dob: "",
+          type: ""
+        }
+      
     });
 
     this.EditedForm = this.fb.group({
-      age: [''],
-      dob: [''],
-      gender: [''],
-      key: [''],
-      nickname: [''],
-      password: [''],
-      phoneNumber: [''],
-      userName: ['']
+      // age: [''],
+      // dob: [''],
+      // gender: [''],
+      // key: [''],
+      // nickname: [''],
+      // password: [''],
+      // phoneNumber: [''],
+      // userName: ['']
+      _id: "",
+      _rev: "",
+      data: {
+        userName: "",
+        phoneNumber: null,
+        password: "",
+        nickname: "",
+        age: null,
+        gender: "",
+        dob: "",
+        type: ""
+      }
     });
-
-
   }
 
   compareFormGroups(): void {
-    // Get the values of the form groups
-    const tempFormValues = this.tempForm.value;
-    const editedFormValues = this.EditedForm.value;
 
-    // Compare each field in the form groups
+    const tempFormValues = this.tempForm.value.data;
+    const editedFormValues = this.EditedForm.value.data;
+
     const isEqual = Object.keys(tempFormValues).every((key) => {
       return tempFormValues[key] === editedFormValues[key];
     });
 
-    // Set this.Edited to true if the form groups are equal
     this.Edited = isEqual;
     console.log(this.Edited);
+    console.log("temp", tempFormValues);
+    console.log("edit", editedFormValues);
+    
 
   }
 
@@ -106,8 +131,6 @@ export class EditpageComponent implements OnInit {
     if (userdataGetting !== null) {
 
       this.userData = JSON.parse(userdataGetting);
-      console.log(this.userData);
-
     }
 
     for (let i = 1; i <= 31; i++) {
@@ -120,20 +143,24 @@ export class EditpageComponent implements OnInit {
       'September', 'October', 'November', 'December'
     ];
 
-    const currentYear = new Date().getFullYear();
+    const currentYear = new Date().getFullYear() - 13;
     for (let i = currentYear; i >= currentYear - 100; i--) {
       this.years.push(i.toString());
     }
 
     this.tempForm.patchValue(this.userData);
     this.EditedForm.patchValue(this.userData);
+    console.log(this.userData);
+    
+    console.log(this.EditedForm.value);
+    console.log(this.tempForm.value);
 
-    this.userName = this.EditedForm.value.userName;
-    this.nickname = this.EditedForm.value.nickname;
-    this.phoneNumber = this.EditedForm.value.phoneNumber;
-    this.age = this.EditedForm.value.age;
-    this.birthdate = this.EditedForm.value.dob;
-    this.FormGender = this.EditedForm.value.gender;
+    this.userName = this.EditedForm.value.data.userName;
+    this.nickname = this.EditedForm.value.data.nickname;
+    this.phoneNumber = this.EditedForm.value.data.phoneNumber;
+    this.age = this.EditedForm.value.data.age;
+    this.birthdate = this.EditedForm.value.data.dob;
+    this.FormGender = this.EditedForm.value.data.gender;
 
 
     this.compareFormGroups();
@@ -142,13 +169,12 @@ export class EditpageComponent implements OnInit {
     } else {
       this.toggleFemale()
     }
-
   }
 
   conformPassword() {
     if (!this.CurrentPassword) {
       this.showError = true;
-    } else if (this.CurrentPassword === this.userData.password) {
+    } else if (this.CurrentPassword === this.userData.data.password) {
       this.passwordDiolog = false;
       this.CurrentPassword = "";
       this.firebaseService.updateProfile(this.userData.key, this.EditedForm.value);
@@ -270,10 +296,12 @@ export class EditpageComponent implements OnInit {
     } else if (!this.phoneNumber || !phoneNumberPattern.test(this.phoneNumber)) {
       this.showErrorPhnNO = true;
       this.showErrorPhnNOMessage = 'Invalid Phone Number';
-    } else if (usernamePattern) {
-      this.showErrorNickNameMessage = 'Nickname Support underscore ( _ ) only other symbols not valid';
-      this.showErrorNickName = true;
-    } else if (!/[_]/.test(this.nickname)) {
+    }
+    //  else if (usernamePattern) {
+    //   this.showErrorNickNameMessage = 'Nickname Support underscore ( _ ) only other symbols not valid';
+    //   this.showErrorNickName = true;
+    // }
+     else if (!/[_]/.test(this.nickname)) {
       this.showErrorNickName = true;
       this.showErrorNickNameMessage = 'use At least 1 underscore ( _ ) for Nick Name';
     } else if (this.userName && this.phoneNumber && phoneNumberPattern.test(this.phoneNumber)) {

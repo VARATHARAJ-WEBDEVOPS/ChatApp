@@ -23,9 +23,9 @@ export class ProfileComponent implements OnInit {
 
   UserList: User[] = [];
   conformlogout: boolean = false;
+  Userdata: any;
 
   constructor(private router: Router,
-    private firebaseService: FirebaseService,
     private title: Title,
   ) { }
 
@@ -40,15 +40,12 @@ export class ProfileComponent implements OnInit {
     const userListString = localStorage.getItem('userList');
 
     if (userListString !== null) {
-      this.UserList[0] = JSON.parse(userListString);
-     await  this.firebaseService.getUserDetails(this.UserList[0].key).subscribe((data: any) => {
-        localStorage.setItem('userList', JSON.stringify(data));
-        // console.log("changed", data);
-      });
+      this.Userdata = JSON.parse(userListString);
+   
     }
+    this.UserList[0]=this.Userdata.data;    
   }
 
-  
   conformlogoutToggle() {
     this.conformlogout = !this.conformlogout;
   }

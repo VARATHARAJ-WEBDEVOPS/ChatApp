@@ -4,6 +4,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Title } from '@angular/platform-browser';
 import { CouchService } from 'src/app/services/couch.service';
+import * as CryptoJS from 'crypto-js';
 
 
 @Component({
@@ -20,11 +21,6 @@ export class LoginComponent implements OnInit {
   showErrorPhnNO: boolean = false;
   showTip: boolean = false;
   message: string = '';
-
-  data = {
-    name : "vasanth",
-    phn: 9360733323
-  }
 
   constructor(private title: Title, private couchService: CouchService, public router: Router, private firebase: FirebaseService) { }
 
@@ -44,7 +40,10 @@ export class LoginComponent implements OnInit {
     this.couchService.checkExistingUser(this.phoneNumber).subscribe((users: any) => {
        
       if (users.rows.length === 1) {
-        if (users.rows[0].value.data.password === this.password) {
+
+        const decryptedPassword = CryptoJS.AES.decrypt(users.rows[0].value.data.password , 'secret key').toString(CryptoJS.enc.Utf8);
+
+        if ( decryptedPassword === this.password) {
           localStorage.setItem('token', this.phoneNumber);
           this.clearData();
           this.router.navigateByUrl('chat');

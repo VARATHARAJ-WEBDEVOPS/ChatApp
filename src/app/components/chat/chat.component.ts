@@ -140,8 +140,6 @@ export class ChatComponent implements OnInit {
       data: { }
     });
     // this.gettingUnreadedNotifications();
-    console.timeEnd(this.userdata);
-    
     
   }
 
@@ -156,22 +154,16 @@ export class ChatComponent implements OnInit {
     this.couchService.checkExistingUser(phoneNumber).subscribe((response: any) => {
       localStorage.setItem("userList", JSON.stringify(response.rows[0].value));
       this.isNickNameDiolog = false;
-      console.log(response);
       
       const userDataFromLocalStorage = localStorage.getItem('userList');
       if (userDataFromLocalStorage !== null) {
         this.userdata = JSON.parse(userDataFromLocalStorage);
       }
-      console.log(this.userdata);
-
-      
+   
       this.userName = this.userdata.data.userName;
       this.nickNameForm.patchValue(this.userdata);
-      console.log(this.nickNameForm.value);
       
-
       // console.log(this.userdata.userName);
-
 
       if (response) {
         if (!this.userdata.data.nickname) {
@@ -184,7 +176,6 @@ export class ChatComponent implements OnInit {
             this.userphoneNumber = this.userdata.phoneNummber;
             this.isNickname = this.userdata.nickname;
             // this.getContacts();
-
           }
         }
       }
@@ -210,7 +201,6 @@ export class ChatComponent implements OnInit {
 
   checkExistingUserName() {
     this.couchService.checkExistingUserName(this.nickname).subscribe((res: any) => {
-      console.log(res);
       // return !!res.rows.length;
       if (res.rows.length === 1) {
         this.toastService.showToast('Nick Name Already used', true);
@@ -220,7 +210,7 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  updateNickName() {
+  async updateNickName() {
     this.nickNameForm.value.data.nickname = this.nickname;
     this.nickNameForm.value.data.gender = this.gender;
     this.nickNameForm.value.data.age = this.age;
@@ -231,14 +221,22 @@ export class ChatComponent implements OnInit {
     console.log(this.userdata._id);
 
 
-    this.couchService.updateNickName(this.userdata._id, this.nickNameForm.value).subscribe(() => {
+  await  this.couchService.updateNickName(this.userdata._id,this.userdata._rev, this.nickNameForm.value).subscribe(() => {
       localStorage.removeItem('userList');
       this.getUser(this.tempPhone);
-      
-      this.couchService.createUnreadNotification(this.nickNameForm.value).subscribe((res: any) => {
-        console.log(res);
+    });
+    const notificationFormat = {
+      _id: 'notification_2_' + uuidv4(),
+      data: {
+        time: String(new Date()),
+        message: `Hai 🙋‍♂️ ${this.userdata.userName} Welcome to AmorChat .`,
+        type: 'notification',
+        user: this.userdata._id
+      }
+    }
+    
+   this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
 
-      });
     });
   }
 
