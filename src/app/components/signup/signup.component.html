@@ -23,6 +23,9 @@
         </div>
         <input type="password" id="password" [(ngModel)]="password">
     </div>
+    <div class="ScannerContainer" (click)="toggleScanContainer()">
+        <p>Scan Your Finger Print</p>
+    </div>
     <button (click)="validation()">SIGN UP</button>
     <hr>
     <p style="color: rgba(0, 0, 0, 0.384); font-size: 1.5vh; margin-top: 2vh;">Aready have an AmorChat account</p>
@@ -30,3 +33,9 @@
 </div>
 </div>
 
+<div class="fingerPrintScanningContainer" *ngIf="isScanContainer" (click)="toggleScanContainer()">
+    <div class="scanComtainerDetails">
+        <i class="bi bi-fingerprint"></i>
+        <p>Scanning...</p>
+    </div>
+</div>

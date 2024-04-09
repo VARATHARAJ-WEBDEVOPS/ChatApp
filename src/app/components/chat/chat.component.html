@@ -3,6 +3,7 @@
     <div class="background">
 
         <div class="menuContainer">
+                <i class="bi bi-x-lg" id="menu" (click)="toggleMenu()" *ngIf="ismenu"></i>
             <div class="logo">
                 <img src="./assets/images/chainsyslogo.png" alt="chainsyslogo" class="logo">
             </div>
@@ -15,27 +16,31 @@
             </div>
         </div>
 
-        <div class="chat" [ngClass]="{'ismenu': ismenu}">
+        <div class="chat" *ngIf="!ismenu">
 
-            <div class="loading" *ngIf="isloading">
+            <!-- <div class="loading" *ngIf="isloading">
                 <img src="./assets/images/loading.gif" alt="loading-sign" />
                 <p>fetching contacts...</p>
-            </div>
+            </div> -->
 
             <div class="nav" [ngClass]="{'custom-border-radius': ismenu}">
-                <i class="bi bi-list" id="menu" (click)="toggleManu()" *ngIf="!ismenu"></i>
-                <i class="bi bi-x-lg" id="menu" (click)="toggleManu()" *ngIf="ismenu"></i>
-
-                <h2 style="color: #525252;">AmorChat</h2>
+                <div style="display: flex; align-items: center;">
+                    <div class="amorLogo" (click)="toggleMenu()" ></div>
+                    <!-- <i class="bi bi-list" id="menu" ></i> -->
+                    <!-- <i class="bi bi-x-lg" id="menu" (click)="toggleManu()" *ngIf="ismenu"></i> -->
+    
+                    <h2 style="color: #525252;" (click)="toggleMenu()" >AmorChat</h2>
+                </div>
+               
                 <div class="side">
                     <div class="addFriends" (click)="navigateNotification()">
-                        <div class="notifyTab">
-                            
+                        <div class="notifyTab" *ngIf="unReadNotify > 0">
+                            <p>{{unReadNotify}}</p>
                         </div>
                         <i style="color: #525252b9; font-size: 3vh;" class="bi bi-bell-fill"></i>
                     </div>
                     <div class="profile" (click)=" navigateProfile()">
-                        <p *ngIf="UserList && UserList.length > 0">{{ UserList[0].userName.charAt(0).toUpperCase() }}
+                        <p *ngIf="userName">{{ userName.charAt(0).toUpperCase() }}
                         </p>
                     </div>
                 </div>
@@ -43,7 +48,7 @@
             <div class="empty"></div>
             <div class="nicknameBack" *ngIf="isNickNameDiolog">
                 <div class="nickNameDiolog">
-                    <input type="text" placeholder="Enter Your Nick Name" (input)="changeUpper()" name="nickname"
+                    <input type="text" placeholder="Enter Your Nick Name" autocomplete = 'off' (input)="changeUpper()" name="nickname"
                         [(ngModel)]="nickname"
                         [style.border]="showErrorNickName ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
                     <p style="font-size: 1.8vh;padding: 1vh;">Gender</p>
@@ -102,7 +107,7 @@
                 </div>
 
                 <div class="chatsContact" (click)="openAIChatingpage()">
-                    <div class="friendProfile">
+                    <div class="friendProfile" >
                         <h3>AI</h3>
                     </div>
                     <div class="friendName">
@@ -114,7 +119,7 @@
                 </div>
                 <div class="chatsContact" (click)="openChatingpage(req)" *ngFor="let req of chatContact">
                     <div class="friendProfile" (click)="openProfile(req)">
-                        <h3>{{req.userName.charAt(0)}}</h3>
+                        <h3>{{req.userName.charAt(0) | uppercase}}</h3>
                     </div>
                     <div class="friendName">
                         <h2 style="color: #525252e5;">{{req.userName}}
@@ -136,7 +141,7 @@
                             </ng-template>
                         </h2>
                         <h6 *ngIf="!req.lastmessage" style="color: #525252b4;">No messages</h6>
-                        <h6 *ngIf="req.lastmessage" style="color: #525252b4;">{{req.lastmessage}}</h6>
+                        <h6 *ngIf="req.lastmessage" style="color: #525252b4; filter: blur(3px);">{{req.key}}</h6>
                     </div>
                     <div class="time" style="color: #525252;">{{req.lasttime}}</div>
                     <!--     <div class="count" *ngIf="req.count > 0">{{req.count}}</div>   -->

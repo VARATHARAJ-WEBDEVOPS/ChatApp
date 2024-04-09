@@ -6,7 +6,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
 import { async } from 'rxjs';
 
-
 @Component({
   selector: 'app-ai-chat',
   templateUrl: './ai-chat.component.html',
@@ -28,7 +27,7 @@ export class AiChatComponent {
   secure: boolean = false;
   toggle: boolean = false;
   passwordDiolog: boolean = false;
-  CheckPassword!: string;
+  CheckCredentials: string = '';
   myChatListForm!: FormGroup;
   hisChatListForm!: FormGroup;
   isEditontainer: boolean[] = new Array<any>();
@@ -64,12 +63,12 @@ export class AiChatComponent {
   }
 
   conformPassword() {
-    if (!this.CheckPassword) {
+    if (!this.CheckCredentials) {
       this.showError = true;
-    } else if (this.CheckPassword === this.userData.password) {
+    } else if (this.CheckCredentials === this.userData.password) {
       this.secure = true;
       this.passwordDiolog = false;
-      this.CheckPassword = "";
+      this.CheckCredentials = "";
     } else {
       this.showError = true;
       this.firebaseService.createNotification(this.userData.key, { time: String(new Date()), message: `Someone tried to open AmorChat AI's chat` });
@@ -98,7 +97,7 @@ export class AiChatComponent {
       isEdited: [''],
       isDeleted: ['']
     });
-    this.fetchMessages();
+    // this.fetchMessages();
   }
 
   backToChat() {
@@ -119,11 +118,11 @@ export class AiChatComponent {
 
       this.getCurrentTime();
       console.log(" my Form", this.myMessageForm.value);
-      await this.firebaseService.sendAIMessage(this.userData.key, this.myMessageForm.value).then((key) => {
-        this.AIUpdateKey = key.key;
-        console.log(this.AIUpdateKey);
-        this.connectWebSocket(this.message);
-      });
+      // await this.firebaseService.sendAIMessage(this.userData.key, this.myMessageForm.value).then((key) => {
+      //   this.AIUpdateKey = key.key;
+      //   console.log(this.AIUpdateKey);
+      //   this.connectWebSocket(this.message);
+      // });
     }
   }
 
@@ -140,13 +139,13 @@ export class AiChatComponent {
     this.myMessageForm.value.time = formattedTime;
   }
 
-  fetchMessages() {
-    this.firebaseService.getAIMessages(this.userData.key).subscribe((res) => {
-      this.Conversation = res;
-      console.log(this.Conversation);
+  // fetchMessages() {
+  //   this.firebaseService.getAIMessages(this.userData.key).subscribe((res) => {
+  //     this.Conversation = res;
+  //     console.log(this.Conversation);
 
-    });
-  }
+  //   });
+  // }
 
   resetSelection() {
     for (const key in this.isEditontainer) {
@@ -158,10 +157,8 @@ export class AiChatComponent {
 
   chatbox = document.getElementById("chatbox");
   messageInput = document.getElementById("messageInput");
-
   receiving = false;
   systemPrompt = "You are a Mr.S.Varatharaj devoloped an Amorchat web application's chat AI  ";
-
   receivedMessage: string = '';
 
   connectWebSocket(message: any) {
@@ -180,12 +177,12 @@ export class AiChatComponent {
       );
     });
 
-    websocket.onmessage = async (event) => {
-      this.receivedMessage += event.data;
-      await this.firebaseService.updateAIMssage(this.userData.key,this.AIUpdateKey,{ received: this.receivedMessage } );
-      this.message = "";
+    // websocket.onmessage = async (event) => {
+    //   this.receivedMessage += event.data;
+    //   await this.firebaseService.updateAIMssage(this.userData.key,this.AIUpdateKey,{ received: this.receivedMessage } );
+    //   this.message = "";
     
-    };
+    // };
 
     websocket.onclose = (event) => {
       if (event.code === 1000) {

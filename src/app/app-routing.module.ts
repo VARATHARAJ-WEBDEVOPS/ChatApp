@@ -12,12 +12,14 @@ import { MesssageComponent } from './components/messsage/messsage.component';
 import { NotificationComponent } from './components/notification/notification.component';
 import { EditpageComponent } from './components/editpage/editpage.component';
 import { FriendProfileComponent } from './components/friend-profile/friend-profile.component';
+import { AiChatComponent } from './components/ai-chat/ai-chat.component';
 
 const routes: Routes = [
   {path: '', component: SplashComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'chat', component: ChatComponent},
+  {path: 'aichat', component: AiChatComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'addfriend', component: AddFriendsComponent},
   {path: 'myfriend', component: MyFriendsComponent},

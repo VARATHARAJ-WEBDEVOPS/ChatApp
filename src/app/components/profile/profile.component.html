@@ -2,6 +2,18 @@
 
     <div class="profile">
        
+        <div class="logoutdialog" *ngIf="conformlogout">
+            <div class="dialogBg">
+                <i class="bi bi-exclamation-triangle"></i>
+                <h2>Are you sure?</h2>
+                <p>You want to logout?</p>
+                <div class="conformButtons">
+                    <button id="cancelBtn" (click)="conformlogoutToggle()">Cancel</button>
+                    <button id="okBtn" (click)="logOut()">Yes!</button>
+                </div>
+            </div>
+        </div>
+
         <div class="profilePic">
             <h1 style="font-size: 4vh; color: #66a9e0;">{{ UserList[0].userName.charAt(0).toUpperCase() }}</h1>
         </div>
@@ -63,14 +75,14 @@
                 </div>
             </div>
             <div style="display: flex; width: 100%; height: 10vh; margin-top: 3vh; justify-content: center; align-items: center;"
-                (click)="navigateMyfriendList()">
+                >
 
             </div>
             <div style="display: flex; width: 100%; margin-top: 3vh;   justify-content: center; align-items: center;">
                 <div class="inviteLove" style="width: 40%;   background-color: #66a9e0;   box-shadow:
   -5px 5px 10px rgba(0, 0, 0, 0.2),
   5px -5px 8px #fff;
-  " (click)="logOut()">
+  " (click)="conformlogoutToggle()">
                     <svg xmlns="http://www.w3.org/2000/svg" style="width: 2.5vh; height: 2.5vh;" fill="#fff"
                         class="bi bi-box-arrow-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"

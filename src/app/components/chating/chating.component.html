@@ -85,7 +85,8 @@
 
         <div class="footer">
             <div class="textBox">
-                <input type="text" [(ngModel)]="message" name="message" (keyup.enter)="sendMessage()" placeholder="Message">
+                <input type="text" [(ngModel)]="message" autocomplete = 'off' name="message" (keyup.enter)="sendMessage()"
+                    placeholder="Message">
             </div>
             <div class="sendButton" (click)="sendMessage()">
                 <i class="bi bi-chat-heart-fill"></i>
@@ -94,8 +95,18 @@
         </div>
 
         <div class="passwordDiolog" *ngIf="passwordDiolog" style="z-index: 1000;">
+            <i class="bi bi-fingerprint"></i>
+            <div class="dividerContainer">
+                <div>
+                    <hr>
+                </div>
+                or
+                <div>
+                    <hr>
+                </div>
+            </div>
             <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
-                placeholder="Enter your password" [(ngModel)]="CheckPassword">
+                placeholder="Enter your password" autocomplete = 'off' [(ngModel)]="CheckPassword">
             <button (click)="conformPassword()">Conform</button>
         </div>
 

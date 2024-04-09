@@ -59,6 +59,8 @@ hr {
     margin-block: 2vh;
 }
 
+
+
 @media (min-width: 992px) {
     .login{
         width: 30%;

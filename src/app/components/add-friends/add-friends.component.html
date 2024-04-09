@@ -1,6 +1,6 @@
 <div class="overAll">
     <div class="addFriendsContainer">
-
+        <button class="createGroupBtn">New Group</button>
         <div class="TipTour" *ngIf="showTooltip">
             <h1>
                 New User Tour <i class="bi bi-lightbulb"></i>!
@@ -13,7 +13,7 @@
                 Or invite your friend for AmorChat via whatsApp
             </p>
         </div>
-
+        
         <div class="header">
             <div class="backButton" routerLink="/chat">
                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 3vh; height: 3vh;" fill="#454545"
@@ -38,7 +38,7 @@
             <i (click)="cancelSearch()" class="bi bi-arrow-left" style="margin-left: 2.9vh; font-size: 2.7vh;"
                 *ngIf="isSearchResults"></i>
             <input type="text" (focus)="handleInputFocus()" (blur)="handleInputBlur()" (input)="changeUpper()"
-                placeholder="Search Friend's Contact / Nickname" [(ngModel)]="query" >
+                placeholder="Search Friend's Contact / Nickname" [(ngModel)]="query">
         </div>
         <div *ngIf="isSearchResults" class="SearchResults">
             <h2>Search Results</h2>

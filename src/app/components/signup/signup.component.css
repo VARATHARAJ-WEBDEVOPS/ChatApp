@@ -23,19 +23,79 @@
     margin-block: 2vh;
 }
 
+
+.ScannerContainer {
+    width: 70%;
+    height: 4.5vh;
+    background-color: #66a9e0;
+    border-radius: 10px;
+    padding: 1vh;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-block: 2vh;
+}
+
+.ScannerContainer:hover {
+    background-color: #5e9bcd;
+}
+
+.ScannerContainer p {
+    font-weight: 400;
+    font-size: 2vh;
+}
+
+.fingerPrintScanningContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.315);
+}
+
+.scanComtainerDetails {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    height: 350px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.fingerPrintScanningContainer i {
+    font-size: 15vh;
+    color: #66a9e0;
+    margin-bottom: 4vh;
+}
+
+.fingerPrintScanningContainer p {
+    color: #66a9e0;
+    font-size: 3vh;
+}
+
 .login .txtbox .top {
     position: absolute;
     top: -0.7vh;
     left: 8%;
-    background-color:  white;
+    background-color: white;
 }
 
-.login .txtbox .top P{
+.login .txtbox .top P {
     font-size: 1.4vh;
     color: #66a9e0;
 }
 
-.login .txtbox input{
+.login .txtbox input {
     border: none;
     width: 96%;
     height: 100%;
@@ -43,7 +103,8 @@
     padding-left: 4%;
 }
 
-.login button, span {
+.login button,
+span {
     border: none;
     font-size: 1.5vh;
     padding: 2vh;
@@ -60,17 +121,17 @@ hr {
 }
 
 @media (min-width: 992px) {
-    .login{
+    .login {
         width: 30%;
         height: 100vh;
     }
 }
-  
 
-  .overAll {
+
+.overAll {
     width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}

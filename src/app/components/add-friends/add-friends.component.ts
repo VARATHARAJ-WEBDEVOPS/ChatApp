@@ -83,10 +83,7 @@ export class AddFriendsComponent implements OnInit {
     this.firebaseService.getFriendRequests(this.userdata.key).subscribe((res) => {
       this.FriendRequestList = res;
       console.log(this.FriendRequestList);
-
     });
-
-    
   }
 
   createFriendList(data: any, requestKey: string) {
@@ -114,7 +111,7 @@ export class AddFriendsComponent implements OnInit {
     this.sendFriendReqForm.value.dob = this.userdata.dob;
     this.sendFriendReqForm.value.count = 0;
     this.firebaseService.createFriendsList(data.userKey, this.sendFriendReqForm.value);
-    this.firebaseService.createNotification(data.userKey,{time: String(new Date()), message: `🥳 ${this.userdata.userName} has Accepted your Friend Request ❤️🔒`});
+    this.firebaseService.createUnreadNotification(data.userKey,{time: String(new Date()), message: `🥳 ${this.userdata.userName} has Accepted your Friend Request ❤️🔒`});
     this.isReqThere(data.userKey, requestKey);
   }
 
@@ -135,7 +132,7 @@ export class AddFriendsComponent implements OnInit {
   }
 
   async removeFriendReqbyuser(data: any) {
-    this.firebaseService.createNotification(data.userKey,{time: String(new Date()), message: `${this.userdata.userName} has rejected your Friend Request 💔`});
+    this.firebaseService.createUnreadNotification(data.userKey,{time: String(new Date()), message: `${this.userdata.userName} has rejected your Friend Request 💔`});
     await this.firebaseService.removeFriendRequest(this.userdata.key, data.key);
 
   }
@@ -172,7 +169,7 @@ export class AddFriendsComponent implements OnInit {
     this.sendFriendReqForm.value.dob = this.userdata.dob;
     console.log(this.sendFriendReqForm.value);
     this.firebaseService.sendFriendRequest(key, this.sendFriendReqForm.value);
-    this.firebaseService.createNotification(key,{time: String(new Date()), message: ` ${this.userdata.userName} has send you a Friend Request 💌❤️🩹` });
+    this.firebaseService.createUnreadNotification(key,{time: String(new Date()), message: ` ${this.userdata.userName} has send you a Friend Request 💌❤️🩹` });
     return
   }
 

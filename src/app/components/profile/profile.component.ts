@@ -22,6 +22,7 @@ export class User {
 export class ProfileComponent implements OnInit {
 
   UserList: User[] = [];
+  conformlogout: boolean = false;
 
   constructor(private router: Router,
     private firebaseService: FirebaseService,
@@ -35,17 +36,21 @@ export class ProfileComponent implements OnInit {
       this.router.navigateByUrl('login');
     } 
     
-    console.log(localStorage.getItem('userList'));
+    // console.log(localStorage.getItem('userList'));
     const userListString = localStorage.getItem('userList');
 
     if (userListString !== null) {
       this.UserList[0] = JSON.parse(userListString);
      await  this.firebaseService.getUserDetails(this.UserList[0].key).subscribe((data: any) => {
         localStorage.setItem('userList', JSON.stringify(data));
-        console.log("changed", data);
+        // console.log("changed", data);
       });
     }
+  }
 
+  
+  conformlogoutToggle() {
+    this.conformlogout = !this.conformlogout;
   }
 
   logOut() {

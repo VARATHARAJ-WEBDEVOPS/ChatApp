@@ -7,6 +7,88 @@
     background-size: cover;
 }
 
+.dialogBg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75vw;
+    height: 30vh;
+    background-color: #fff;
+    box-shadow:
+        -5px 5px 10px rgba(0, 0, 0, 0.1),
+        5px -5px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 2vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.deletedialog {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 100;
+    background-color: #00000086;
+}
+
+.deletedialog i {
+    font-size: 7vh;
+    color: #66a9e0;
+}
+
+.deletedialog h2 {
+    color: rgb(253, 130, 151);
+    padding: 1.5vh;
+}
+
+.deletedialog p {
+    color: #0000009e;
+    line-height: 2vh;
+    padding-bottom: 4vh;
+    padding-inline: 2vh;
+}
+
+.conformButtons {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 2vh;
+}
+
+#cancelBtn {
+    padding: 1.5vh;
+    border: none;
+    background-color: #66a9e0;
+    color: #fff;
+    border-radius: 0.7vh;
+    font-size: 1.5vh;
+}
+
+#okBtn {
+    padding: 1.5vh;
+    border: none;
+    background-color: rgb(253, 130, 151);
+    color: #fff;
+    border-radius: 0.7vh;
+    font-size: 1.5vh;
+    margin-left: 1vh;
+}
+
+#cancelBtn:hover {
+    background-color: #548bb8;
+}
+
+#okBtn:hover {
+   background-color: rgb(215, 111, 128);
+}
+
 .profilePic {
     width: 15vh;
     height: 15vh;
@@ -14,24 +96,26 @@
     border-radius: 2vh;
     position: absolute;
     top: 33vh;
-    left: 50%; /* Set left to 50% */
-    transform: translateX(-50%); /* Use transform to center */
+    left: 50%;
+    /* Set left to 50% */
+    transform: translateX(-50%);
+    /* Use transform to center */
     display: flex;
     justify-content: center;
     align-items: center;
     box-shadow:
-    5px -5px 0px 10px #fff,
-    -5px 5px 10px rgba(0, 0, 0, 0.2);
+        5px -5px 0px 10px #fff,
+        -5px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 
 .profile .top {
-width: 100%;
-height: 40vh;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+    width: 100%;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .profile .bottom {
@@ -60,24 +144,90 @@ align-items: center;
         width: 50%;
         height: 100vh;
         border-radius: 2vh;
-        box-shadow: 0px 0px 10px rgba(0,0,0, 0.2);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     }
 
     .top {
         z-index: 10;
         background-color: #66a9e0;
-       border-top-right-radius: 1.5vh;
-       border-top-left-radius: 1.5vh;
+        border-top-right-radius: 1.5vh;
+        border-top-left-radius: 1.5vh;
     }
 
- 
-  
-  .overAll {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #eee;
-  }
-  }
+
+
+    .overAll {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #eee;
+    }
+
+    .dialogBg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50vh;
+        height: 20vw;
+        background-color: #fff;
+        box-shadow:
+            -5px 5px 10px rgba(0, 0, 0, 0.1),
+            5px -5px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 2vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+
+    .deletedialog {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        z-index: 100;
+        background-color: #00000086;
+    }
+
+    .deletedialog i {
+        font-size: 10vh;
+    }
+
+    .deletedialog h2 {
+        color: rgb(253, 130, 151);
+        padding: 1.5vh;
+    }
+
+    .deletedialog p {
+        color: #0000009e;
+        line-height: 2vh;
+        padding-bottom: 4vh;
+        padding-inline: 2vh;
+        font-size: 2vh;
+    }
+
+    #cancelBtn {
+        padding: 1.5vh;
+        border: none;
+        background-color: #66a9e0;
+        color: #fff;
+        border-radius: 0.7vh;
+        font-size: 2.5vh;
+    }
+
+    #okBtn {
+        padding: 1.5vh;
+        border: none;
+        background-color: rgb(253, 130, 151);
+        color: #fff;
+        border-radius: 0.7vh;
+        font-size: 2.5vh;
+        margin-left: 1vh;
+    }
+}

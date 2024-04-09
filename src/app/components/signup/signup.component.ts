@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase.service';
@@ -7,6 +7,8 @@ import { Title } from '@angular/platform-browser';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CouchService } from 'src/app/services/couch.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-signup',
@@ -23,16 +25,21 @@ export class SignupComponent implements OnInit, OnDestroy {
   showError: boolean = false;
   showErrorPhnNO: boolean = false;
   showErrorUserName: boolean = false;
+  isScanContainer: boolean = false;
   private unsubscribe$ = new Subject<void>();
 
   constructor(
+    private couchService: CouchService,
     private db: AngularFireDatabase,
     private title: Title,
     private toastService: ToastService,
     private fb: FormBuilder,
     private firebaseService: FirebaseService,
-    private router: Router,
-    private renderer: Renderer2) {
+    private router: Router) {
+  }
+
+  toggleScanContainer() {
+    this.isScanContainer = !this.isScanContainer;
   }
 
   changeUpper() {
@@ -48,8 +55,8 @@ export class SignupComponent implements OnInit, OnDestroy {
       userName: [''],
       phoneNumber: [''],
       password: [''],
+      nickname: '',
     });
-
   }
 
   navigate() {
@@ -57,36 +64,51 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    const customId = 'user_2_' + uuidv4();   
+
+    this.addItemForm.value._id = customId;
     this.addItemForm.value.userName = this.userName;
     this.addItemForm.value.phoneNumber = this.phoneNumber;
     this.addItemForm.value.password = this.password;
-    this.firebaseService.createItem(this.addItemForm.value)
+
+    const couchFormat = {
+      _id: 'user_2_' + uuidv4(),
+      data: {
+        userName: this.userName,
+        phoneNumber: this.phoneNumber,
+        password: this.password,
+        nickname: null,
+        age: null,
+        gender: null,
+        dob: null,
+        type: "user"
+      }
+    }
+
+    this.couchService.createAccount(couchFormat).subscribe(res => {
+      console.log(res);
+
+    });
+
     localStorage.setItem('token', this.phoneNumber);
     this.router.navigateByUrl("chat");
   }
 
   checkUserExistence() {
-    const usersRef = this.db.list('users', (ref) =>
-      ref.orderByChild('phoneNumber').equalTo(this.phoneNumber)
-    );
-
-    const users$: Observable<any[]> = usersRef.valueChanges();
-
-    users$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((users) => {
-        console.log(users);
-
-        if (users.length > 0) {
-          this.toastService.showToast('Phone Number Already userd', true);
-          this.phoneNumber = '';
-          this.showErrorPhnNO = true;
+    const phoneNumber = this.phoneNumber;
+    this.couchService.checkExistingUser(phoneNumber).subscribe((response: any) => {
+      console.log(response);
+      
+        if (response.rows.length != 0) {
+            this.toastService.showToast('Phone Number Already used', true);
+          console.log('Phone Number Already used');
+          
         } else {
-          console.log('User does not exist');
-          this.onSubmit();
+            console.log('User does not exist');
+            console.log(this.onSubmit());
         }
-      });
-  }
+    });
+}
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -123,7 +145,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     } else if (hasNumbersOrSymbols) {
       this.showError = true;
       this.toastService.showToast('Symbols & Numbers Not Allowed', true);
-    }else if (this.userName  && this.phoneNumber && this.password && phoneNumberPattern.test(this.phoneNumber)) {
+    } else if (this.userName && this.phoneNumber && this.password && phoneNumberPattern.test(this.phoneNumber)) {
       this.showErrorUserName = false;
       this.showErrorPhnNO = false;
       this.showError = false;

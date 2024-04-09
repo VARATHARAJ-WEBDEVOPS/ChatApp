@@ -11,6 +11,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 export class FriendProfileComponent {
   UserList: any;
   paramValue: any;
+  conformDelete: boolean = false;
 
   constructor(private router: Router,
     private firebaseService: FirebaseService,
@@ -19,7 +20,6 @@ export class FriendProfileComponent {
 
   async ngOnInit() {
     this.title.setTitle("AmorChat | FriendProfile");
-
 
     if (!localStorage.getItem('currectChattingFriend') ) {
       this.router.navigateByUrl('/chat');
@@ -38,9 +38,11 @@ export class FriendProfileComponent {
 
       this.UserList = JSON.parse(userdataGetting);
       console.log(this.UserList);
-
     }
+  }
 
+  conformDeleteToggle() {
+    this.conformDelete = !this.conformDelete;
   }
 
   logOut() {
@@ -72,7 +74,7 @@ export class FriendProfileComponent {
 
  async removeFriendListonSender(data: string, removekey: string) {
     this.firebaseService.removeFriend(data, removekey);
-    await this.firebaseService.createNotification(data,{time: String(new Date()), message: `${this.UserList.userName} has Removed you from his  Friend List 💔`});
+    await this.firebaseService.createUnreadNotification(data,{time: String(new Date()), message: `${this.UserList.userName} has Removed you from his  Friend List 💔`});
    await localStorage.removeItem('currectChattingFriend');
    await window.location.reload();
   }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Title } from '@angular/platform-browser';
+import { CouchService } from 'src/app/services/couch.service';
 
 
 @Component({
@@ -20,7 +21,12 @@ export class LoginComponent implements OnInit {
   showTip: boolean = false;
   message: string = '';
 
-  constructor(private title: Title, private toastService: ToastService, public router: Router, private firebase: FirebaseService) { }
+  data = {
+    name : "vasanth",
+    phn: 9360733323
+  }
+
+  constructor(private title: Title, private couchService: CouchService, public router: Router, private firebase: FirebaseService) { }
 
   ngOnInit(): void {
     this.title.setTitle("AmorChat | Login");
@@ -35,10 +41,10 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.firebase.login(this.phoneNumber).subscribe((users: any[]) => {
-      if (users.length === 1) {
-        const user = users[0];
-        if (user.password === this.password) {
+    this.couchService.checkExistingUser(this.phoneNumber).subscribe((users: any) => {
+       
+      if (users.rows.length === 1) {
+        if (users.rows[0].value.data.password === this.password) {
           localStorage.setItem('token', this.phoneNumber);
           this.clearData();
           this.router.navigateByUrl('chat');
@@ -65,7 +71,7 @@ export class LoginComponent implements OnInit {
   openPhnTip() {
     this.message = 'It must need 10 numbers'
     this.showTip = true;
-    console.log(this.showTip);
+    // console.log(this.showTip);
   }
 
   validatePhn() {

@@ -46,7 +46,7 @@ export class ChatingComponent implements OnInit {
     private toastService: ToastService,
     private fb: FormBuilder
   ) {
-    this.isEditontainer = new Array().fill(false);  
+    this.isEditontainer = new Array().fill(false);
   }
 
 
@@ -99,7 +99,7 @@ export class ChatingComponent implements OnInit {
       this.CheckPassword = "";
     } else {
       this.showError = true;
-      this.firebaseService.createNotification(this.userData.key,{time: String(new Date()), message: `Someone tried to open ${this.paramValue.userName}'s chat`});
+      this.firebaseService.createUnreadNotification(this.userData.key, { time: String(new Date()), message: `Someone tried to open ${this.paramValue.userName}'s chat` });
       this.toastService.showToast('wrong password', true);
     }
   }
@@ -126,7 +126,6 @@ export class ChatingComponent implements OnInit {
 
       this.userData = JSON.parse(userdataGetting);
       console.log(this.userData);
-
     }
 
     this.Frienddata = this.fb.group({
@@ -141,8 +140,8 @@ export class ChatingComponent implements OnInit {
       send: [''],
       received: [''],
       currentTime: [''],
-      isEdited:[''],
-      isDeleted:['']
+      isEdited: [''],
+      isDeleted: ['']
     });
 
     this.myChatListForm = this.formBuilder.group({
@@ -158,15 +157,13 @@ export class ChatingComponent implements OnInit {
       send: [''],
       received: [''],
       currentTime: [''],
-      isEdited:[''],
-      isDeleted:['']
+      isEdited: [''],
+      isDeleted: ['']
     });
 
     this.exchangeFriendListKey();
     this.exchangeMyFriendListKey();
   }
-
-  
 
   exchangeFriendListKey() {
     this.firebaseService.searchFriendListKey(this.paramValue.userKey, this.userData.phoneNumber).subscribe((res) => {
@@ -184,12 +181,10 @@ export class ChatingComponent implements OnInit {
       this.firebaseService.getUserDetails(this.paramValue.userKey).subscribe((data: any) => {
         localStorage.setItem('currectChattingFriend', JSON.stringify(data));
         console.log("changed", data);
-        
+
       });
     });
   }
-
-
 
   backToChat() {
     localStorage.removeItem('currectChattingFriend');
@@ -203,7 +198,7 @@ export class ChatingComponent implements OnInit {
   }
 
   async sendMessage() {
-    if (this.message) {
+    if (this.message && this.message.trim() !== "") {
       this.myMessageForm.value.send = this.message;
       this.sendMessageForm.value.received = this.message;
 
@@ -253,8 +248,6 @@ export class ChatingComponent implements OnInit {
       this.message = "";
     }
   }
-
-
 
   getCurrentTime() {
 
@@ -326,10 +319,10 @@ export class ChatingComponent implements OnInit {
     this.sendMessageForm.value.hisMgs = true;
     this.sendMessageForm.value.send = '';
 
-   await this.firebaseService.searchMessageKey(this.paramValue.userKey, this.friendPath, this.temp[0].currentTime)
-    .subscribe( (res) => {
-      this.firebaseService.updateMessage(this.paramValue.userKey, this.friendPath, res[0].key, this.sendMessageForm.value);
-    });
+    await this.firebaseService.searchMessageKey(this.paramValue.userKey, this.friendPath, this.temp[0].currentTime)
+      .subscribe((res) => {
+        this.firebaseService.updateMessage(this.paramValue.userKey, this.friendPath, res[0].key, this.sendMessageForm.value);
+      });
     this.myChatListForm.value.lastmessage = "this message has been deleted by you";
     this.hisChatListForm.value.lastmessage = `this message has been deleted by ${this.userData.userName}`;
     await this.firebaseService.sendquires(this.userData.key, this.myPath, this.myChatListForm.value);
@@ -357,11 +350,11 @@ export class ChatingComponent implements OnInit {
     this.sendMessageForm.value.isEdited = true;
     this.sendMessageForm.value.send = '';
 
-   await this.firebaseService.searchMessageKey(this.paramValue.userKey, this.friendPath, this.temp[0].currentTime)
-    .subscribe( (res) => {
-      this.firebaseService.updateMessage(this.paramValue.userKey, this.friendPath, res[0].key, this.sendMessageForm.value);
-       
-    });
+    await this.firebaseService.searchMessageKey(this.paramValue.userKey, this.friendPath, this.temp[0].currentTime)
+      .subscribe((res) => {
+        this.firebaseService.updateMessage(this.paramValue.userKey, this.friendPath, res[0].key, this.sendMessageForm.value);
+
+      });
     this.myChatListForm.value.lastmessage = this.editedMessage;
     this.hisChatListForm.value.lastmessage = this.editedMessage;
     await this.firebaseService.sendquires(this.userData.key, this.myPath, this.myChatListForm.value);

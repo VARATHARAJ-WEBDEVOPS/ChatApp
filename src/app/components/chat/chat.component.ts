@@ -8,6 +8,8 @@ import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
 import { ToastService } from 'src/app/services/toast.service';
+import { CouchService } from 'src/app/services/couch.service';
+import { v4 as uuidv4 } from 'uuid';
 
 export class User {
   key: any;
@@ -25,6 +27,7 @@ export class User {
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css']
 })
+
 export class ChatComponent implements OnInit {
   private unsubscribe$ = new Subject<void>();
   showUserProfiledDiv = false;
@@ -34,7 +37,7 @@ export class ChatComponent implements OnInit {
   showErrorDob: boolean = false;
   isGenderMale = false;
   isGenderFemale = false;
-  UserList: User[] = [];
+  UserList: any;
   tempPhone: any;
   nickNameForm!: FormGroup;
   birthdate: string = '';
@@ -57,6 +60,10 @@ export class ChatComponent implements OnInit {
   isloading: boolean = true;
   ismenu: boolean = false;
   searchTerm: any;
+  isShowMyContent: boolean = false;
+  unReadNotify!: number;
+  userName: string = '';
+  isNickname: string = '';
 
   constructor(
     private firebaseService: FirebaseService,
@@ -66,7 +73,8 @@ export class ChatComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private analytics: AngularFireAnalytics,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private couchService: CouchService
   ) { }
 
 
@@ -82,7 +90,7 @@ export class ChatComponent implements OnInit {
     this.router.navigateByUrl('addfriend');
   }
 
-  toggleManu() {
+  toggleMenu() {
     this.ismenu = !this.ismenu;
   }
 
@@ -98,28 +106,15 @@ export class ChatComponent implements OnInit {
     this.isGenderFemale = true;
   }
 
-
   ngOnInit(): void {
     this.title.setTitle("AmorChat | chat");
-    this.userdata = { key: '', phoneNummber: '' }; // Initialize with default values
-    const userDataFromLocalStorage = localStorage.getItem('userList');
-
-    if (userDataFromLocalStorage !== null) {
-      this.userdata = JSON.parse(userDataFromLocalStorage);
-      this.userKey = this.userdata.key;
-      this.userphoneNumber = this.userdata.phoneNummber;
-    }
 
     if (!localStorage.getItem('token')) {
       this.router.navigateByUrl('login');
     } else {
 
-
-
       this.tempPhone = localStorage.getItem('token');
       this.getUser(this.tempPhone);
-
-
 
       for (let i = 1; i <= 31; i++) {
         this.days.push(i.toString());
@@ -131,59 +126,75 @@ export class ChatComponent implements OnInit {
         'September', 'October', 'November', 'December'
       ];
 
-      const currentYear = new Date().getFullYear();
+      const currentYear = new Date().getFullYear() - 13;
+
       for (let i = currentYear; i >= currentYear - 100; i--) {
         this.years.push(i.toString());
       }
 
     }
     this.nickNameForm = this.fb.group({
-      nickname: [''],
-      gender: [''],
-      age: [''],
-      dob: ['']
+
+      _id: '',
+      _rev: '',
+      data: { }
     });
+    // this.gettingUnreadedNotifications();
+    console.timeEnd(this.userdata);
+    
+    
   }
 
+  // gettingUnreadedNotifications() {
+  //   this.firebaseService.gettingUnreadedNotifications(this.userdata.key).subscribe((res) => {
+  //     // console.log(res);
+  //     this.unReadNotify = res.length;
+  //   })
+  // }
+
+  async getUser(phoneNumber: string) {
+    this.couchService.checkExistingUser(phoneNumber).subscribe((response: any) => {
+      localStorage.setItem("userList", JSON.stringify(response.rows[0].value));
+      this.isNickNameDiolog = false;
+      console.log(response);
+      
+      const userDataFromLocalStorage = localStorage.getItem('userList');
+      if (userDataFromLocalStorage !== null) {
+        this.userdata = JSON.parse(userDataFromLocalStorage);
+      }
+      console.log(this.userdata);
+
+      
+      this.userName = this.userdata.data.userName;
+      this.nickNameForm.patchValue(this.userdata);
+      console.log(this.nickNameForm.value);
+      
+
+      // console.log(this.userdata.userName);
 
 
-  getUser(phoneNumber: any) {
-    const usersRef = this.db.list('users', (ref) =>
-      ref.orderByChild('phoneNumber').equalTo(Number(phoneNumber))
-    );
-
-    const users$: Observable<any[]> = usersRef.snapshotChanges();
-
-    users$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((snapshot) => {
-        this.UserList = snapshot.map((user) => {
-          const key = user.key;
-          const data = user.payload.val();
-          return { key, ...data };
-        });
-        localStorage.setItem("userList", JSON.stringify(this.UserList[0]));
-        this.isNickNameDiolog = false;
-
-        if (!this.UserList[0].nickname) {
+      if (response) {
+        if (!this.userdata.data.nickname) {
           this.isNickNameDiolog = true;
         } else {
           const userDataFromLocalStorage = localStorage.getItem('userList');
           if (userDataFromLocalStorage !== null) {
             this.userdata = JSON.parse(userDataFromLocalStorage);
-            this.userKey = this.userdata.key;
+            this.userKey = this.userdata._id;
             this.userphoneNumber = this.userdata.phoneNummber;
-            this.getContacts();
+            this.isNickname = this.userdata.nickname;
+            // this.getContacts();
+
           }
         }
-      });
+      }
+    });
   }
 
   changeUpper() {
     this.nickname = this.nickname.toLowerCase();
   }
 
-  
   calculateAge() {
     this.birthdate = (`${this.selectedDay}/${this.selectedMonth}/${this.selectedYear}`);
     const today = new Date();
@@ -194,26 +205,58 @@ export class ChatComponent implements OnInit {
       this.age = ageDiff - 1;
     } else {
       this.age = ageDiff;
-    }    
+    }
   }
 
-  nickNameValidation() {
+  checkExistingUserName() {
+    this.couchService.checkExistingUserName(this.nickname).subscribe((res: any) => {
+      console.log(res);
+      // return !!res.rows.length;
+      if (res.rows.length === 1) {
+        this.toastService.showToast('Nick Name Already used', true);
+      } else {
+        this.updateNickName();
+      }
+    });
+  }
+
+  updateNickName() {
+    this.nickNameForm.value.data.nickname = this.nickname;
+    this.nickNameForm.value.data.gender = this.gender;
+    this.nickNameForm.value.data.age = this.age;
+    this.nickNameForm.value.data.dob = this.birthdate;
+
+    // console.log(this.nickNameForm.value);
+
+    console.log(this.userdata._id);
+
+
+    this.couchService.updateNickName(this.userdata._id, this.nickNameForm.value).subscribe(() => {
+      localStorage.removeItem('userList');
+      this.getUser(this.tempPhone);
+      
+      this.couchService.createUnreadNotification(this.nickNameForm.value).subscribe((res: any) => {
+        console.log(res);
+
+      });
+    });
+  }
+
+  async nickNameValidation() {
+    // console.log(this.userdata);
+    this.nickNameForm.patchValue(this.userdata);
+
     this.calculateAge()
-    
+
     this.showErrorNickName = false;
     this.showErrorDob = false;
     this.showErrorGender = false;
     const usernamePattern = /[!@#$%^&*()+{}\[\]:;<>,.?~\\]/.test(this.nickname);
-    
+
     if (this.nickname === "") {
       this.showErrorNickName = true;
-    } else if (usernamePattern) {
-      this.toastService.showToast('Nickname Support underscore ( _ ) only other symbols not valid', true);
-      this.showErrorNickName = true;
-    } else if (!/[_]/.test(this.nickname)) {
-      this.showErrorNickName = true;
-      this.toastService.showToast('use At least 1 underscore ( _ ) for Nick Name', true);
-    } else if (this.gender === "") {
+    }
+    else if (this.gender === "") {
       this.showErrorGender = true;
     } else if (!this.selectedDay) {
       this.toastService.showToast('Select your Birth date', true);
@@ -226,19 +269,7 @@ export class ChatComponent implements OnInit {
       this.showErrorDob = true;
     } else if (this.nickname && this.gender && this.age) {
 
-      this.nickNameForm.value.nickname = this.nickname;
-      this.nickNameForm.value.gender = this.gender;
-      this.nickNameForm.value.age = this.age;
-      this.nickNameForm.value.dob = this.birthdate;
-      console.log(this.nickNameForm.value);
-
-      this.firebaseService.updateItem(this.UserList[0].key, this.nickNameForm.value).then(() => {
-        localStorage.removeItem('userList');
-        this.getUser(this.tempPhone);
-        const UserGender = this.UserList[0].gender;
-        this.analytics.setUserProperties({ UserGender });
-        this.firebaseService.createNotification(this.userKey,{time: String(new Date()), message: `Hai 🙋‍♂️ ${this.userdata.userName} Welcome to AmorChat .`});
-      });
+      this.checkExistingUserName();
     }
   }
 
@@ -246,7 +277,7 @@ export class ChatComponent implements OnInit {
     this.router.navigateByUrl('myfriend');
   }
 
-  openAIChatingpage(){
+  openAIChatingpage() {
     this.router.navigateByUrl('/aichat');
   }
 
@@ -262,11 +293,13 @@ export class ChatComponent implements OnInit {
   }
 
   getContacts() {
-    this.firebaseService.getFriends(this.userKey).subscribe((res) => {
+    console.log(this.userKey);
+
+    this.couchService.getContacts(this.userKey).subscribe((res: any) => {
       if (res) {
         this.isloading = false;
       }
-      this.chatContact = res.sort((a, b) => {
+      this.chatContact = res.sort((a: any, b: any) => {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
 
@@ -278,9 +311,9 @@ export class ChatComponent implements OnInit {
         }
         return 0;
       });;
-      console.log("My Friends List", this.chatContact);
-      console.log("My Friends List res", res);
-      console.log("Key", this.userKey);
+      // console.log("My Friends List", this.chatContact);
+      // console.log("My Friends List res", res);
+      // console.log("Key", this.userKey);
     });
   }
 
@@ -293,14 +326,12 @@ export class ChatComponent implements OnInit {
       this.isSearchResults = true;
     } else {
       this.isSearchResults = false;
-      
     }
   }
 
   cancelSearch() {
     this.query = '';
     this.isSearchResults = false;
-
   }
 
   searchProducts() {

@@ -37,7 +37,7 @@ export class FirebaseService {
   }
 
   updateItem(key: string, value: any) {
-  return this.users.update(key, value);
+    return this.users.update(key, value);
   }
 
   deleteItem(key: string): void {
@@ -46,7 +46,7 @@ export class FirebaseService {
 
   login(phoneNumber: any): Observable<any[]> {
     console.log("service starts");
-    
+
     console.log("service starts");
 
     return this.db
@@ -83,7 +83,7 @@ export class FirebaseService {
         map(changes => {
           return changes.map(c => {
             const key = c.payload.key;
-            const data = { ...(c.payload.val() as any) }; 
+            const data = { ...(c.payload.val() as any) };
             return { key, ...data };
           });
         })
@@ -97,23 +97,23 @@ export class FirebaseService {
         map(changes => {
           return changes.map(c => {
             const key = c.payload.key;
-            const data = { ...(c.payload.val() as any) }; 
+            const data = { ...(c.payload.val() as any) };
             return { key, ...data };
           });
         })
       );
   }
 
-   sendFriendRequest(key: string, friendRequest: any) {
+  sendFriendRequest(key: string, friendRequest: any) {
     return this.db.list(`/users/${key}/friendRequests`).push(friendRequest);
   }
-  
+
   getFriendRequests(key: string): Observable<any[]> {
     return this.db.list(`/users/${key}/friendRequests`).snapshotChanges().pipe(
       map(changes => {
         return changes.map(c => {
           const key = c.payload.key;
-          const data = { ...(c.payload.val() as any) }; 
+          const data = { ...(c.payload.val() as any) };
           return { key, ...data };
         });
       })
@@ -125,13 +125,13 @@ export class FirebaseService {
       map(changes => {
         return changes.map(c => {
           const key = c.payload.key;
-          const data = { ...(c.payload.val() as any) }; 
+          const data = { ...(c.payload.val() as any) };
           return { key, ...data };
         });
       })
     );
   }
-  
+
   removeFriendRequest(key: string, requestId: string) {
     return this.db.list(`/users/${key}/friendRequests`).remove(requestId);
   }
@@ -143,32 +143,32 @@ export class FirebaseService {
   createFriendsList(key: string, friendRequest: any) {
     return this.db.list(`/users/${key}/FriendsList`).push(friendRequest);
   }
-  
- searchPartial(query: string): Observable<any[]> {
-  return this.db.list('/users').snapshotChanges().pipe(
-    map(changes => {
-      return changes
-        .filter(c => {
-          const data = c.payload.val() as { nickname: any, phoneNumber: any }; 
-          const nickname = String(data?.nickname || ''); 
-          const phoneNumber = String(data?.phoneNumber || ''); 
-          return (
-            nickname.includes(query) || 
-            phoneNumber.includes(query) 
-          );
-        })
-        .map(c => {
-          const key = c.key as string;
-          const data = { ...(c.payload.val() as any) };
-          return { key, ...data };
-        });
-    })
-  );
-}
+
+  searchPartial(query: string): Observable<any[]> {
+    return this.db.list('/users').snapshotChanges().pipe(
+      map(changes => {
+        return changes
+          .filter(c => {
+            const data = c.payload.val() as { nickname: any, phoneNumber: any };
+            const nickname = String(data?.nickname || '');
+            const phoneNumber = String(data?.phoneNumber || '');
+            return (
+              nickname.includes(query) ||
+              phoneNumber.includes(query)
+            );
+          })
+          .map(c => {
+            const key = c.key as string;
+            const data = { ...(c.payload.val() as any) };
+            return { key, ...data };
+          });
+      })
+    );
+  }
 
 
 
-   removeFriendRequestByKey(key: string, requestKey: string) {
+  removeFriendRequestByKey(key: string, requestKey: string) {
     return this.db.list(`/users/${key}/friendRequests`).remove(requestKey);
   }
 
@@ -185,7 +185,7 @@ export class FirebaseService {
         });
       })
     );
-    
+
   }
 
   async checkFriendExists(key: string, phoneNumber: string): Promise<boolean> {
@@ -221,29 +221,29 @@ export class FirebaseService {
         });
     });
   }
-  
- searchFriendListKey(key: string, phoneNumber: string): Observable<any> {
+
+  searchFriendListKey(key: string, phoneNumber: string): Observable<any> {
     return this.db.list(`/users/${key}/FriendsList`, ref => ref.orderByChild('phoneNumber').equalTo(phoneNumber))
       .snapshotChanges()
       .pipe(
         map(changes => {
           return changes.map(c => {
             const key = c.payload.key;
-            const data = { ...(c.payload.val() as any) }; 
+            const data = { ...(c.payload.val() as any) };
             return { key, ...data };
           });
         })
       );
   }
 
-  updateFriendRequest(key: string,friendKey: string, updatedData: any){
+  updateFriendRequest(key: string, friendKey: string, updatedData: any) {
     const path = `/users/${key}/FriendsList/${friendKey}`;
-   this.db.object(path).update(updatedData)
+    this.db.object(path).update(updatedData)
   }
 
-  countMessage(key: string,friendKey: string, updatedData: any){
+  countMessage(key: string, friendKey: string, updatedData: any) {
     const path = `/users/${key}/FriendsList/${friendKey}`;
-   this.db.object(path).update(updatedData)
+    this.db.object(path).update(updatedData)
   }
 
   getMessages(key: string, pathkey: string): Observable<any[]> {
@@ -251,25 +251,25 @@ export class FirebaseService {
       map(changes => {
         return changes.map(c => {
           const key = c.payload.key;
-          const data = { ...(c.payload.val() as any) }; 
+          const data = { ...(c.payload.val() as any) };
           return { key, ...data };
         });
       })
     );
   }
 
-  sendMessage (key: string, pathkey: string, message: any) {
+  sendMessage(key: string, pathkey: string, message: any) {
     return this.db.list(`/users/${key}/FriendsList/${pathkey}/chat`).push(message);
   }
 
-  sendquires(key: string,friendKey: string, updatedData: any){
+  sendquires(key: string, friendKey: string, updatedData: any) {
     const path = `/users/${key}/FriendsList/${friendKey}`;
-   this.db.object(path).update(updatedData)
+    this.db.object(path).update(updatedData)
   }
 
- changeCount(key: string,friendKey: string,){
+  changeCount(key: string, friendKey: string,) {
     const path = `/users/${key}/FriendsList/${friendKey}`;
-   this.db.object(path).update({ count: 0 })
+    this.db.object(path).update({ count: 0 })
   }
 
   async searchIsChatList(key: string, phoneNumber: string): Promise<boolean> {
@@ -296,7 +296,7 @@ export class FirebaseService {
         map(changes => {
           return changes.map(c => {
             const key = c.payload.key;
-            const data = { ...(c.payload.val() as any) }; 
+            const data = { ...(c.payload.val() as any) };
             return { key, ...data };
           });
         })
@@ -307,10 +307,10 @@ export class FirebaseService {
   createChatList(key: string, data: any) {
     return this.db.list(`/users/${key}/chats`).push(data);
   }
-  
-  updateChatlist(key: string,friendKey: string, updatedData: any){
+
+  updateChatlist(key: string, friendKey: string, updatedData: any) {
     const path = `/users/${key}/chats/${friendKey}`;
-   this.db.object(path).update(updatedData)
+    this.db.object(path).update(updatedData)
   }
 
   getCountValue(key: string, friendKey: string): Observable<any[]> {
@@ -318,16 +318,16 @@ export class FirebaseService {
       map(changes => {
         return changes.map(c => {
           const key = c.payload.key;
-          const data = { ...(c.payload.val() as any) }; 
+          const data = { ...(c.payload.val() as any) };
           return { key, ...data };
         });
       })
     );
   }
 
-  updateMessage(key: string,friendKey: string, chatPath: string, updatedData: any){
+  updateMessage(key: string, friendKey: string, chatPath: string, updatedData: any) {
     const path = `/users/${key}/FriendsList/${friendKey}/chat/${chatPath}`;
-   this.db.object(path).update(updatedData)
+    this.db.object(path).update(updatedData)
   }
 
   searchMessageKey(key: string, friendKey: string, currentTime: string): Observable<any> {
@@ -337,14 +337,14 @@ export class FirebaseService {
         map(changes => {
           return changes.map(c => {
             const key = c.payload.key;
-            const data = { ...(c.payload.val() as any) }; 
+            const data = { ...(c.payload.val() as any) };
             return { key, ...data };
           });
         })
       );
   }
 
-  
+
   setUserOnline(userId: string) {
     this.db.object(`/users/${userId}/online`).set(true);
   }
@@ -352,7 +352,7 @@ export class FirebaseService {
   setUserOffline(userId: string) {
     // Update the 'online' status to false and set the 'lastSeen' timestamp
     this.db.object(`/users/${userId}`).update({
-    //  online: false,
+      //  online: false,
       lastSeen: new Date(), // Set the last seen timestamp
     });
   }
@@ -360,8 +360,8 @@ export class FirebaseService {
   setUserOfflineByfriend(userId: string) {
     // Update the 'online' status to false and set the 'lastSeen' timestamp
     this.db.object(`/users/${userId}`).update({
-     online: false,
-     lastSeen: new Date(), // Set the last seen timestamp
+      online: false,
+      lastSeen: new Date(), // Set the last seen timestamp
     });
   }
 
@@ -378,15 +378,35 @@ export class FirebaseService {
       map(changes => {
         return changes.map(c => {
           const key = c.payload.key;
-          const data = { ...(c.payload.val() as any) }; 
+          const data = { ...(c.payload.val() as any) };
           return { key, ...data };
         });
       })
     );
   }
 
-  createNotification(key: string, data: any) {
-    return this.db.list(`/users/${key}/notification`).push(data);
+  gettingUnreadedNotifications(key: string): Observable<any[]> {  //getting Unreaded Notifications
+    return this.db.list(`/users/${key}/unreadnotification`).snapshotChanges().pipe(
+      map(changes => {
+        return changes.map(c => {
+          const key = c.payload.key;
+          const data = { ...(c.payload.val() as any) };
+          return { key, ...data };
+        });
+      })
+    );
+  }
+
+  removeUnreadNotification(key: string, requestKey: string) {
+    return this.db.list(`/users/${key}/unreadnotification`).remove(requestKey);
+  }
+
+  createUnreadNotification(key: string, data: any) {    //create unread notification
+    return this.db.list(`/users/${key}/unreadnotification`).push(data);
+  }
+
+  createNotification(key: string, data: any) {    //create notification
+    return this.db.list(`/users/${key}/notification`).push(data)
   }
 
   getUserDetails(key: string) {
@@ -399,14 +419,14 @@ export class FirebaseService {
     );
   }
 
-  updateProfile(key: string, updatedData: any){
+  updateProfile(key: string, updatedData: any) {
     const path = `/users/${key}`;
-   this.db.object(path).update(updatedData)
+    this.db.object(path).update(updatedData)
   }
 
-  }
-  
-  
+}
+
+
 
 
 

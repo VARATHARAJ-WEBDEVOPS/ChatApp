@@ -27,6 +27,7 @@ import { NotificationComponent } from './components/notification/notification.co
 import { DatePipePipe } from './date-pipe.pipe';
 import { EditpageComponent } from './components/editpage/editpage.component';
 import { FriendProfileComponent } from './components/friend-profile/friend-profile.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBnqwvPQV9ZyuTpM6qZJlLxH1uQr8b4XKo",
@@ -57,7 +58,7 @@ const firebaseConfig = {
     NotificationComponent,
     DatePipePipe,
     EditpageComponent,
-    FriendProfileComponent,
+    FriendProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +70,8 @@ const firebaseConfig = {
     NgToastModule,
     CommonModule,
     AngularFireAnalyticsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     ScreenTrackingService, 
