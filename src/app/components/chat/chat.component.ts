@@ -66,9 +66,7 @@ export class ChatComponent implements OnInit {
   isNickname: string = '';
 
   constructor(
-    private firebaseService: FirebaseService,
     private title: Title,
-    private userService: FirebaseService,
     private db: AngularFireDatabase,
     private fb: FormBuilder,
     private router: Router,
@@ -107,7 +105,7 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle("AmorChat | chat");
+    this.title.setTitle("chatApp | chat");
 
     if (!localStorage.getItem('token')) {
       this.router.navigateByUrl('login');
@@ -151,15 +149,15 @@ export class ChatComponent implements OnInit {
   // }
 
   async getUser(phoneNumber: string) {
-    this.couchService.checkExistingUser(phoneNumber).subscribe((response: any) => {
-      localStorage.setItem("userList", JSON.stringify(response.rows[0].value));
+    await this.couchService.checkExistingUser(phoneNumber).subscribe((response: any) => {
+      let res: any = response.rows[0].value;
+      localStorage.setItem("userList", JSON.stringify(res));
       this.isNickNameDiolog = false;
       
       const userDataFromLocalStorage = localStorage.getItem('userList');
       if (userDataFromLocalStorage !== null) {
         this.userdata = JSON.parse(userDataFromLocalStorage);
       }
-   
       this.userName = this.userdata.data.userName;
       this.nickNameForm.patchValue(this.userdata);
       
@@ -175,7 +173,7 @@ export class ChatComponent implements OnInit {
             this.userKey = this.userdata._id;
             this.userphoneNumber = this.userdata.phoneNummber;
             this.isNickname = this.userdata.nickname;
-            // this.getContacts();
+            this.getContacts();
           }
         }
       }
@@ -218,7 +216,7 @@ export class ChatComponent implements OnInit {
 
     // console.log(this.nickNameForm.value);
 
-    console.log(this.userdata._id);
+    // console.log(this.userdata._id);
 
 
   await  this.couchService.updateNickName(this.userdata._id,this.userdata._rev, this.nickNameForm.value).subscribe(() => {
@@ -291,29 +289,37 @@ export class ChatComponent implements OnInit {
   }
 
   getContacts() {
-    console.log(this.userKey);
 
     this.couchService.getContacts(this.userKey).subscribe((res: any) => {
-      if (res) {
-        this.isloading = false;
-      }
-      this.chatContact = res.sort((a: any, b: any) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
+      console.log(res);
+      
+    //   if (res) {
+    //     this.isloading = false;
+    //   }
+    //   this.chatContact = res.sort((a: any, b: any) => {
+       this.chatContact = res.rows.map((row: any)=>row.value).sort((a: any, b: any) => {
+        try {
+          const dateA = new Date(a.time);
+          const dateB = new Date(b.time);
 
-        if (dateA > dateB) {
-          return -1;
+          if (dateA > dateB) {
+            return -1;
+          }
+          if (dateA < dateB) {
+            return 1;
+          }
+          return 0;
+        } catch (error) {
+          console.error('Error parsing dates:', error);
+          return 0;
         }
-        if (dateA < dateB) {
-          return 1;
-        }
-        return 0;
-      });;
-      // console.log("My Friends List", this.chatContact);
-      // console.log("My Friends List res", res);
-      // console.log("Key", this.userKey);
+    // console.log(this.notifications);
+    //   // console.log("My Friends List", this.chatContact);
+    //   // console.log("My Friends List res", res);
+    //   // console.log("Key", this.userKey);
     });
-  }
+  });
+}
 
   handleInputFocus() {
     this.isSearchResults = true;

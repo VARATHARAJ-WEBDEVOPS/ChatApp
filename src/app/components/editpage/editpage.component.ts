@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CouchService } from 'src/app/services/couch.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { v4 as uuidv4 } from 'uuid';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-editpage',
@@ -55,73 +58,43 @@ export class EditpageComponent implements OnInit {
     private fb: FormBuilder,
     private toastService: ToastService,
     private firebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
+    private couchService: CouchService
   ) {
 
     this.tempForm = this.fb.group({
-      // age: [''],
-      // dob: [''],
-      // gender: [''],
-      // key: [''],
-      // nickname: [''],
-      // password: [''],
-      // phoneNumber: [''],
-      // userName: ['']
-      
-        _id: "",
-        _rev: "",
-        data: {
-          userName: "",
-          phoneNumber: null,
-          password: "",
-          nickname: "",
-          age: null,
-          gender: "",
-          dob: "",
-          type: ""
-        }
-      
+      age: [''],
+      dob: [''],
+      gender: [''],
+      nickname: [''],
+      password: [''],
+      phoneNumber: [''],
+      userName: [''],
+      type: "user"
     });
 
     this.EditedForm = this.fb.group({
-      // age: [''],
-      // dob: [''],
-      // gender: [''],
-      // key: [''],
-      // nickname: [''],
-      // password: [''],
-      // phoneNumber: [''],
-      // userName: ['']
-      _id: "",
-      _rev: "",
-      data: {
-        userName: "",
-        phoneNumber: null,
-        password: "",
-        nickname: "",
-        age: null,
-        gender: "",
-        dob: "",
-        type: ""
-      }
+      age: [''],
+      dob: [''],
+      gender: [''],
+      nickname: [''],
+      password: [''],
+      phoneNumber: [''],
+      userName: [''],
+      type: "user"
     });
   }
 
   compareFormGroups(): void {
 
-    const tempFormValues = this.tempForm.value.data;
-    const editedFormValues = this.EditedForm.value.data;
+    const tempFormValues = this.tempForm.value;
+    const editedFormValues = this.EditedForm.value;
 
     const isEqual = Object.keys(tempFormValues).every((key) => {
       return tempFormValues[key] === editedFormValues[key];
     });
 
     this.Edited = isEqual;
-    console.log(this.Edited);
-    console.log("temp", tempFormValues);
-    console.log("edit", editedFormValues);
-    
-
   }
 
   ngOnInit(): void {
@@ -143,24 +116,20 @@ export class EditpageComponent implements OnInit {
       'September', 'October', 'November', 'December'
     ];
 
-    const currentYear = new Date().getFullYear() - 13;
+    const currentYear = new Date().getFullYear();
     for (let i = currentYear; i >= currentYear - 100; i--) {
       this.years.push(i.toString());
     }
 
-    this.tempForm.patchValue(this.userData);
-    this.EditedForm.patchValue(this.userData);
-    console.log(this.userData);
-    
-    console.log(this.EditedForm.value);
-    console.log(this.tempForm.value);
+    this.tempForm.patchValue(this.userData.data);
+    this.EditedForm.patchValue(this.userData.data);
 
-    this.userName = this.EditedForm.value.data.userName;
-    this.nickname = this.EditedForm.value.data.nickname;
-    this.phoneNumber = this.EditedForm.value.data.phoneNumber;
-    this.age = this.EditedForm.value.data.age;
-    this.birthdate = this.EditedForm.value.data.dob;
-    this.FormGender = this.EditedForm.value.data.gender;
+    this.userName = this.EditedForm.value.userName;
+    this.nickname = this.EditedForm.value.nickname;
+    this.phoneNumber = this.EditedForm.value.phoneNumber;
+    this.age = this.EditedForm.value.age;
+    this.birthdate = this.EditedForm.value.dob;
+    this.FormGender = this.EditedForm.value.gender;
 
 
     this.compareFormGroups();
@@ -169,19 +138,43 @@ export class EditpageComponent implements OnInit {
     } else {
       this.toggleFemale()
     }
+
   }
 
   conformPassword() {
+
+    const decryptedPassword = CryptoJS.AES.decrypt(this.userData.data.password, 'secret key').toString(CryptoJS.enc.Utf8);
+
     if (!this.CurrentPassword) {
       this.showError = true;
-    } else if (this.CurrentPassword === this.userData.data.password) {
+    } else if (this.CurrentPassword === decryptedPassword) {
       this.passwordDiolog = false;
       this.CurrentPassword = "";
-      this.firebaseService.updateProfile(this.userData.key, this.EditedForm.value);
-      this.router.navigateByUrl('/profile');
+
+      const updateFormat = {
+        _id: this.userData._id,
+        _rev: this.userData._rev,
+        data: this.EditedForm.value
+      }
+
+      this.couchService.updateUserProfile(this.userData._id, this.userData._rev, updateFormat).subscribe((res) => {
+      this.toastService.showToast('Edit Successfully', true);
+        this.router.navigateByUrl('/chat');
+      });
+
     } else {
       this.showError = true;
-      this.firebaseService.createNotification(this.userData.key, { time: String(new Date()), message: `Someone tried to Edit your Profile` });
+      const notificationFormat = {
+        _id: "notification_2_" + uuidv4(),
+        data: {
+          time: String(new Date()),
+          message: `Someone tried to Edit your Profile`,
+          type: "notification",
+          user: this.userData._id
+        }
+      }
+      this.couchService.createNotification(notificationFormat).subscribe((res) => {
+      });
       this.toastService.showToast('wrong password', true);
     }
   }
@@ -224,8 +217,8 @@ export class EditpageComponent implements OnInit {
     if (this.selectedDay || this.selectedMonth || this.selectedYear) {
       this.Validation();
       if (!this.selectedDay && !this.selectedMonth && !this.selectedYear) {
-       
-      } else if (this.selectedDay && this.selectedMonth && this.selectedYear){
+
+      } else if (this.selectedDay && this.selectedMonth && this.selectedYear) {
         this.calculateAge();
         this.EditedForm.value.age = this.age;
         this.EditedForm.value.dob = this.birthdate;
@@ -296,15 +289,18 @@ export class EditpageComponent implements OnInit {
     } else if (!this.phoneNumber || !phoneNumberPattern.test(this.phoneNumber)) {
       this.showErrorPhnNO = true;
       this.showErrorPhnNOMessage = 'Invalid Phone Number';
-    }
-    //  else if (usernamePattern) {
+    } else if (!this.nickname || this.nickname.length < 6) {
+      this.showErrorNickName = true;
+      this.showErrorNickNameMessage = '( nickname ) Need Atleast 6 charecters';
+    } 
+    // else if (usernamePattern) {
     //   this.showErrorNickNameMessage = 'Nickname Support underscore ( _ ) only other symbols not valid';
     //   this.showErrorNickName = true;
-    // }
-     else if (!/[_]/.test(this.nickname)) {
-      this.showErrorNickName = true;
-      this.showErrorNickNameMessage = 'use At least 1 underscore ( _ ) for Nick Name';
-    } else if (this.userName && this.phoneNumber && phoneNumberPattern.test(this.phoneNumber)) {
+    // } else if (!/[_]/.test(this.nickname)) {
+    //   this.showErrorNickName = true;
+    //   this.showErrorNickNameMessage = 'use At least 1 underscore ( _ ) for Nick Name';
+    // } 
+    else if (this.checkExistingUserName() && this.userName && this.phoneNumber && phoneNumberPattern.test(this.phoneNumber)) {
       this.showErrorUserName = false;
       this.showErrorPhnNO = false;
       this.showError = false;
@@ -312,12 +308,24 @@ export class EditpageComponent implements OnInit {
       this.EditedForm.value.userName = this.userName;
       this.EditedForm.value.phoneNumber = this.phoneNumber;
       this.EditedForm.value.gender = this.FormGender;
-     
+
       this.compareFormGroups();
-
     }
+  }
 
-
+  checkExistingUserName(): boolean {
+    if (this.nickname !== this.tempForm.value.nickname) {
+      this.couchService.checkExistingUserName(this.nickname).subscribe((res: any) => {
+        if (res.rows.length === 1) {
+          this.Edited = true;
+          this.showErrorNickName = true;
+          this.toastService.showToast('Nick Name Already used', true);
+          return false
+        }
+        return true
+      });
+    }
+    return true
   }
 
 }

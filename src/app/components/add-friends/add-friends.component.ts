@@ -3,6 +3,8 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
+import { CouchService } from 'src/app/services/couch.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-add-friends',
@@ -18,8 +20,8 @@ export class AddFriendsComponent implements OnInit {
   query!: string;
   sendFriendReqForm!: FormGroup;
   userdata: any;
-  userKey: any;
-  userphoneNumber: any;
+  userKey!: string;
+  userphoneNumber!: number;
   keyItem: any[] = [];
   friendListPathKey!: string;
   showTooltip: boolean = false;
@@ -28,7 +30,8 @@ export class AddFriendsComponent implements OnInit {
     private firebaseService: FirebaseService,
     private title: Title,
     public formBuilder: FormBuilder,
-    private toast: ToastService
+    private toast: ToastService,
+    private couchService: CouchService
   ) { }
 
   share() {
@@ -47,12 +50,10 @@ export class AddFriendsComponent implements OnInit {
       this.searchResults = [];
     } else if (this.query) {
       this.searchResults = [];
-      this.firebaseService.searchPartial(this.query).subscribe((res) => {
-        this.searchResults = res.filter((result) => result.phoneNumber !== this.userdata.phoneNumber
-          && result.nickname !== this.userdata.nickname);
-          console.log(this.searchResults);
-          
-      });
+      this.couchService.searchUsersByName(this.query).subscribe((res: any) => {
+        this.searchResults = res.rows.map((row: any) => row.value);
+        this.searchResults = this.searchResults.filter(item => item.data.phoneNumber !== this.userphoneNumber);
+      })
     }
   }
 
@@ -62,14 +63,14 @@ export class AddFriendsComponent implements OnInit {
 
     if (userDataFromLocalStorage !== null) {
       this.userdata = JSON.parse(userDataFromLocalStorage);
-      console.log(this.userdata);
-      
     }
 
-    this.userKey = this.userdata.key;
-    this.userphoneNumber = this.userdata.phoneNummber;
+    this.userKey = this.userdata.data._id;
+    this.userphoneNumber = this.userdata.data.phoneNumber;
 
     this.getFriendReq();
+
+
     this.sendFriendReqForm = this.formBuilder.group({
       userName: [''],
       phoneNumber: [''],
@@ -79,10 +80,9 @@ export class AddFriendsComponent implements OnInit {
     });
   }
 
-  getFriendReq() {
-    this.firebaseService.getFriendRequests(this.userdata.key).subscribe((res) => {
-      this.FriendRequestList = res;
-      console.log(this.FriendRequestList);
+  async getFriendReq() {
+    this.couchService.getFriendRequest(this.userdata._id).subscribe((res: any) => {
+      this.FriendRequestList = res.rows.map((row: any) => row.value);
     });
   }
 
@@ -111,7 +111,7 @@ export class AddFriendsComponent implements OnInit {
     this.sendFriendReqForm.value.dob = this.userdata.dob;
     this.sendFriendReqForm.value.count = 0;
     this.firebaseService.createFriendsList(data.userKey, this.sendFriendReqForm.value);
-    this.firebaseService.createUnreadNotification(data.userKey,{time: String(new Date()), message: `🥳 ${this.userdata.userName} has Accepted your Friend Request ❤️🔒`});
+    this.firebaseService.createUnreadNotification(data.userKey, { time: String(new Date()), message: `🥳 ${this.userdata.userName} has Accepted your Friend Request ❤️🔒` });
     this.isReqThere(data.userKey, requestKey);
   }
 
@@ -126,23 +126,36 @@ export class AddFriendsComponent implements OnInit {
     this.firebaseService.removeFriendRequest(data, removekey);
   }
 
+  cancelFriendRequest(data: any) {
+    this.couchService.cancelFriendRequest(data._id, data._rev).subscribe((res) => {
+      const notificationFormat = {
+        _id: "notification_2_" + uuidv4(),
+        data: {
+          time: String(new Date()),
+          message: `${this.userdata.data.userName} has rejected your Friend Request 💔`,
+          type: "notification",
+          user: data.data.from
+        }
+      }
+      this.couchService.createNotification(notificationFormat).subscribe((res) => {
+        this.getFriendReq();
+      });
+    });
+  }
+
   removeFriendReq(data: string) {
     this.firebaseService.removeFriendRequest(this.userdata.key, data);
-    
-  }
-
-  async removeFriendReqbyuser(data: any) {
-    this.firebaseService.createUnreadNotification(data.userKey,{time: String(new Date()), message: `${this.userdata.userName} has rejected your Friend Request 💔`});
-    await this.firebaseService.removeFriendRequest(this.userdata.key, data.key);
 
   }
+
+
 
   async checkFriendExists(key: string, nickname: string) {
 
     const existsInBothPaths = await this.firebaseService.checkFriendExists(key, this.userdata.phoneNumber);
 
     if (existsInBothPaths === true) {
-      
+
       this.toast.showToast(` you and ${nickname} are Already Friends`, true)
     } if (existsInBothPaths === false) {
       this.checkRequestExists(key, nickname);
@@ -155,22 +168,78 @@ export class AddFriendsComponent implements OnInit {
     if (existsInBothPaths === true) {
       this.toast.showToast(`Friend Request Already Send! but ${nickname} cant't Accept yet `, true)
     } if (existsInBothPaths === false) {
-      this.sendFriendRequest(key);
+      // this.sendFriendRequest(key);
     }
   }
 
-  sendFriendRequest(key: any) {
-    this.sendFriendReqForm.value.userName = this.userdata.userName;
-    this.sendFriendReqForm.value.nickname = this.userdata.nickname;
-    this.sendFriendReqForm.value.phoneNumber = this.userdata.phoneNumber;
-    this.sendFriendReqForm.value.gender = this.userdata.gender;
-    this.sendFriendReqForm.value.userKey = this.userdata.key;
-    this.sendFriendReqForm.value.age = this.userdata.age;
-    this.sendFriendReqForm.value.dob = this.userdata.dob;
-    console.log(this.sendFriendReqForm.value);
-    this.firebaseService.sendFriendRequest(key, this.sendFriendReqForm.value);
-    this.firebaseService.createUnreadNotification(key,{time: String(new Date()), message: ` ${this.userdata.userName} has send you a Friend Request 💌❤️🩹` });
-    return
+  async sendFriendRequest(id: string) {
+
+    const notificationFormat = {
+      _id: 'notification_2_' + uuidv4(),
+      data: {
+        time: String(new Date()),
+        message: ` ${this.userdata.data.userName} has send you a Friend Request 💌`,
+        type: 'notification',
+        user: id
+      }
+    }
+
+    const frndReqFormat = {
+      _id: 'friendrequest_2_' + uuidv4(),
+      data: {
+        userName: this.userdata.data.userName,
+        nickname: this.userdata.data.nickname,
+        phoneNumber: this.userdata.data.phoneNumber,
+        gender: this.userdata.data.gender,
+        from: this.userdata._id,
+        age: this.userdata.data.age,
+        dob: this.userdata.data.dob,
+        type: 'friendrequest',
+        user: id
+      }
+    }
+
+    await this.couchService.sendFriendRequest(frndReqFormat).subscribe((res: any) => {
+    });
+    this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
+    });
+  }
+
+  createContact(data: any) {
+    this.firstPersion(data);
+  }
+
+  firstPersion(data: any) {          //my contact
+    const couchFormat = {
+      _id: "contacts_2_" + uuidv4(),
+      data: {
+        for: data.data.from,
+        lastmessage: "",
+        lasttime: "",
+        type: "contacts",
+        user: this.userdata._id
+      }
+    }
+    this.couchService.createContact(couchFormat).subscribe((res: any) => {
+      this.secondPersion(data);
+    });
+  }
+  secondPersion(data: any) {
+    const couchFormat = {
+      _id: "contacts_2_" + uuidv4(),
+      data: {
+        for: this.userdata._id,
+        lastmessage: "",
+        lasttime: "",
+        type: "contacts",
+        user: data.data.from
+      }
+    }
+    this.couchService.createContact(couchFormat).subscribe((res: any) => {
+      this.couchService.cancelFriendRequest(data._id, data._rev).subscribe((res) => {
+        console.log(res);
+      })
+    });
   }
 
   handleInputFocus() {

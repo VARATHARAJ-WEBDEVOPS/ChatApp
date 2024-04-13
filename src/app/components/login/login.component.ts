@@ -47,7 +47,6 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token', this.phoneNumber);
           this.clearData();
           this.router.navigateByUrl('chat');
-
         } else {
           this.password = "";
           console.log('Incorrect password');

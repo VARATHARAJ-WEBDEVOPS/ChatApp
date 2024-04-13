@@ -47,12 +47,12 @@
             </div>
             <div class="SearchResultsVisible" *ngFor="let result of searchResults">
                 <div class="profile">
-                    <h1 style="color: #fff;">{{result.userName.charAt(0)}}</h1>
+                    <h1 style="color: #fff;">{{result.data.userName.charAt(0)}}</h1>
                 </div>
                 <div class="names">
 
-                    <h4 style="font-size: 1.9vh;">{{result.userName}}
-                        <span *ngIf="result.gender === 'female'; else maleIcon">
+                    <h4 style="font-size: 1.9vh;">{{result.data.userName}}
+                        <span *ngIf="result.data.gender === 'female'; else maleIcon">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke: #ff00ea; stroke-width: 1.5;"
                                 class="bi bi-gender-female" viewBox="0 0 16 16">
@@ -70,15 +70,19 @@
                         </ng-template>
                     </h4>
 
-                    <h4>@{{result.nickname}}</h4>
+                    <h4>@{{result.data.nickname}}</h4>
                     <!-- <h4>{{result.phoneNumber}}</h4> -->
                 </div>
-                <div class="accept" style="  width: 13vh; height: 4.8vh; z-index: 1000;"
-                    (click)="checkFriendExists(result.key, result.nickname)">
+                <!-- <div class="accept" style="  width: 13vh; height: 4.8vh; z-index: 1000;"
+                    (click)="checkFriendExists(result.key, result.nickname)" >
                     <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
                     <h2>Request</h2>
-                </div>
-
+                </div> -->
+                <div class="accept" style="  width: 13vh; height: 4.8vh; z-index: 1000;"
+                (click)="sendFriendRequest(result._id)" >
+                <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
+                <h2>Request</h2>
+            </div>
 
 
             </div>
@@ -94,11 +98,11 @@
             </div>
             <div class="friendRequestVisible" *ngFor="let req of FriendRequestList">
                 <div class="profile">
-                    <h1 style="color: #fff;">S</h1>
+                    <h1 style="color: #fff;">{{req.data.userName.charAt(0)}}</h1>
                 </div>
                 <div class="names">
-                    <h4 style="font-size: 1.9vh;">{{req.userName}}
-                        <span *ngIf="req.gender === 'female'; else maleIcon">
+                    <h4 style="font-size: 1.9vh;">{{req.data.userName}}
+                        <span *ngIf="req.data.gender === 'female'; else maleIcon">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke: #ff00ea; stroke-width: 1.5;"
                                 class="bi bi-gender-female" viewBox="0 0 16 16">
@@ -115,14 +119,14 @@
                             </svg>
                         </ng-template>
                     </h4>
-                    <h4>@{{req.nickname}}</h4>
+                    <h4>@{{req.data.nickname}}</h4>
                     <!--   <h4>{{req.phoneNumber}}</h4>  -->
                 </div>
-                <div class="accept" (click)="createFriendList(req, req.key)">
+                <div class="accept" (click)="createContact(req)">
                     <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
                     <h2>Accept</h2>
                 </div>
-                <div class="cancel" (click)="removeFriendReqbyuser(req)">
+                <div class="cancel" (click)="cancelFriendRequest(req)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x"
                         style="width:2vh; height: 2vh; stroke-width: 1.5; stroke:  #b4b6b8 ;" viewBox="0 0 16 16">
                         <path

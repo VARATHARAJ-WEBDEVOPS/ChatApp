@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -10,82 +10,101 @@ export class CouchService {
   databaseName: string = 'amorchat';
   couchUserName: string = 'd_couchdb';
   couchPassword: string = 'Welcome#2';
+  header = {
+    headers: {
+      'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
+    }
+  }
 
   constructor(private http: HttpClient) { }
 
-  getAll() {
-    const getAllUrl = `${this.CouchURL}/${this.databaseName}/_all_docs?include_docs=true`;
-    return this.http.get(getAllUrl, {
-      headers: {
-        'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
-      }
-    });
+  callRealtime() {
+    const realtimeUrl = `${this.CouchURL}/${this.databaseName}/_changes?include_docs=true`;
+    return this.http.get(realtimeUrl, this.header);
   }
+
+  //create Process
 
   createAccount(document: any) {
     const createUrl = `${this.CouchURL}/${this.databaseName}`;
-    return this.http.post(createUrl, document, {
-      headers: {
-        'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
-      }
-    });
+    return this.http.post(createUrl, document, this.header);
   }
+
+  sendFriendRequest(doc: any) {
+    const Url = `${this.CouchURL}/${this.databaseName}`;
+    return this.http.post(Url, doc, this.header);
+  }
+
+  createContact(doc: any) {
+    const Url = `${this.CouchURL}/${this.databaseName}`;
+    return this.http.post(Url, doc, this.header);
+  }
+
+  createNotification(doc: any) {
+    const createUrl = `${this.CouchURL}/${this.databaseName}`;
+    return this.http.post(createUrl, doc, this.header);
+  }
+
+  //read process
 
   checkExistingUser(phoneNumber: string) {
     const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/phoneNumberSearch?key=${phoneNumber}`
-    return this.http.get(url, {
-      headers: {
-        'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
-      }
-    });
+    return this.http.get(url, this.header);
   }
 
   checkExistingUserName(nickName: string) {
     const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/nicknameSearch?key="${nickName}"`
-    return this.http.get(url, {
-      headers: {
-        'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
-      }
-    });
-  }
-
-  updateNickName(_id: string,_rev: string, doc: any ) {
-    const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
-    return this.http.put(url, doc, {
-      headers: {
-        'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
-      }
-    }); ``
-  }
-
-  createNotification( doc: any ) {
-    const createUrl = `${this.CouchURL}/${this.databaseName}`;
-    return this.http.post(createUrl, doc, {
-      headers: {
-        'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
-      }
-    });
+    return this.http.get(url, this.header);
   }
 
   getNotifications(user_id: string) {
     const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/notificationSearch?key="${user_id}"`;
-    return this.http.get(url, {
-      headers: {
-        'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
-      }
-    });
+    return this.http.get(url, this.header);
   }
 
-  //pending
   getContacts(_id: string) {
-    const Url = `${this.CouchURL}/${this.databaseName}/_design/contacts/_view/contacts?key=${_id}`
-    return this.http.get(Url, {
-      headers: {
-        'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
+    const Url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/get_contacts?key="${_id}"`
+    return this.http.get(Url, this.header);
+  }
+
+  getFriendRequest(user_id: string) {
+    const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/friendrequest_search?key="${user_id}"`;
+    return this.http.get(url, this.header);
+  }
+
+  //update process
+
+  updateNickName(_id: string, _rev: string, doc: any) {
+    const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
+    return this.http.put(url, doc, this.header); ``
+  }
+
+  updateUserProfile(_id: string, _rev: string, doc: any) {
+    const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
+    return this.http.put(url, doc, this.header); ``
+  }
+
+  //delete process...
+
+  cancelFriendRequest(_id: string, _rev: string) {
+    const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
+    return this.http.delete(url, this.header);
+  }
+
+  //search process
+
+  searchUsersByName(name: string) {
+    const startkey = name.toLowerCase();
+    const headers = new HttpHeaders({
+      'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
+    });
+    return this.http.get(`${this.CouchURL}/${this.databaseName}/_design/view/_view/contactSearch`, {
+      headers,
+      params: {
+        startkey: `"${startkey}"`,
+        endkey: `"${startkey}\ufff0"`
       }
     });
   }
-
 }
-
 

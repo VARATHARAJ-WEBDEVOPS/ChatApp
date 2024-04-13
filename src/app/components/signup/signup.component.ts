@@ -88,7 +88,6 @@ onSubmit() {
     }
 
     this.couchService.createAccount(couchFormat).subscribe(res => {
-    
 
     });
 
@@ -102,10 +101,10 @@ onSubmit() {
       
         if (response.rows.length != 0) {
             this.toastService.showToast('Phone Number Already used', true);
-          console.log('Phone Number Already used');
+          // console.log('Phone Number Already used');
           
         } else {
-            console.log('User does not exist');
+            // console.log('User does not exist');
             this.onSubmit();
         }
     });

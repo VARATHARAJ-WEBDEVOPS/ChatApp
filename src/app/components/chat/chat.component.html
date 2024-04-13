@@ -8,7 +8,7 @@
                 <img src="./assets/images/chainsyslogo.png" alt="chainsyslogo" class="logo">
             </div>
             <div class="menuTexts">
-                "I embarked on the creative journey of crafting AmorChat, a charming chat web application, while honing
+                "I embarked on the creative journey of crafting ChatApp, a charming chat web application, while honing
                 my skills at Chain Sys Madurai. To explore more of my work and discover my creative portfolio, please
                 visit the enchanting realm of my projects <a href="https://varatharaj-portfolio.web.app/"
                     target="_blank">"https://varatharaj-portfolio.web.app/"</a>. It's a testament to my passion and
@@ -29,7 +29,7 @@
                     <!-- <i class="bi bi-list" id="menu" ></i> -->
                     <!-- <i class="bi bi-x-lg" id="menu" (click)="toggleManu()" *ngIf="ismenu"></i> -->
     
-                    <h2 style="color: #525252;" (click)="toggleMenu()" >AmorChat</h2>
+                    <h2 style="color: #525252;" (click)="toggleMenu()" >ChatApp</h2>
                 </div>
                
                 <div class="side">
@@ -119,7 +119,7 @@
                 </div>
                 <div class="chatsContact" (click)="openChatingpage(req)" *ngFor="let req of chatContact">
                     <div class="friendProfile" (click)="openProfile(req)">
-                        <h3>{{req.userName.charAt(0) | uppercase}}</h3>
+                        <h3>{{req.data.userName.charAt(0) | uppercase}}</h3>
                     </div>
                     <div class="friendName">
                         <h2 style="color: #525252e5;">{{req.userName}}

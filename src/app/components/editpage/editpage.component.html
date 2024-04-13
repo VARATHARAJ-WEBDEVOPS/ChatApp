@@ -32,7 +32,7 @@
             <div class="name" [style.color]="showErrorNickName ? 'red' : '#ffffff9f'">
                 Nickname
             </div>
-            <input type="text" (input)="checkEdit()" [(ngModel)]="nickname">
+            <input type="text" (input)="checkEdit(); checkExistingUserName()" [(ngModel)]="nickname">
             <p class="ErrorText">{{showErrorNickNameMessage}}</p>
         </div>
 
