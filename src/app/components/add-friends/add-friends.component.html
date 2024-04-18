@@ -6,14 +6,14 @@
                 New User Tour <i class="bi bi-lightbulb"></i>!
             </h1>
             <p>
-                If your friend is an existing user in AmorChat, Search their contact or nickname to give friend request.
+                If your friend is an existing user in AmorChat, Search their nickname to give friend request.
             </p>
             <hr style="width: 90%;">
             <p>
                 Or invite your friend for AmorChat via whatsApp
             </p>
         </div>
-        
+
         <div class="header">
             <div class="backButton" routerLink="/chat">
                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 3vh; height: 3vh;" fill="#454545"
@@ -38,7 +38,7 @@
             <i (click)="cancelSearch()" class="bi bi-arrow-left" style="margin-left: 2.9vh; font-size: 2.7vh;"
                 *ngIf="isSearchResults"></i>
             <input type="text" (focus)="handleInputFocus()" (blur)="handleInputBlur()" (input)="changeUpper()"
-                placeholder="Search Friend's Contact / Nickname" [(ngModel)]="query">
+                placeholder="Search Friend's Nickname" [(ngModel)]="query" appNoCopyPaste>
         </div>
         <div *ngIf="isSearchResults" class="SearchResults">
             <h2>Search Results</h2>
@@ -79,10 +79,15 @@
                     <h2>Request</h2>
                 </div> -->
                 <div class="accept" style="  width: 13vh; height: 4.8vh; z-index: 1000;"
-                (click)="sendFriendRequest(result._id)" >
-                <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
-                <h2>Request</h2>
-            </div>
+                    (click)="sendFriendRequest(result._id)">
+                    <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
+                    <h2>Request</h2>
+                </div>
+                <!-- <div *ngIf="!isReqThere(result)" class="accept" style="  width: 13vh; height: 4.8vh; z-index: 1000;"
+                    (click)="sendFriendRequest(result._id)">
+                    <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
+                    <h2>Sent</h2>
+                </div> -->
 
 
             </div>

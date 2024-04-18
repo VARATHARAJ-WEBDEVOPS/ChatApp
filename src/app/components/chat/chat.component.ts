@@ -64,6 +64,9 @@ export class ChatComponent implements OnInit {
   unReadNotify!: number;
   userName: string = '';
   isNickname: string = '';
+  contactFormat!: FormGroup;
+  rawContact: any;
+  userData: any;
 
   constructor(
     private title: Title,
@@ -131,14 +134,26 @@ export class ChatComponent implements OnInit {
       }
 
     }
+
+    this.contactFormat = this.fb.group({
+      for: "",
+      lastmessage: "",
+      lasttime: "",
+      userName: "",
+      phoneNumber: null,
+      nickname: "",
+      age: null,
+      gender: "",
+      dob: null
+    });
     this.nickNameForm = this.fb.group({
 
       _id: '',
       _rev: '',
-      data: { }
+      data: {}
     });
     // this.gettingUnreadedNotifications();
-    
+
   }
 
   // gettingUnreadedNotifications() {
@@ -153,14 +168,14 @@ export class ChatComponent implements OnInit {
       let res: any = response.rows[0].value;
       localStorage.setItem("userList", JSON.stringify(res));
       this.isNickNameDiolog = false;
-      
+
       const userDataFromLocalStorage = localStorage.getItem('userList');
       if (userDataFromLocalStorage !== null) {
         this.userdata = JSON.parse(userDataFromLocalStorage);
       }
       this.userName = this.userdata.data.userName;
       this.nickNameForm.patchValue(this.userdata);
-      
+
       // console.log(this.userdata.userName);
 
       if (response) {
@@ -219,7 +234,7 @@ export class ChatComponent implements OnInit {
     // console.log(this.userdata._id);
 
 
-  await  this.couchService.updateNickName(this.userdata._id,this.userdata._rev, this.nickNameForm.value).subscribe(() => {
+    await this.couchService.updateNickName(this.userdata._id, this.userdata._rev, this.nickNameForm.value).subscribe(() => {
       localStorage.removeItem('userList');
       this.getUser(this.tempPhone);
     });
@@ -232,8 +247,8 @@ export class ChatComponent implements OnInit {
         user: this.userdata._id
       }
     }
-    
-   this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
+
+    this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
 
     });
   }
@@ -278,48 +293,78 @@ export class ChatComponent implements OnInit {
   }
 
   openChatingpage(res: any) {
-    localStorage.setItem('currectChattingFriend', JSON.stringify(res));
-    this.router.navigateByUrl('chatting');
+    this.router.navigate(['/chatting', encodeURIComponent(JSON.stringify(res))]);
   }
 
   openProfile(res: any) {
-    console.log(res);
-    localStorage.setItem('currectChattingFriend', JSON.stringify(res));
-    this.router.navigateByUrl('friendprofile');
+    this.router.navigate(['/friendprofile', encodeURIComponent(JSON.stringify(res))]);
   }
 
-  getContacts() {
+  async getContacts() {
+    await this.couchService.getContacts(this.userKey).subscribe((res: any) => {
+      if (res.rows.length ) {
+        let for_ids = res.rows.map((row: any) => row.value[1]);
+        this.rawContact = res.rows.map((row: any) => row.value[0]);
+  
+        this.couchService.getContactUserDetails(for_ids.join('","')).subscribe((res: any) => {
+          this.userData = res.rows; 
+          
+          for (let i = 0; i < this.userData.length; i++) {
+            for (let j = 0; j < this.userData.length; j++) {
+       
+             if (this.rawContact[i].data.for === this.userData[j].id) {           
+               
+               this.contactFormat.value.for = this.rawContact[i].data.for;
+               this.contactFormat.value.lastmessage = this.rawContact[i].data.lastmessage;
+               this.contactFormat.value.contact_id = this.rawContact[i]._id;
+               this.contactFormat.value.contact_rev = this.rawContact[i]._rev;
+               this.contactFormat.value.lasttime = this.rawContact[i].data.lasttime;
+               this.contactFormat.value.userName = this.userData[j].doc.data.userName;
+               this.contactFormat.value.phoneNumber = this.userData[j].doc.data.phoneNumber;
+               this.contactFormat.value.nickname = this.userData[j].doc.data.nickname;
+               this.contactFormat.value.age = this.userData[j].doc.data.age;
+               this.contactFormat.value.gender = this.userData[j].doc.data.gender;
+               this.contactFormat.value.dob = this.userData[j].doc.data.dob;
+               this.contactFormat.value.to_id = this.userdata._id;
+               this.contactFormat.value.to_name = this.userdata.data.userName;
+               
+               this.chatContact.push(this.contactFormat.value);
+               this.contactFormat.reset();
+               // console.log(contactFormat);
+               
+             }            
+            }
+         }
+        //  console.log(this.chatContact);
+         
+        });
+      }
+          this.isloading = false;
+   
+      //   this.chatContact = res.sort((a: any, b: any) => {
+      // this.chatContact = res.rows.map((row: any) => row.value).sort((a: any, b: any) => {
+      //   try {
+      //     const dateA = new Date(a.time);
+      //     const dateB = new Date(b.time);
 
-    this.couchService.getContacts(this.userKey).subscribe((res: any) => {
-      console.log(res);
-      
-    //   if (res) {
-    //     this.isloading = false;
-    //   }
-    //   this.chatContact = res.sort((a: any, b: any) => {
-       this.chatContact = res.rows.map((row: any)=>row.value).sort((a: any, b: any) => {
-        try {
-          const dateA = new Date(a.time);
-          const dateB = new Date(b.time);
-
-          if (dateA > dateB) {
-            return -1;
-          }
-          if (dateA < dateB) {
-            return 1;
-          }
-          return 0;
-        } catch (error) {
-          console.error('Error parsing dates:', error);
-          return 0;
-        }
-    // console.log(this.notifications);
-    //   // console.log("My Friends List", this.chatContact);
-    //   // console.log("My Friends List res", res);
-    //   // console.log("Key", this.userKey);
+      //     if (dateA > dateB) {
+      //       return -1;
+      //     }
+      //     if (dateA < dateB) {
+      //       return 1;
+      //     }
+      //     return 0;
+      //   } catch (error) {
+      //     console.error('Error parsing dates:', error);
+      //     return 0;
+      //   }
+      //   // console.log(this.notifications);
+      //   //   // console.log("My Friends List", this.chatContact);
+      //   //   // console.log("My Friends List res", res);
+      //   //   // console.log("Key", this.userKey);
+      // });
     });
-  });
-}
+  }
 
   handleInputFocus() {
     this.isSearchResults = true;

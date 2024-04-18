@@ -45,6 +45,13 @@ export class CouchService {
     return this.http.post(createUrl, doc, this.header);
   }
 
+  // getUsingAllDocs
+
+  getContactUserDetails(doc: string[]) {
+    const url = `${this.CouchURL}/${this.databaseName}/_all_docs?include_docs=true&keys=["${doc}"]`
+    return this.http.get(url, this.header);
+  }
+
   //read process
 
   checkExistingUser(phoneNumber: string) {
@@ -72,6 +79,17 @@ export class CouchService {
     return this.http.get(url, this.header);
   }
 
+  isReqThere(user_id: string, from_id: string) {
+    const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/is_in_requests?key=["${user_id}","${from_id}"]`;
+    return this.http.get(url, this.header);
+  }
+
+  getContactForDelete(For: string, User: string) {
+    const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/search_contact_for_delete?key=["${For}","${User}"]`
+    return this.http.get(url, this.header);
+  }
+    
+
   //update process
 
   updateNickName(_id: string, _rev: string, doc: any) {
@@ -87,6 +105,11 @@ export class CouchService {
   //delete process...
 
   cancelFriendRequest(_id: string, _rev: string) {
+    const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
+    return this.http.delete(url, this.header);
+  }
+
+  deleteFriend(_id: string, _rev: string) {
     const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
     return this.http.delete(url, this.header);
   }

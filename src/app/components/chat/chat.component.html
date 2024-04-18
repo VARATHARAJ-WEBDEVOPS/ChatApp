@@ -18,10 +18,10 @@
 
         <div class="chat" *ngIf="!ismenu">
 
-            <!-- <div class="loading" *ngIf="isloading">
+            <div class="loading" *ngIf="isloading">
                 <img src="./assets/images/loading.gif" alt="loading-sign" />
                 <p>fetching contacts...</p>
-            </div> -->
+            </div>
 
             <div class="nav" [ngClass]="{'custom-border-radius': ismenu}">
                 <div style="display: flex; align-items: center;">
@@ -106,20 +106,20 @@
                     <input type="text" [(ngModel)]="searchTerm" (input)="searchProducts()" placeholder="Search Friend">
                 </div>
 
-                <div class="chatsContact" (click)="openAIChatingpage()">
+                <!-- <div class="chatsContact" (click)="openAIChatingpage()">
                     <div class="friendProfile" >
                         <h3>AI</h3>
                     </div>
                     <div class="friendName">
                         <h2 style="color: #525252e5;">Amor AI 🤖</h2>
                     </div>
-                </div>
+                </div> -->
                 <div class="noFriends" *ngIf="!isloading && chatContact.length === 0">
                     <p>No friends</p>
                 </div>
-                <div class="chatsContact" (click)="openChatingpage(req)" *ngFor="let req of chatContact">
+                <div class="chatsContact" *ngFor="let req of chatContact" (click)="openChatingpage(req)">
                     <div class="friendProfile" (click)="openProfile(req)">
-                        <h3>{{req.data.userName.charAt(0) | uppercase}}</h3>
+                        <h3>{{req.userName.charAt(0) | uppercase}}</h3>
                     </div>
                     <div class="friendName">
                         <h2 style="color: #525252e5;">{{req.userName}}

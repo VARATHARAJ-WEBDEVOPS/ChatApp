@@ -23,11 +23,11 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'addfriend', component: AddFriendsComponent},
   {path: 'myfriend', component: MyFriendsComponent},
-  {path: 'chatting', component: ChatingComponent},
+  {path: 'chatting/:data', component: ChatingComponent},
   {path: 'message', component: MesssageComponent},
   {path: 'notification', component: NotificationComponent},
   {path: 'editprofile', component: EditpageComponent},
-  {path: 'friendprofile', component: FriendProfileComponent},
+  {path: 'friendprofile/:data', component: FriendProfileComponent},
 ];
 
 @NgModule({

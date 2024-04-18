@@ -158,7 +158,6 @@ export class EditpageComponent implements OnInit {
       }
 
       this.couchService.updateUserProfile(this.userData._id, this.userData._rev, updateFormat).subscribe((res) => {
-      this.toastService.showToast('Edit Successfully', true);
         this.router.navigateByUrl('/chat');
       });
 

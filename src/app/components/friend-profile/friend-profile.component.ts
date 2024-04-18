@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CouchService } from 'src/app/services/couch.service';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-friend-profile',
@@ -16,29 +18,23 @@ export class FriendProfileComponent {
   constructor(private router: Router,
     private firebaseService: FirebaseService,
     private title: Title,
+    private route: ActivatedRoute,
+    private couchService: CouchService
   ) { }
 
   async ngOnInit() {
     this.title.setTitle("AmorChat | FriendProfile");
+    this.route.params.subscribe(params => {
 
-    if (!localStorage.getItem('currectChattingFriend') ) {
-      this.router.navigateByUrl('/chat');
-    }
+      const encodedData = params['data'];
+      if (encodedData) {
+        this.paramValue = JSON.parse(decodeURIComponent(encodedData));
+        // console.log(this.paramValue);
 
-    const userDataFromLocalStorage = localStorage.getItem('currectChattingFriend');
+      }
+    });
+    // console.log(this.paramValue);
 
-    if (userDataFromLocalStorage !== null) {
-      this.paramValue = JSON.parse(userDataFromLocalStorage);
-      console.log(this.paramValue);
-    }
-
-    const userdataGetting = localStorage.getItem('userList');
-
-    if (userdataGetting !== null) {
-
-      this.UserList = JSON.parse(userdataGetting);
-      console.log(this.UserList);
-    }
   }
 
   conformDeleteToggle() {
@@ -56,26 +52,43 @@ export class FriendProfileComponent {
   }
 
   removeFriend() {
-    console.log(this.paramValue);
+    // console.log(this.paramValue);
+    // this.couchService.getContactForDelete()
+    // console.log(this.paramValue.for);
     
-    this.firebaseService.removeFriend(this.UserList.key, this.paramValue.key).then( () => {
-      this.isFriendThere(this.paramValue.userKey, this.UserList.phoneNumber);
-      console.log("remove Friend",this.paramValue.userKey );
+
+    this.couchService.deleteFriend(this.paramValue.contact_id, this.paramValue.contact_rev).subscribe((res) => {
+      this.couchService.getContactForDelete(this.paramValue.for, this.paramValue.to_id).subscribe((res: any) => {
+        this.couchService.deleteFriend(res.rows[0].value._id, res.rows[0].value._rev).subscribe((res) => {
+          const notificationFormat = {
+            _id: 'notification_2_' + uuidv4(),
+            data: {
+              time: String(new Date()),
+              message: `${this.paramValue.to_name} has Removed you from his  Friend List 💔 .`,
+              type: 'notification',
+              user: this.paramValue.for
+            }
+          }
+          this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
+            this.router.navigateByUrl('chat');
+          });
+        });
+      });
     });
   }
 
   isFriendThere(key: string, phoneNumber: any) {
     this.firebaseService.isFriendThere(key, phoneNumber).subscribe(res => {
-        this.removeFriendListonSender(key, res[0].key);
-        console.log(res[0].key);
-        
-    });    
+      this.removeFriendListonSender(key, res[0].key);
+      console.log(res[0].key);
+
+    });
   }
 
- async removeFriendListonSender(data: string, removekey: string) {
+  async removeFriendListonSender(data: string, removekey: string) {
     this.firebaseService.removeFriend(data, removekey);
-    await this.firebaseService.createUnreadNotification(data,{time: String(new Date()), message: `${this.UserList.userName} has Removed you from his  Friend List 💔`});
-   await localStorage.removeItem('currectChattingFriend');
-   await window.location.reload();
+    await this.firebaseService.createUnreadNotification(data, { time: String(new Date()), message: `${this.UserList.userName} has Removed you from his  Friend List 💔` });
+    await localStorage.removeItem('currectChattingFriend');
+    await window.location.reload();
   }
 }

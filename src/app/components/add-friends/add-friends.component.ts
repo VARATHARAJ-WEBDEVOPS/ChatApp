@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
 import { CouchService } from 'src/app/services/couch.service';
 import { v4 as uuidv4 } from 'uuid';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-friends',
@@ -57,6 +58,20 @@ export class AddFriendsComponent implements OnInit {
     }
   }
 
+  isReqThere(result: any): boolean {
+    let isFound = false;
+    this.couchService.isReqThere(this.userdata._id, result._id).subscribe(
+        (res: any) => {
+
+            if (res.rows[0].length === 1) {
+                isFound = true;
+            } else {
+                isFound = false;
+        }}
+    );
+    return isFound;
+}
+
   ngOnInit(): void {
     this.title.setTitle("AmorChat | AddFriends");
     const userDataFromLocalStorage = localStorage.getItem('userList');
@@ -78,12 +93,16 @@ export class AddFriendsComponent implements OnInit {
       nickname: [''],
       friendListPathKey: ['']
     });
+    // this.couchService.callRealtime().subscribe((res: any) => {
+    //   console.log(res);
+    // });
   }
 
   async getFriendReq() {
     this.couchService.getFriendRequest(this.userdata._id).subscribe((res: any) => {
       this.FriendRequestList = res.rows.map((row: any) => row.value);
     });
+
   }
 
   createFriendList(data: any, requestKey: string) {
@@ -112,15 +131,15 @@ export class AddFriendsComponent implements OnInit {
     this.sendFriendReqForm.value.count = 0;
     this.firebaseService.createFriendsList(data.userKey, this.sendFriendReqForm.value);
     this.firebaseService.createUnreadNotification(data.userKey, { time: String(new Date()), message: `🥳 ${this.userdata.userName} has Accepted your Friend Request ❤️🔒` });
-    this.isReqThere(data.userKey, requestKey);
+    // this.isReqThere(data.userKey, requestKey);
   }
 
-  isReqThere(key: string, requestKey: any) {
-    this.firebaseService.isReqThere(key, this.userdata.phoneNumber).subscribe(res => {
-      this.removeFriendReqonSender(key, res[0].key);
-    });
-    this.removeFriendReq(requestKey);
-  }
+  // isReqThere(key: string, requestKey: any) {
+  //   this.firebaseService.isReqThere(key, this.userdata.phoneNumber).subscribe(res => {
+  //     this.removeFriendReqonSender(key, res[0].key);
+  //   });
+  //   this.removeFriendReq(requestKey);
+  // }
 
   removeFriendReqonSender(data: string, removekey: string) {
     this.firebaseService.removeFriendRequest(data, removekey);
@@ -237,7 +256,19 @@ export class AddFriendsComponent implements OnInit {
     }
     this.couchService.createContact(couchFormat).subscribe((res: any) => {
       this.couchService.cancelFriendRequest(data._id, data._rev).subscribe((res) => {
-        console.log(res);
+        const notificationFormat = {
+          _id: 'notification_2_' + uuidv4(),
+          data: {
+            time: String(new Date()),
+            message: ` ${this.userdata.data.userName} has Accepted your Friend Request `,
+            type: 'notification',
+            user: data.data.from
+          }
+        }
+        this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
+          console.log("done");
+          this.getFriendReq();
+        });
       })
     });
   }

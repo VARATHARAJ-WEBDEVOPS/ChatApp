@@ -3,7 +3,7 @@ import { FirebaseService } from 'src/app/services/firebase.service';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 
 
 @Component({
@@ -27,17 +27,19 @@ export class MyFriendsComponent implements OnInit {
     private firebaseService: FirebaseService,
     private title: Title,
     public formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.title.setTitle("AmorChat | MyFriends");
-    const userDataFromLocalStorage = localStorage.getItem('userList');
 
-    if (userDataFromLocalStorage !== null) {
-
-      this.userdata = JSON.parse(userDataFromLocalStorage);
-    }
+    this.route.params.subscribe(params => {
+      // Decode JSON data
+      const encodedData = params['data'];
+      if (encodedData) {
+          this.userdata = JSON.parse(decodeURIComponent(encodedData));
+  }});
 
     this.userKey = this.userdata.key;
     this.userphoneNumber = this.userdata.phoneNummber;

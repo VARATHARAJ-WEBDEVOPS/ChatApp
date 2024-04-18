@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -44,7 +44,8 @@ export class ChatingComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private toastService: ToastService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private route: ActivatedRoute
   ) {
     this.isEditontainer = new Array().fill(false);
   }
@@ -113,13 +114,15 @@ export class ChatingComponent implements OnInit {
       this.scrollToContent();
     }, 1);
 
-    const userDataFromLocalStorage = localStorage.getItem('currectChattingFriend');
+    this.route.params.subscribe(params => {
 
-    if (userDataFromLocalStorage !== null) {
-      this.paramValue = JSON.parse(userDataFromLocalStorage);
-      console.log(this.paramValue);
-    }
+      const encodedData = params['data'];
+      if (encodedData) {
+        this.paramValue = JSON.parse(decodeURIComponent(encodedData));
+        console.log(this.paramValue);
 
+      }
+    });
     const userdataGetting = localStorage.getItem('userList');
 
     if (userdataGetting !== null) {
@@ -161,8 +164,8 @@ export class ChatingComponent implements OnInit {
       isDeleted: ['']
     });
 
-    this.exchangeFriendListKey();
-    this.exchangeMyFriendListKey();
+    // this.exchangeFriendListKey();
+    // this.exchangeMyFriendListKey();
   }
 
   exchangeFriendListKey() {

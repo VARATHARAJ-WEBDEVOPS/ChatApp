@@ -28,6 +28,7 @@ import { DatePipePipe } from './date-pipe.pipe';
 import { EditpageComponent } from './components/editpage/editpage.component';
 import { FriendProfileComponent } from './components/friend-profile/friend-profile.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NoCopyPasteDirective } from './directives/no-copy-paste.directive';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBnqwvPQV9ZyuTpM6qZJlLxH1uQr8b4XKo",
@@ -58,7 +59,8 @@ const firebaseConfig = {
     NotificationComponent,
     DatePipePipe,
     EditpageComponent,
-    FriendProfileComponent
+    FriendProfileComponent,
+    NoCopyPasteDirective,
   ],
   imports: [
     BrowserModule,
