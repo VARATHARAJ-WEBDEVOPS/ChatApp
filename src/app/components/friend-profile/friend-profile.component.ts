@@ -22,19 +22,17 @@ export class FriendProfileComponent {
     private couchService: CouchService
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.title.setTitle("AmorChat | FriendProfile");
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe(param => {
 
-      const encodedData = params['data'];
+      const encodedData = param['data'];
       if (encodedData) {
         this.paramValue = JSON.parse(decodeURIComponent(encodedData));
         // console.log(this.paramValue);
-
       }
     });
     // console.log(this.paramValue);
-
   }
 
   conformDeleteToggle() {

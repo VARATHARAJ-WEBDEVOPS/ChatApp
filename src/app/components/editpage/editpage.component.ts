@@ -243,7 +243,7 @@ export class EditpageComponent implements OnInit {
         this.showError = true;
         this.showErrorMessage = '( Password ) Need Atleast 8 characters';
       } else {
-        this.EditedForm.value.password = this.password;
+        this.EditedForm.value.password = CryptoJS.AES.encrypt(this.password, 'secret key').toString();
         this.Validation();
       }
     } else {

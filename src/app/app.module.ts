@@ -29,6 +29,7 @@ import { EditpageComponent } from './components/editpage/editpage.component';
 import { FriendProfileComponent } from './components/friend-profile/friend-profile.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NoCopyPasteDirective } from './directives/no-copy-paste.directive';
+import { GroupCreationComponent } from './components/group-creation/group-creation.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBnqwvPQV9ZyuTpM6qZJlLxH1uQr8b4XKo",
@@ -61,6 +62,7 @@ const firebaseConfig = {
     EditpageComponent,
     FriendProfileComponent,
     NoCopyPasteDirective,
+    GroupCreationComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,252 @@
+.groupCreation {
+    width: 100%;
+    height: 100svh;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #f7f8fa;
+    position: relative;
+}
+
+.groupCreation .header {
+    width: 80%;
+    height: 10vh;
+    padding-inline: 10%;
+    align-items: center;
+    display: flex;
+    position: relative
+}
+
+ .groupCreation .header h1 {
+    font-size: 2.3vh;
+    font-weight: 600;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.GroupNameInput {
+    width: 80%;
+    /* background-color: #eee; */
+    height: 5vh;
+    border-radius: 1vh;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+}
+
+input {
+    background: none;
+    border: none;
+    width: 80%;
+    height: 100%;
+    padding-inline: 10%;
+    font-size: 1.8vh;
+}
+
+.validation {
+    height: 3vh;
+    width: 80%;
+    color: red;
+    display: flex;
+    align-items: center;
+    font-size: 2vh;
+}
+
+.contactsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    height: 60vh;
+    width: 80%;
+    padding: 10%;
+}
+
+.plusButton {
+    border: none;
+    border-radius: 50%;
+    height: 5vh;
+    width: 5vh;
+    font-size: 3.5vh;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+    margin-top: 2vh;
+}
+
+.searchContact {
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.searchResultscontainer {
+    height: 79vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.SearchResultsVisible {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    height: 11vh;
+    box-shadow:
+      -1px 1px 5px rgba(0, 0, 0, 0.2),
+      1px -1px 5px #fff;
+    margin-block: 1vh;
+    border-radius: 3vh;
+    position: relative;
+    margin-top: 2vh;
+}
+
+.SearchResultsVisible .profile {
+    background-color: #66a9e0;
+    height: 6vh;
+    width: 6vh;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: #fff;
+}
+
+.SearchResultsVisible .profile h1 {
+    font-size: 2.3vh;
+}
+
+.SearchResultsVisible .names {
+    width: 18vh;
+    margin-bottom: 1.3vh;
+}
+
+.SearchResultsVisible .names h4 {
+    font-weight: 300;
+    padding: 0.3vh;
+    margin-left: 1vh;
+    font-size: 1.3vh;
+}
+
+.accept {
+    width: 11.5vh;
+    height: 4.2vh;
+    color: #fff;
+    background-color: rgb(253, 130, 151);
+    border-radius: 8vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    box-shadow:
+        -5px 5px 10px rgba(0, 0, 0, 0.2),
+        5px -5px 8px #fff,
+        inset 5px -5px 10px #00000048;
+}
+
+.SearchResultsVisible .accept h2 {
+    font-size: 1.7vh;
+    font-weight: 600;
+    color: #fff;
+}
+
+.SearchResultsVisible .cancel {
+    padding: 1vh;
+    margin-left: 0.8vh;
+    color: #fff;
+}
+
+.SearchResultsVisible{
+    height: 8vh;
+    display: flex;
+    align-items: center;
+  } 
+
+  #TrashIcon {
+    position: absolute;
+    top: -3vh;
+    right: -1vh;
+    background-color: #fff;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+    padding: 1vh;
+    border-radius: 50%;
+}
+
+.displayNames {
+    min-width: 2vh;
+    max-height: 2vh;
+    position: relative;
+    margin: 2vh;
+}
+
+.displayNames p {
+    padding: 10px;
+    border-radius: 2vh;
+    background-color: #66a9e0;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.floatingButton {
+    font-size: 3vh;
+    padding: 2.6vh;
+    color: #fff;
+    background-color: #66a9e0;
+    border-radius: 2vh;
+    position: absolute;
+    bottom: 10vh;
+    right: 4vh;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 992px) {
+    /* for pc screen*/
+
+    .searchResultscontainer {
+        height: 79vh;
+        width: 100%;
+    }
+
+    .searchContact {
+        height: 85vh;
+    }
+
+    .plusButton {
+        height: 6.5vh;
+        width: 6.5vh;
+        font-size: 5vh;
+    }
+
+    .validation {
+        font-size: 2.3vh;
+    }
+
+    h1 {
+        font-size: 2.7vh;
+    }
+
+    .groupCreation .header {
+        height: 15vh;
+    }
+
+    input {
+        font-size: 2.3vh
+    }
+
+    .GroupNameInput {
+        height: 8vh;
+    }
+
+    .groupCreation {
+        width: 50%;
+        height: 100vh;
+        border-radius: 2vh;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .overAll {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #eee;
+    }
+}

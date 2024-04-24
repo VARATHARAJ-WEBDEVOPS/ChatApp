@@ -1,0 +1,89 @@
+<div class="overAll">
+    <div class="groupCreation">
+        <div class="floatingButton"  *ngIf="selectedContacts.length >= 2 && errorColor === 'green'"  style="color: #fff; background-color: #66a9e0" (click)="createGroup()">
+            Create
+        </div>
+        <div class="floatingButton" *ngIf="selectedContacts.length < 2 " style="color: #0000002c; background-color: #dddbdb;" >
+            Create
+        </div>
+        <div class="header">
+            <div class="backButton" routerLink="/addfriend">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width: 3vh; height: 3vh;" fill="#454545"
+                    class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                    <path
+                        d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
+                </svg>
+            </div>
+            <h1>Create Group</h1>
+        </div>
+        <div class="GroupNameInput" *ngIf="!isSearchContact"
+            [style.border]="Query.length >= 1 ? '2px solid ' + errorColor : ''">
+            <input type="text" placeholder="Group Name" [(ngModel)]="Query" (input)="isError()">
+        </div>
+        <div class="validation" *ngIf="!isSearchContact">
+            <p>{{showError}}</p>
+            <!-- <p>Group Name Already Exists</p> -->
+        </div>
+        <div class="contactsContainer" *ngIf="!isSearchContact">
+
+            <div class="displayNames" *ngFor="let data of selectedContacts">
+
+                <i class="bi bi-x-lg" id="TrashIcon" style="font-size: 3vh; color: red;"
+                    (click)="removeContact(data.data.nickname)"></i>
+                <p>@{{data.data.nickname}}</p>
+                <!-- <app-url-dialog [data]="data" (urlEvent)="handleurlEvent($event)" (cancelDiolog)="toggleDialog()"
+                        *ngIf="isDialog"></app-url-dialog> -->
+            </div>
+
+            <button class="plusButton" [style.margin-left]="selectedContacts.length >= 1 ? '3vh': '' " *ngIf="errorColor === 'green' && Query.length >= 1"
+                style="color: #fff; background-color: #66a9e0;" (click)="isSearchContact = !isSearchContact">
+                <i class="bi bi-plus"></i>
+            </button>
+            <button class="plusButton" [style.margin-left]="selectedContacts.length >= 1 ? '3vh': '' " *ngIf="errorColor === '' || errorColor === 'red' || Query.length === 0 "
+                style="color: #0000002c; background-color: #dddbdb;">
+                <i class="bi bi-plus"></i>
+            </button>
+        </div>
+        <div class="searchContact" *ngIf="isSearchContact">
+            <div class="GroupNameInput">
+                <input type="text" placeholder="Search Nickname..." [(ngModel)]="query" (input)="searchNickname()">
+            </div>
+            <div class="searchResultscontainer">
+                <div class="SearchResultsVisible" *ngFor="let result of searchResults">
+                    <div class="profile">
+                        <h1 style="color: #fff;">{{result.data.userName.charAt(0)}}</h1>
+                    </div>
+                    <div class="names">
+
+                        <h4 style="font-size: 1.9vh;">{{result.data.userName}}
+                            <span *ngIf="result.data.gender === 'female'; else maleIcon">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke: #ff00ea; stroke-width: 1.5;"
+                                    class="bi bi-gender-female" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z" />
+                                </svg>
+                            </span>
+                            <ng-template #maleIcon>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke:  #66a9e0; stroke-width: 1.5;"
+                                    class="bi bi-gender-male" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+                                </svg>
+                            </ng-template>
+                        </h4>
+
+                        <h4>@{{result.data.nickname}}</h4>
+                        <!-- <h4>{{result.phoneNumber}}</h4> -->
+                    </div>
+
+                    <div class="accept" style="  width: 13vh; height: 4.8vh; z-index: 1000;"
+                        (click)="addToSelectedContact(result)">
+                        <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
+                        <h2>Add</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,17 @@ export class CouchService {
 
   constructor(private http: HttpClient) { }
 
-  callRealtime() {
-    const realtimeUrl = `${this.CouchURL}/${this.databaseName}/_changes?include_docs=true`;
-    return this.http.get(realtimeUrl, this.header);
-  }
+  callRealtime(id: string): Observable<any> {
+    const realtimeUrl = `${this.CouchURL}/${this.databaseName}/_changes?include_docs=true&filter=mydesign/myfilter&user=${id}`   //include_docs=true`;
+    return this.http.get(realtimeUrl, {
+      headers: {
+        "Authorization": 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword),
+        "Accept": 'application/json',
+        "Content-Type": 'application/json',
 
+      }
+    });
+  }
   //create Process
 
   createAccount(document: any) {
@@ -44,6 +51,12 @@ export class CouchService {
     const createUrl = `${this.CouchURL}/${this.databaseName}`;
     return this.http.post(createUrl, doc, this.header);
   }
+
+  createChat(doc: any) {
+    const createUrl = `${this.CouchURL}/${this.databaseName}`;
+    return this.http.post(createUrl, doc, this.header);
+  }
+
 
   // getUsingAllDocs
 
@@ -88,7 +101,11 @@ export class CouchService {
     const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/search_contact_for_delete?key=["${For}","${User}"]`
     return this.http.get(url, this.header);
   }
-    
+
+  getChat(user: string, _with: string) {
+    const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/get_chats?key=["${user}","${_with}"]`
+    return this.http.get(url, this.header);
+  }
 
   //update process
 
@@ -98,6 +115,11 @@ export class CouchService {
   }
 
   updateUserProfile(_id: string, _rev: string, doc: any) {
+    const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
+    return this.http.put(url, doc, this.header); ``
+  }
+
+  updatecontact(_id: string, _rev: string, doc: any) {
     const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
     return this.http.put(url, doc, this.header); ``
   }

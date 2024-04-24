@@ -6,6 +6,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { CouchService } from 'src/app/services/couch.service';
 import { v4 as uuidv4 } from 'uuid';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-friends',
@@ -14,6 +15,7 @@ import { Subscription } from 'rxjs';
 })
 
 export class AddFriendsComponent implements OnInit {
+  private changesSubscription!: Subscription;
   isFriendRequest = true;
   FriendRequestList: any[] = [];
   isSearchResults: boolean = false;
@@ -32,7 +34,8 @@ export class AddFriendsComponent implements OnInit {
     private title: Title,
     public formBuilder: FormBuilder,
     private toast: ToastService,
-    private couchService: CouchService
+    private couchService: CouchService,
+    private router: Router
   ) { }
 
   share() {
@@ -61,16 +64,17 @@ export class AddFriendsComponent implements OnInit {
   isReqThere(result: any): boolean {
     let isFound = false;
     this.couchService.isReqThere(this.userdata._id, result._id).subscribe(
-        (res: any) => {
+      (res: any) => {
 
-            if (res.rows[0].length === 1) {
-                isFound = true;
-            } else {
-                isFound = false;
-        }}
+        if (res.rows[0].length === 1) {
+          isFound = true;
+        } else {
+          isFound = false;
+        }
+      }
     );
     return isFound;
-}
+  }
 
   ngOnInit(): void {
     this.title.setTitle("AmorChat | AddFriends");
@@ -93,14 +97,30 @@ export class AddFriendsComponent implements OnInit {
       nickname: [''],
       friendListPathKey: ['']
     });
-    // this.couchService.callRealtime().subscribe((res: any) => {
-    //   console.log(res);
-    // });
+
+
+
+    //_changes calling...
+    this.couchService.callRealtime(this.userdata._id).subscribe((res: any) => {
+      console.log(res);
+    });
+
+
+
   }
+
+
+  // ngOnDestroy() {
+  //   this.changesSubscription.unsubscribe();
+  // }
+
+
 
   async getFriendReq() {
     this.couchService.getFriendRequest(this.userdata._id).subscribe((res: any) => {
       this.FriendRequestList = res.rows.map((row: any) => row.value);
+      console.log(this.FriendRequestList);
+      
     });
 
   }
@@ -221,6 +241,8 @@ export class AddFriendsComponent implements OnInit {
     await this.couchService.sendFriendRequest(frndReqFormat).subscribe((res: any) => {
     });
     this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
+      console.log('send success');
+
     });
   }
 

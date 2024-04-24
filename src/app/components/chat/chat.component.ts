@@ -110,9 +110,9 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle("chatApp | chat");
 
-    if (!localStorage.getItem('token')) {
-      this.router.navigateByUrl('login');
-    } else {
+    // if (!localStorage.getItem('token')) {
+    //   this.router.navigateByUrl('login');
+    // } else {
 
       this.tempPhone = localStorage.getItem('token');
       this.getUser(this.tempPhone);
@@ -133,7 +133,7 @@ export class ChatComponent implements OnInit {
         this.years.push(i.toString());
       }
 
-    }
+    // }
 
     this.contactFormat = this.fb.group({
       for: "",
@@ -293,21 +293,30 @@ export class ChatComponent implements OnInit {
   }
 
   openChatingpage(res: any) {
-    this.router.navigate(['/chatting', encodeURIComponent(JSON.stringify(res))]);
+    this.router.navigate(['/chatting', encodeURIComponent(JSON.stringify(res))], { skipLocationChange: true});
   }
 
   openProfile(res: any) {
-    this.router.navigate(['/friendprofile', encodeURIComponent(JSON.stringify(res))]);
+    this.router.navigate(['/friendprofile', encodeURIComponent(JSON.stringify(res))], { skipLocationChange: true});
+    // const encodedUserData = encodeURIComponent(JSON.stringify(res));
+    // this.router.navigate(['/friendprofile'], { queryParams: { encodedUserData }, replaceUrl: true });
   }
 
   async getContacts() {
     await this.couchService.getContacts(this.userKey).subscribe((res: any) => {
+      console.log(res);
+      
       if (res.rows.length ) {
         let for_ids = res.rows.map((row: any) => row.value[1]);
+
         this.rawContact = res.rows.map((row: any) => row.value[0]);
-  
+        // let result = res.rows.filter((need: any) => need.value[0].data.isGroup === true)
+
+        // this.rawContact = res.rows.filter((row: any) => row.value[0].data.isGroup !== true);
+        // console.log(this.rawContact);
+        
         this.couchService.getContactUserDetails(for_ids.join('","')).subscribe((res: any) => {
-          this.userData = res.rows; 
+          this.userData = res.rows;
           
           for (let i = 0; i < this.userData.length; i++) {
             for (let j = 0; j < this.userData.length; j++) {

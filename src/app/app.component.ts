@@ -10,6 +10,6 @@ import { CouchService } from './services/couch.service';
 export class AppComponent implements OnInit {
   
 ngOnInit(): void {
-  
+
 }
 }

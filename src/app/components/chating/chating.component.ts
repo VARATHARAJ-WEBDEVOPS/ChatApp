@@ -1,9 +1,13 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
+import { v4 as uuidv4 } from 'uuid';
+import { CouchService } from 'src/app/services/couch.service';
+import * as CryptoJS from 'crypto-js';
+
 
 @Component({
   selector: 'app-chating',
@@ -23,6 +27,7 @@ export class ChatingComponent implements OnInit {
   myPath!: string;
   friendPath!: string;
   Conversation: any[] = [];
+
   secure: boolean = false;
   toggle: boolean = false;
   passwordDiolog: boolean = false;
@@ -45,15 +50,23 @@ export class ChatingComponent implements OnInit {
     private router: Router,
     private toastService: ToastService,
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private couchService: CouchService
   ) {
     this.isEditontainer = new Array().fill(false);
   }
 
 
-  onMouseDown(event: MouseEvent) {   //for desktop
+  onMouseDown(event: MouseEvent, index: any) {   //for desktop
     this.pressTimeout = setTimeout(() => {
-      alert('Edit and Delete Support Only Mobile Browsers');
+      // alert('Edit and Delete Support Only Mobile Browsers');
+      if (this.secure) { // Check if secure is true
+        this.pressTimeout = setTimeout(() => {
+          this.resetSelection();
+          this.isEditontainer[index] = true;
+          this.isShowEditContainer = true;
+        }, 500);
+      }
     }, 500);
   }
 
@@ -66,7 +79,6 @@ export class ChatingComponent implements OnInit {
       }, 500);
     }
   }
-
 
   onMouseUp(event: MouseEvent) {
     if (this.pressTimeout) {
@@ -92,9 +104,10 @@ export class ChatingComponent implements OnInit {
   }
 
   conformPassword() {
+    const decryptedPassword = CryptoJS.AES.decrypt(this.userData.data.password, 'secret key').toString(CryptoJS.enc.Utf8);
     if (!this.CheckPassword) {
       this.showError = true;
-    } else if (this.CheckPassword === this.userData.password) {
+    } else if (this.CheckPassword === decryptedPassword) {
       this.secure = true;
       this.passwordDiolog = false;
       this.CheckPassword = "";
@@ -106,6 +119,8 @@ export class ChatingComponent implements OnInit {
   }
 
   ngOnInit() {
+
+
 
     this.title.setTitle("AmorChat | chatting");
 
@@ -119,7 +134,7 @@ export class ChatingComponent implements OnInit {
       const encodedData = params['data'];
       if (encodedData) {
         this.paramValue = JSON.parse(decodeURIComponent(encodedData));
-        console.log(this.paramValue);
+        // console.log(this.paramValue);
 
       }
     });
@@ -128,7 +143,7 @@ export class ChatingComponent implements OnInit {
     if (userdataGetting !== null) {
 
       this.userData = JSON.parse(userdataGetting);
-      console.log(this.userData);
+      // console.log(this.userData);
     }
 
     this.Frienddata = this.fb.group({
@@ -164,8 +179,27 @@ export class ChatingComponent implements OnInit {
       isDeleted: ['']
     });
 
-    // this.exchangeFriendListKey();
-    // this.exchangeMyFriendListKey();
+    this.couchService.getChat(this.userData._id, this.paramValue.for).subscribe((res: any) => {
+      // console.log(res.rows.map((res: any) => res.value));
+      this.Conversation = res.rows.map((res: any) => res.value).sort((a: any, b: any) => {
+        try {
+          const dateA = new Date(a.data.currentTime);
+          const dateB = new Date(b.data.currentTime);
+
+          if (dateA > dateB) {
+            return 1;
+          }
+          if (dateA < dateB) {
+            return -1;
+          }
+          return 0;
+        } catch (error) {
+          console.error('Error parsing dates:', error);
+          return 0;
+        }
+      });
+      // console.log(this.Conversation);
+    });
   }
 
   exchangeFriendListKey() {
@@ -213,12 +247,81 @@ export class ChatingComponent implements OnInit {
 
       console.log(" Send Form", this.sendMessageForm.value);
       console.log(" my Form", this.myMessageForm.value);
-      await this.firebaseService.sendMessage(this.paramValue.userKey, this.friendPath, this.sendMessageForm.value);
-      await this.firebaseService.sendMessage(this.userData.key, this.myPath, this.myMessageForm.value);
-      await this.firebaseService.sendquires(this.userData.key, this.myPath, this.myChatListForm.value);
-      await this.firebaseService.sendquires(this.paramValue.userKey, this.friendPath, this.hisChatListForm.value);
-      // this.searchIsChatList();
-      this.message = "";
+
+      const sendMessageFormat = {
+        _id: "chats_2_" + uuidv4(),
+        data: {
+          time: this.getCurrentTime(),
+          currentTime: new Date(),
+          isDelete: false,
+          isEdited: false,
+          received: '',
+          send: this.message,
+          user: this.userData._id,
+          with: this.paramValue.for,
+          type: 'chats'
+        }
+      }
+      console.log(sendMessageFormat);
+
+      this.couchService.createChat(sendMessageFormat).subscribe((res) => {
+        const sendMessageFormat = {
+          _id: "chats_2_" + uuidv4(),
+          data: {
+            time: this.getCurrentTime(),
+            currentTime: new Date(),
+            isDelete: false,
+            isEdited: false,
+            received: this.message,
+            send: '',
+            user: this.paramValue.for,
+            with: this.userData._id,
+            type: 'chats'
+          }
+        }
+        this.couchService.createChat(sendMessageFormat).subscribe((res) => {
+
+          this.couchService.getContactForDelete(this.paramValue.for, this.userData._id).subscribe((res: any) => {
+            console.log(res);
+            const couchFormat = {
+              _id: res.rows[0].value._id,
+              _rev: res.rows[0].value._rev,
+              data: {
+                for: res.rows[0].value.data.for,
+                lastmessage: this.message,
+                lasttime: this.getCurrentTime(),
+                type: "contacts",
+                user: res.rows[0].value.data.user
+              }
+            }
+            console.log(couchFormat);
+            this.couchService.updatecontact(res.rows[0].value._id, res.rows[0].value._rev, couchFormat).subscribe((res) => {
+
+              this.couchService.getContactForDelete(this.userData._id, this.paramValue.for).subscribe((res: any) => {
+                console.log(res);
+                const couchFormat = {
+                  _id: res.rows[0].value._id,
+                  _rev: res.rows[0].value._rev,
+                  data: {
+                    for: res.rows[0].value.data.for,
+                    lastmessage: this.message,
+                    lasttime: this.getCurrentTime(),
+                    type: "contacts",
+                    user: res.rows[0].value.data.user
+                  }
+                }
+                console.log(couchFormat);
+                this.couchService.updatecontact(res.rows[0].value._id, res.rows[0].value._rev, couchFormat).subscribe((res) => {
+                  this.message = "";
+                  console.log("done");
+                });
+              });
+            });
+          });
+        });
+      });
+
+
     }
   }
 
@@ -252,32 +355,32 @@ export class ChatingComponent implements OnInit {
     }
   }
 
-  getCurrentTime() {
+  getCurrentTime(): string {
 
     const currentTime = new Date();
     const hours = currentTime.getHours();
     const minutes = currentTime.getMinutes();
     const ampm = hours >= 12 ? 'pm' : 'am';
 
-    const formattedTime = `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
+    return `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
 
-    console.log('Current Time:', currentTime);
-    this.myMessageForm.value.time = formattedTime;
-    this.sendMessageForm.value.time = formattedTime;
+    // console.log('Current Time:', currentTime);
+    // this.myMessageForm.value.time = formattedTime;
+    // this.sendMessageForm.value.time = formattedTime;
 
-    this.myMessageForm.value.currentTime = String(currentTime);
-    this.sendMessageForm.value.currentTime = String(currentTime);
+    // this.myMessageForm.value.currentTime = String(currentTime);
+    // this.sendMessageForm.value.currentTime = String(currentTime);
 
-    this.myChatListForm.value.lasttime = formattedTime;
-    this.myChatListForm.value.date = currentTime;
-    this.hisChatListForm.value.date = currentTime;
-    this.hisChatListForm.value.lasttime = formattedTime;
+    // this.myChatListForm.value.lasttime = formattedTime;
+    // this.myChatListForm.value.date = currentTime;
+    // this.hisChatListForm.value.date = currentTime;
+    // this.hisChatListForm.value.lasttime = formattedTime;
 
-    this.myMessageForm.value.isEdited = false;
-    this.myMessageForm.value.isDeleted = false;
+    // this.myMessageForm.value.isEdited = false;
+    // this.myMessageForm.value.isDeleted = false;
 
-    this.sendMessageForm.value.isEdited = false;
-    this.sendMessageForm.value.isDeleted = false;
+    // this.sendMessageForm.value.isEdited = false;
+    // this.sendMessageForm.value.isDeleted = false;
 
   }
 

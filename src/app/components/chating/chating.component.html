@@ -31,46 +31,47 @@
             <div class="messages" (click)="resetSelection(); isShowEditContainer = false"
                 *ngFor="let mgs of Conversation ">
 
-                <div class="sendMessageContainer" [style]="mgs.received === '' ? 'display: none' : 'display: flex'">
-                    <div class="sendMessage" [style]="mgs.isDeleted ? 'display: none' : 'display: flex'">
+                <div class="sendMessageContainer"
+                    [style]="mgs.data.received === '' ? 'display: none' : 'display: flex'">
+                    <div class="sendMessage" [style]="mgs.data.isDeleted ? 'display: none' : 'display: flex'">
 
-                        <p *ngIf="!secure">{{mgs.key}}</p>
-                        <p *ngIf="secure">{{mgs.received}}</p>
+                        <p *ngIf="!secure">{{mgs._rev}}</p>
+                        <p *ngIf="secure">{{mgs.data.received}}</p>
 
                     </div>
 
-                    <p class="sendTime">{{mgs.time}}</p>
+                    <p class="sendTime">{{mgs.data.time}}</p>
                     <p class="sendIsEdit" *ngIf="mgs.isEdited  && secure">| Edited</p>
 
                 </div>
-                <div class="sendMessageContainer" [style]="!mgs.isDeleted ? 'display: none' : 'display: flex'">
+                <div class="sendMessageContainer" [style]="!mgs.data.isDeleted ? 'display: none' : 'display: flex'">
 
-                    <div class="sendDeleteMessage" [style]="!mgs.hisMgs ? 'display: none' : 'display: flex'">
+                    <div class="sendDeleteMessage" [style]="!mgs.data.hisMgs ? 'display: none' : 'display: flex'">
 
                         <p>This Message has been Deleted by {{paramValue.userName}}</p>
 
                     </div>
-                    <p class="sendTime" [style]="mgs.myMgs ? 'display: none' : 'display: flex'">{{mgs.time}}</p>
+                    <p class="sendTime" [style]="mgs.myMgs ? 'display: none' : 'display: flex'">{{mgs.data.time}}</p>
                 </div>
 
-                <div class="myMessageContainer" [style]="mgs.send === '' ? 'display: none' : 'display: flex'">
-                    <div class="myMessage" (mousedown)="onMouseDown($event)"
-                        (touchstart)="onTouchStart($event, mgs.key)" (touchend)="onTouchEnd($event, mgs.key)"
+                <div class="myMessageContainer" [style]="mgs.data.send === '' ? 'display: none' : 'display: flex'">
+                    <div class="myMessage" (mousedown)="onMouseDown($event, mgs._id)"
+                        (touchstart)="onTouchStart($event, mgs._id)" (touchend)="onTouchEnd($event, mgs._id)"
                         (mouseup)="onMouseUp($event)">
-                        <div *ngIf="isEditontainer[mgs.key] && isShowEditContainer" class="editDeldteContainer">
+                        <div *ngIf="isEditontainer[mgs._id] && isShowEditContainer" class="editDeldteContainer">
                             <i class="bi bi-pencil-square" style="color: #66a9e0;" (click)="editAction(mgs)"></i>
                             <i class="bi bi-trash3-fill" style="color: rgb(253, 130, 151);"
                                 (click)="deleteAction(mgs)"></i>
                         </div>
-                        <p *ngIf="!secure">{{mgs.key}}</p>
-                        <p *ngIf="secure">{{mgs.send}}</p>
+                        <p *ngIf="!secure">{{mgs._rev}}</p>
+                        <p *ngIf="secure">{{mgs.data.send}}</p>
 
                     </div>
-                    <p class="myTime">{{mgs.time}}</p>
-                    <p class="myIsEdit" *ngIf="mgs.isEdited && secure">Edited |</p>
+                    <p class="myTime">{{mgs.data.time}}</p>
+                    <p class="myIsEdit" *ngIf="mgs.data.isEdited && secure">Edited |</p>
                 </div>
 
-                <div class="myMessageContainer" [style]="!mgs.isDeleted ? 'display: none' : 'display: flex'">
+                <div class="myMessageContainer" [style]="!mgs.data.isDeleted ? 'display: none' : 'display: flex'">
                     <div class="myDeleteMessage" [style]="!mgs.myMgs ? 'display: none' : 'display: flex'">
 
                         <p>This Message has been Deleted by you</p>
@@ -85,7 +86,7 @@
 
         <div class="footer">
             <div class="textBox">
-                <input type="text" [(ngModel)]="message" autocomplete = 'off' name="message" (keyup.enter)="sendMessage()"
+                <input type="text" [(ngModel)]="message" autocomplete='off' name="message" (keyup.enter)="sendMessage()"
                     placeholder="Message">
             </div>
             <div class="sendButton" (click)="sendMessage()">
@@ -106,7 +107,7 @@
                 </div>
             </div>
             <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
-                placeholder="Enter your password" autocomplete = 'off' [(ngModel)]="CheckPassword">
+                placeholder="Enter your password" autocomplete='off' [(ngModel)]="CheckPassword">
             <button (click)="conformPassword()">Conform</button>
         </div>
 

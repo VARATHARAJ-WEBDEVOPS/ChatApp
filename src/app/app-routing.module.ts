@@ -13,21 +13,25 @@ import { NotificationComponent } from './components/notification/notification.co
 import { EditpageComponent } from './components/editpage/editpage.component';
 import { FriendProfileComponent } from './components/friend-profile/friend-profile.component';
 import { AiChatComponent } from './components/ai-chat/ai-chat.component';
+import { GroupCreationComponent } from './components/group-creation/group-creation.component';
+import { AuthRouteService } from './auth-route.service';
 
 const routes: Routes = [
-  {path: '', component: SplashComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'signup', component: SignupComponent},
-  {path: 'chat', component: ChatComponent},
-  {path: 'aichat', component: AiChatComponent},
-  {path: 'profile', component: ProfileComponent},
-  {path: 'addfriend', component: AddFriendsComponent},
-  {path: 'myfriend', component: MyFriendsComponent},
-  {path: 'chatting/:data', component: ChatingComponent},
-  {path: 'message', component: MesssageComponent},
-  {path: 'notification', component: NotificationComponent},
-  {path: 'editprofile', component: EditpageComponent},
-  {path: 'friendprofile/:data', component: FriendProfileComponent},
+  { path: '', component: SplashComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'chat', component: ChatComponent, canActivate: [AuthRouteService] },
+  { path: 'aichat', component: AiChatComponent, canActivate: [AuthRouteService] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthRouteService] },
+  { path: 'addfriend', component: AddFriendsComponent, canActivate: [AuthRouteService] },
+  { path: 'myfriend', component: MyFriendsComponent, canActivate: [AuthRouteService] },
+  { path: 'chatting/:data', component: ChatingComponent, canActivate: [AuthRouteService] },
+  { path: 'message', component: MesssageComponent, canActivate: [AuthRouteService] },
+  { path: 'notification', component: NotificationComponent, canActivate: [AuthRouteService] },
+  { path: 'editprofile', component: EditpageComponent, canActivate: [AuthRouteService] },
+  { path: 'friendprofile/:data', component: FriendProfileComponent, canActivate: [AuthRouteService] },
+  { path: 'group-creation', component: GroupCreationComponent },
+  // { path: 'group-creation', component: GroupCreationComponent, canActivate: [AuthRouteService] },
 ];
 
 @NgModule({
