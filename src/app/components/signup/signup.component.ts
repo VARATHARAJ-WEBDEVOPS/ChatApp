@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FirebaseService } from 'src/app/services/firebase.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Title } from '@angular/platform-browser';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
@@ -17,7 +16,7 @@ import * as CryptoJS from 'crypto-js';
   styleUrls: ['./signup.component.css'],
 
 })
-export class SignupComponent implements OnInit, OnDestroy {
+export class SignupComponent implements OnInit {
 
   userName: string = "";
   phoneNumber: string = "";
@@ -27,7 +26,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   showErrorPhnNO: boolean = false;
   showErrorUserName: boolean = false;
   isScanContainer: boolean = false;
-  private unsubscribe$ = new Subject<void>();
+  // private unsubscribe$ = new Subject<void>();
 
   constructor(
     private couchService: CouchService,
@@ -110,10 +109,10 @@ onSubmit() {
     });
 }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+  // ngOnDestroy() {
+  //   this.unsubscribe$.next();
+  //   this.unsubscribe$.complete();
+  // }
 
   validation() {
     this.showErrorUserName = false;

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CouchService } from 'src/app/services/couch.service';
-import { FirebaseService } from 'src/app/services/firebase.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { v4 as uuidv4 } from 'uuid';
 import * as CryptoJS from 'crypto-js';
@@ -57,7 +56,6 @@ export class EditpageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private toastService: ToastService,
-    private firebaseService: FirebaseService,
     private router: Router,
     private couchService: CouchService
   ) {

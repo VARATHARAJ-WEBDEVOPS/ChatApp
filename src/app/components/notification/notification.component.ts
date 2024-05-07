@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CouchService } from 'src/app/services/couch.service';
-import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-notification',
@@ -12,8 +11,7 @@ export class NotificationComponent implements OnInit {
   notifications!: any[];
   unreadedMessages!: any[];
   key: string = '';
-  constructor(private firebaseService: FirebaseService,
-    private couchService: CouchService
+  constructor( private couchService: CouchService
   ) { }
 
   async ngOnInit() {

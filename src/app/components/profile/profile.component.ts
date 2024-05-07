@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { FirebaseService } from 'src/app/services/firebase.service';
 
 export class User {
   key: any;

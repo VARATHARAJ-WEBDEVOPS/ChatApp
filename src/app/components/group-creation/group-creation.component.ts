@@ -48,7 +48,6 @@ export class GroupCreationComponent implements OnInit {
       this.couchService.searchUsersByName(this.query).subscribe((res: any) => {
         this.searchResults = res.rows.map((row: any) => row.value);
         this.searchResults = this.searchResults.filter(item => item._id !== this.userdata._id);
-        // this.searchResults = this.selectedContacts.filter( (map: any) => this.searchResults.map(item => item._id !== map._id) );
         let compareIDs = this.selectedContacts.map((ids: any) => ids._id);
         // console.log(compareIDs);
         
@@ -65,20 +64,18 @@ export class GroupCreationComponent implements OnInit {
     this.isSearchContact = !this.isSearchContact;
     this.selectedContacts.push(data);
     // console.log(JSON.stringify(this.selectedContacts));
-    
     }
 
     createGroup() {
      let couchFromat = {
         _id: '',
         data: {
-          isGroup: true,
           groupName: this.Query,
           admin: [this.userdata._id],
           peoples: [this.userdata._id],
           lastmessage: "",
           lasttime: "",
-          type: "contacts",
+          type: "group",
           user: ''
         }
       }
@@ -92,7 +89,6 @@ export class GroupCreationComponent implements OnInit {
         // console.log(couchFromat);
         this.couchService.createAccount(couchFromat).subscribe((res: any) => {
           console.log("good :)");
-          
         })
       }
     }

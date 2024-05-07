@@ -32,7 +32,7 @@ export class CouchService {
   }
   //create Process
 
-  createAccount(document: any) {
+  createAccount(document?: any) {
     const createUrl = `${this.CouchURL}/${this.databaseName}`;
     return this.http.post(createUrl, document, this.header);
   }
@@ -65,6 +65,11 @@ export class CouchService {
     return this.http.get(url, this.header);
   }
 
+  getPeoples(doc: string[]) {
+    const url = `${this.CouchURL}/${this.databaseName}/_all_docs?include_docs=true&keys=["${doc}"]`
+    return this.http.get(url, this.header);
+  }
+
   //read process
 
   checkExistingUser(phoneNumber: string) {
@@ -87,6 +92,11 @@ export class CouchService {
     return this.http.get(Url, this.header);
   }
 
+  getGroups(_id: string) {
+    const Url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/get_group?key="${_id}"`
+    return this.http.get(Url, this.header);
+  }
+
   getFriendRequest(user_id: string) {
     const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/friendrequest_search?key="${user_id}"`;
     return this.http.get(url, this.header);
@@ -104,6 +114,11 @@ export class CouchService {
 
   getChat(user: string, _with: string) {
     const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/get_chats?key=["${user}","${_with}"]`
+    return this.http.get(url, this.header);
+  }
+
+  findIsFriendReq( user: string ) {
+    const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/findIsFriend?key="${user}"&include_docs=true`
     return this.http.get(url, this.header);
   }
 

@@ -30,6 +30,8 @@ import { FriendProfileComponent } from './components/friend-profile/friend-profi
 import { HttpClientModule } from '@angular/common/http';
 import { NoCopyPasteDirective } from './directives/no-copy-paste.directive';
 import { GroupCreationComponent } from './components/group-creation/group-creation.component';
+import { GroupProfileComponent } from './components/group-profile/group-profile.component';
+import { GroupChattingComponent } from './components/group-chatting/group-chatting.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBnqwvPQV9ZyuTpM6qZJlLxH1uQr8b4XKo",
@@ -63,6 +65,8 @@ const firebaseConfig = {
     FriendProfileComponent,
     NoCopyPasteDirective,
     GroupCreationComponent,
+    GroupProfileComponent,
+    GroupChattingComponent,
   ],
   imports: [
     BrowserModule,

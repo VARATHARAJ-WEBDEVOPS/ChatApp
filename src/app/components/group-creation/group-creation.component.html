@@ -1,9 +1,11 @@
 <div class="overAll">
     <div class="groupCreation">
-        <div class="floatingButton"  *ngIf="selectedContacts.length >= 2 && errorColor === 'green'"  style="color: #fff; background-color: #66a9e0" (click)="createGroup()">
+        <div class="floatingButton" *ngIf="selectedContacts.length >= 2 && errorColor === 'green'"
+            style="color: #fff; background-color: #66a9e0" (click)="createGroup()">
             Create
         </div>
-        <div class="floatingButton" *ngIf="selectedContacts.length < 2 " style="color: #0000002c; background-color: #dddbdb;" >
+        <div class="floatingButton" *ngIf="selectedContacts.length < 2 && !isSearchContact"
+            style="color: #0000002c; background-color: #dddbdb;">
             Create
         </div>
         <div class="header">
@@ -18,7 +20,7 @@
         </div>
         <div class="GroupNameInput" *ngIf="!isSearchContact"
             [style.border]="Query.length >= 1 ? '2px solid ' + errorColor : ''">
-            <input type="text" placeholder="Group Name" [(ngModel)]="Query" (input)="isError()">
+            <input appNoCopyPaste type="text" placeholder="Group Name" [(ngModel)]="Query" (input)="isError()">
         </div>
         <div class="validation" *ngIf="!isSearchContact">
             <p>{{showError}}</p>
@@ -35,11 +37,13 @@
                         *ngIf="isDialog"></app-url-dialog> -->
             </div>
 
-            <button class="plusButton" [style.margin-left]="selectedContacts.length >= 1 ? '3vh': '' " *ngIf="errorColor === 'green' && Query.length >= 1"
-                style="color: #fff; background-color: #66a9e0;" (click)="isSearchContact = !isSearchContact">
+            <button class="plusButton" [style.margin-left]="selectedContacts.length >= 1 ? '3vh': '' "
+                *ngIf="errorColor === 'green' && Query.length >= 1" style="color: #fff; background-color: #66a9e0;"
+                (click)="isSearchContact = !isSearchContact">
                 <i class="bi bi-plus"></i>
             </button>
-            <button class="plusButton" [style.margin-left]="selectedContacts.length >= 1 ? '3vh': '' " *ngIf="errorColor === '' || errorColor === 'red' || Query.length === 0 "
+            <button class="plusButton" [style.margin-left]="selectedContacts.length >= 1 ? '3vh': '' "
+                *ngIf="errorColor === '' || errorColor === 'red' || Query.length === 0 "
                 style="color: #0000002c; background-color: #dddbdb;">
                 <i class="bi bi-plus"></i>
             </button>

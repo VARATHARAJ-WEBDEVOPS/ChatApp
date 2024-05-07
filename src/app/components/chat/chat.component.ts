@@ -3,7 +3,6 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FirebaseService } from 'src/app/services/firebase.service';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
@@ -52,6 +51,7 @@ export class ChatComponent implements OnInit {
   months: string[] = [];
   years: string[] = [];
   chatContact: any[] = [];
+  groupsList: any[] = [];
   userdata: any;
   userKey: any;
   userphoneNumber: any;
@@ -67,6 +67,7 @@ export class ChatComponent implements OnInit {
   contactFormat!: FormGroup;
   rawContact: any;
   userData: any;
+  isGroupTab: boolean = false;
 
   constructor(
     private title: Title,
@@ -77,6 +78,14 @@ export class ChatComponent implements OnInit {
     private toastService: ToastService,
     private couchService: CouchService
   ) { }
+
+  toggleGroupTab() {
+    this.isGroupTab = true;
+  }
+
+  toggleChatTab() {
+    this.isGroupTab = false;
+  }
 
 
   navigateProfile() {
@@ -114,24 +123,24 @@ export class ChatComponent implements OnInit {
     //   this.router.navigateByUrl('login');
     // } else {
 
-      this.tempPhone = localStorage.getItem('token');
-      this.getUser(this.tempPhone);
+    this.tempPhone = localStorage.getItem('token');
+    this.getUser(this.tempPhone);
 
-      for (let i = 1; i <= 31; i++) {
-        this.days.push(i.toString());
-      }
+    for (let i = 1; i <= 31; i++) {
+      this.days.push(i.toString());
+    }
 
-      this.months = [
-        'January', 'February', 'March', 'April',
-        'May', 'June', 'July', 'August',
-        'September', 'October', 'November', 'December'
-      ];
+    this.months = [
+      'January', 'February', 'March', 'April',
+      'May', 'June', 'July', 'August',
+      'September', 'October', 'November', 'December'
+    ];
 
-      const currentYear = new Date().getFullYear() - 13;
+    const currentYear = new Date().getFullYear() - 13;
 
-      for (let i = currentYear; i >= currentYear - 100; i--) {
-        this.years.push(i.toString());
-      }
+    for (let i = currentYear; i >= currentYear - 100; i--) {
+      this.years.push(i.toString());
+    }
 
     // }
 
@@ -156,15 +165,8 @@ export class ChatComponent implements OnInit {
 
   }
 
-  // gettingUnreadedNotifications() {
-  //   this.firebaseService.gettingUnreadedNotifications(this.userdata.key).subscribe((res) => {
-  //     // console.log(res);
-  //     this.unReadNotify = res.length;
-  //   })
-  // }
-
-  async getUser(phoneNumber: string) {
-    await this.couchService.checkExistingUser(phoneNumber).subscribe((response: any) => {
+  getUser(phoneNumber: string) {
+    this.couchService.checkExistingUser(phoneNumber).subscribe((response: any) => {
       let res: any = response.rows[0].value;
       localStorage.setItem("userList", JSON.stringify(res));
       this.isNickNameDiolog = false;
@@ -189,6 +191,7 @@ export class ChatComponent implements OnInit {
             this.userphoneNumber = this.userdata.phoneNummber;
             this.isNickname = this.userdata.nickname;
             this.getContacts();
+            this.getGroup();
           }
         }
       }
@@ -293,87 +296,70 @@ export class ChatComponent implements OnInit {
   }
 
   openChatingpage(res: any) {
-    this.router.navigate(['/chatting', encodeURIComponent(JSON.stringify(res))], { skipLocationChange: true});
+    this.router.navigate(['/chatting', encodeURIComponent(JSON.stringify(res))], { skipLocationChange: true });
+  }
+
+  openGroupProfile(res: any) {
+    this.router.navigate(['/groupprofile', encodeURIComponent(JSON.stringify(res))], { skipLocationChange: true });
   }
 
   openProfile(res: any) {
-    this.router.navigate(['/friendprofile', encodeURIComponent(JSON.stringify(res))], { skipLocationChange: true});
+    this.router.navigate(['/friendprofile', encodeURIComponent(JSON.stringify(res))], { skipLocationChange: true });
     // const encodedUserData = encodeURIComponent(JSON.stringify(res));
     // this.router.navigate(['/friendprofile'], { queryParams: { encodedUserData }, replaceUrl: true });
   }
 
-  async getContacts() {
-    await this.couchService.getContacts(this.userKey).subscribe((res: any) => {
+  getContacts() {
+    this.couchService.getContacts(this.userKey).subscribe((res: any) => {
       console.log(res);
-      
-      if (res.rows.length ) {
+
+      if (res.rows.length) {
         let for_ids = res.rows.map((row: any) => row.value[1]);
 
         this.rawContact = res.rows.map((row: any) => row.value[0]);
-        // let result = res.rows.filter((need: any) => need.value[0].data.isGroup === true)
 
-        // this.rawContact = res.rows.filter((row: any) => row.value[0].data.isGroup !== true);
-        // console.log(this.rawContact);
-        
         this.couchService.getContactUserDetails(for_ids.join('","')).subscribe((res: any) => {
           this.userData = res.rows;
-          
+
           for (let i = 0; i < this.userData.length; i++) {
             for (let j = 0; j < this.userData.length; j++) {
-       
-             if (this.rawContact[i].data.for === this.userData[j].id) {           
-               
-               this.contactFormat.value.for = this.rawContact[i].data.for;
-               this.contactFormat.value.lastmessage = this.rawContact[i].data.lastmessage;
-               this.contactFormat.value.contact_id = this.rawContact[i]._id;
-               this.contactFormat.value.contact_rev = this.rawContact[i]._rev;
-               this.contactFormat.value.lasttime = this.rawContact[i].data.lasttime;
-               this.contactFormat.value.userName = this.userData[j].doc.data.userName;
-               this.contactFormat.value.phoneNumber = this.userData[j].doc.data.phoneNumber;
-               this.contactFormat.value.nickname = this.userData[j].doc.data.nickname;
-               this.contactFormat.value.age = this.userData[j].doc.data.age;
-               this.contactFormat.value.gender = this.userData[j].doc.data.gender;
-               this.contactFormat.value.dob = this.userData[j].doc.data.dob;
-               this.contactFormat.value.to_id = this.userdata._id;
-               this.contactFormat.value.to_name = this.userdata.data.userName;
-               
-               this.chatContact.push(this.contactFormat.value);
-               this.contactFormat.reset();
-               // console.log(contactFormat);
-               
-             }            
+
+              if (this.rawContact[i].data.for === this.userData[j].id) {
+
+                this.contactFormat.value.for = this.rawContact[i].data.for;
+                this.contactFormat.value.lastmessage = this.rawContact[i].data.lastmessage;
+                this.contactFormat.value.contact_id = this.rawContact[i]._id;
+                this.contactFormat.value.contact_rev = this.rawContact[i]._rev;
+                this.contactFormat.value.lasttime = this.rawContact[i].data.lasttime;
+                this.contactFormat.value.userName = this.userData[j].doc.data.userName;
+                this.contactFormat.value.phoneNumber = this.userData[j].doc.data.phoneNumber;
+                this.contactFormat.value.nickname = this.userData[j].doc.data.nickname;
+                this.contactFormat.value.age = this.userData[j].doc.data.age;
+                this.contactFormat.value.gender = this.userData[j].doc.data.gender;
+                this.contactFormat.value.dob = this.userData[j].doc.data.dob;
+                this.contactFormat.value.to_id = this.userdata._id;
+                this.contactFormat.value.to_name = this.userdata.data.userName;
+                this.chatContact.push(this.contactFormat.value);
+                this.contactFormat.reset();
+                // console.log(contactFormat);
+              }
             }
-         }
-        //  console.log(this.chatContact);
-         
+          }
+          //  console.log(this.chatContact);
         });
       }
-          this.isloading = false;
-   
-      //   this.chatContact = res.sort((a: any, b: any) => {
-      // this.chatContact = res.rows.map((row: any) => row.value).sort((a: any, b: any) => {
-      //   try {
-      //     const dateA = new Date(a.time);
-      //     const dateB = new Date(b.time);
-
-      //     if (dateA > dateB) {
-      //       return -1;
-      //     }
-      //     if (dateA < dateB) {
-      //       return 1;
-      //     }
-      //     return 0;
-      //   } catch (error) {
-      //     console.error('Error parsing dates:', error);
-      //     return 0;
-      //   }
-      //   // console.log(this.notifications);
-      //   //   // console.log("My Friends List", this.chatContact);
-      //   //   // console.log("My Friends List res", res);
-      //   //   // console.log("Key", this.userKey);
-      // });
+      this.isloading = false;
     });
   }
+
+  getGroup() {
+    this.couchService.getGroups(this.userKey).subscribe((res: any) => {
+      console.log(res);
+      this.groupsList = res.rows.map((res: any) => res.value);
+    });
+  }
+
+
 
   handleInputFocus() {
     this.isSearchResults = true;

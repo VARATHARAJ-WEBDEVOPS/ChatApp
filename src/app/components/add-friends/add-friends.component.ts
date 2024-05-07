@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FirebaseService } from 'src/app/services/firebase.service';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
 import { CouchService } from 'src/app/services/couch.service';
 import { v4 as uuidv4 } from 'uuid';
-import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,7 +13,6 @@ import { Router } from '@angular/router';
 })
 
 export class AddFriendsComponent implements OnInit {
-  private changesSubscription!: Subscription;
   isFriendRequest = true;
   FriendRequestList: any[] = [];
   isSearchResults: boolean = false;
@@ -28,9 +25,10 @@ export class AddFriendsComponent implements OnInit {
   keyItem: any[] = [];
   friendListPathKey!: string;
   showTooltip: boolean = false;
+  Contacts: any[] = [];
+  getSentFriendReqs: any[] = [];
 
   constructor(
-    private firebaseService: FirebaseService,
     private title: Title,
     public formBuilder: FormBuilder,
     private toast: ToastService,
@@ -50,6 +48,7 @@ export class AddFriendsComponent implements OnInit {
   }
 
   search() {
+    this.getSentFriendReq();
     if (this.query === "") {
       this.searchResults = [];
     } else if (this.query) {
@@ -57,6 +56,8 @@ export class AddFriendsComponent implements OnInit {
       this.couchService.searchUsersByName(this.query).subscribe((res: any) => {
         this.searchResults = res.rows.map((row: any) => row.value);
         this.searchResults = this.searchResults.filter(item => item.data.phoneNumber !== this.userphoneNumber);
+        console.log('friendRequest', this.searchResults);
+
       })
     }
   }
@@ -65,7 +66,6 @@ export class AddFriendsComponent implements OnInit {
     let isFound = false;
     this.couchService.isReqThere(this.userdata._id, result._id).subscribe(
       (res: any) => {
-
         if (res.rows[0].length === 1) {
           isFound = true;
         } else {
@@ -90,6 +90,15 @@ export class AddFriendsComponent implements OnInit {
     this.getFriendReq();
 
 
+    this.couchService.getContacts(this.userdata._id).subscribe((res: any) => {
+
+      if (res.rows.length) {
+        this.Contacts = res.rows.map((row: any) => row.value[0]);
+        console.log(this.Contacts);
+      }
+    });
+    this.getSentFriendReq();
+
     this.sendFriendReqForm = this.formBuilder.group({
       userName: [''],
       phoneNumber: [''],
@@ -98,17 +107,11 @@ export class AddFriendsComponent implements OnInit {
       friendListPathKey: ['']
     });
 
-
-
     //_changes calling...
-    this.couchService.callRealtime(this.userdata._id).subscribe((res: any) => {
-      console.log(res);
-    });
-
-
-
+    // this.couchService.callRealtime(this.userdata._id).subscribe((res: any) => {
+    //   console.log(res);
+    // });
   }
-
 
   // ngOnDestroy() {
   //   this.changesSubscription.unsubscribe();
@@ -116,14 +119,41 @@ export class AddFriendsComponent implements OnInit {
 
 
 
+  getSentFriendReq() {
+    this.couchService.findIsFriendReq(this.userdata._id).subscribe((res: any)=> {
+      this.getSentFriendReqs = res.rows.map((data: any) => data.doc)
+      console.log(this.getSentFriendReqs);
+    })
+  }
+
   async getFriendReq() {
     this.couchService.getFriendRequest(this.userdata._id).subscribe((res: any) => {
       this.FriendRequestList = res.rows.map((row: any) => row.value);
-      console.log(this.FriendRequestList);
-      
+      console.log('friendRequest', this.FriendRequestList);
     });
-
   }
+
+  checkFriendRequest(userId: string): boolean {
+    if (this.FriendRequestList && this.FriendRequestList.length > 0) {
+      return this.FriendRequestList.some(item => item.data.from === userId);
+    }
+    return false;
+  }
+
+  checkFriend(userId: string): boolean {
+    if (this.Contacts && this.Contacts.length > 0) {
+      return this.Contacts.some(item => item.data.for === userId);
+    }
+    return false;
+  }
+
+  findIsFriendReq(user: string): boolean {
+    if (this.getSentFriendReqs && this.getSentFriendReqs.length > 0) {
+      return this.getSentFriendReqs.some(item => item.data.USERID === user);
+    }
+    return false
+  }
+
 
   createFriendList(data: any, requestKey: string) {
     console.log("initial process Debug:", data.key);
@@ -136,7 +166,6 @@ export class AddFriendsComponent implements OnInit {
     this.sendFriendReqForm.value.age = data.age;
     this.sendFriendReqForm.value.dob = data.dob;
     this.sendFriendReqForm.value.count = 0;
-    this.firebaseService.createFriendsList(this.userdata.key, this.sendFriendReqForm.value);
     this.sendFrndListData(data, requestKey);
   }
 
@@ -149,9 +178,7 @@ export class AddFriendsComponent implements OnInit {
     this.sendFriendReqForm.value.age = this.userdata.age;
     this.sendFriendReqForm.value.dob = this.userdata.dob;
     this.sendFriendReqForm.value.count = 0;
-    this.firebaseService.createFriendsList(data.userKey, this.sendFriendReqForm.value);
-    this.firebaseService.createUnreadNotification(data.userKey, { time: String(new Date()), message: `🥳 ${this.userdata.userName} has Accepted your Friend Request ❤️🔒` });
-    // this.isReqThere(data.userKey, requestKey);
+     // this.isReqThere(data.userKey, requestKey);
   }
 
   // isReqThere(key: string, requestKey: any) {
@@ -161,9 +188,6 @@ export class AddFriendsComponent implements OnInit {
   //   this.removeFriendReq(requestKey);
   // }
 
-  removeFriendReqonSender(data: string, removekey: string) {
-    this.firebaseService.removeFriendRequest(data, removekey);
-  }
 
   cancelFriendRequest(data: any) {
     this.couchService.cancelFriendRequest(data._id, data._rev).subscribe((res) => {
@@ -180,35 +204,6 @@ export class AddFriendsComponent implements OnInit {
         this.getFriendReq();
       });
     });
-  }
-
-  removeFriendReq(data: string) {
-    this.firebaseService.removeFriendRequest(this.userdata.key, data);
-
-  }
-
-
-
-  async checkFriendExists(key: string, nickname: string) {
-
-    const existsInBothPaths = await this.firebaseService.checkFriendExists(key, this.userdata.phoneNumber);
-
-    if (existsInBothPaths === true) {
-
-      this.toast.showToast(` you and ${nickname} are Already Friends`, true)
-    } if (existsInBothPaths === false) {
-      this.checkRequestExists(key, nickname);
-    }
-  }
-
-  async checkRequestExists(key: string, nickname: any) {
-    const existsInBothPaths = await this.firebaseService.checkRequestExists(key, this.userdata.phoneNumber);
-
-    if (existsInBothPaths === true) {
-      this.toast.showToast(`Friend Request Already Send! but ${nickname} cant't Accept yet `, true)
-    } if (existsInBothPaths === false) {
-      // this.sendFriendRequest(key);
-    }
   }
 
   async sendFriendRequest(id: string) {
@@ -237,20 +232,34 @@ export class AddFriendsComponent implements OnInit {
         user: id
       }
     }
-
-    await this.couchService.sendFriendRequest(frndReqFormat).subscribe((res: any) => {
+    this.couchService.sendFriendRequest(frndReqFormat).subscribe((res: any) => {
+      const couchFormat = {
+        _id: "friendRequestSent_2_" + uuidv4(),
+        data: {
+          USERID: id,
+          type: "friendRequestSent",
+          user: this.userdata._id
+        }
+      }
+      this.couchService.createAccount(couchFormat).subscribe((res: any) => {
+        this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
+          console.log('send success');
+          this.search();
+        });
+      });
     });
-    this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
-      console.log('send success');
 
-    });
   }
 
-  createContact(data: any) {
-    this.firstPersion(data);
+  createContact(data: any, _id?: string) {
+    if (_id) {
+      this.firstPersion(this.FriendRequestList.filter(doc => doc.data.from === data._id)[0]);
+    } else {
+      this.firstPersion(data);
+    }
   }
 
-  firstPersion(data: any) {          //my contact
+  firstPersion(data: any) {          //my contact page
     const couchFormat = {
       _id: "contacts_2_" + uuidv4(),
       data: {
@@ -265,7 +274,7 @@ export class AddFriendsComponent implements OnInit {
       this.secondPersion(data);
     });
   }
-  secondPersion(data: any) {
+  secondPersion(data: any) {        //second persion contact page
     const couchFormat = {
       _id: "contacts_2_" + uuidv4(),
       data: {
@@ -290,6 +299,7 @@ export class AddFriendsComponent implements OnInit {
         this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
           console.log("done");
           this.getFriendReq();
+         
         });
       })
     });
@@ -303,6 +313,7 @@ export class AddFriendsComponent implements OnInit {
     if (this.query) {
       this.isSearchResults = true;
     } else {
+      this.query = '';
       this.isSearchResults = false;
     }
   }

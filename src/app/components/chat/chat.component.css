@@ -103,7 +103,7 @@
 .chat .nav {
   z-index: 100;
   width: 100%;
-  height: 7%;
+  height: 7vh;
   background-color: #fff;
   border-bottom: 0.2vh solid #ebf1f8;
   display: flex;
@@ -255,13 +255,42 @@
 
 .chat .chatListContainer {
   width: 100%;
-  min-height: 40vh;
+  min-height: 60vh;
+  max-height: 60vh;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
   overflow-y: scroll;
   transition: transform 1s ease-in-out;
+}
+
+.chatListContainer .tabs {
+  width: 90%;
+  height: 7vh;
+  background-color: #eee;
+  border-radius: 2vh;
+  display: flex;
+  align-items: center;
+  font-weight: 300;
+  font-size: 2.5vh;
+}
+
+.tabs .chatTab , .groupTab{
+  width: 50%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  border-radius: 1vh;
+}
+
+.chatTabContainer, .groupTabContainer {
+  width: 100%;
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .dob-picker {
@@ -397,6 +426,7 @@
   border-radius: 10vh;
   align-items: center;
   display: flex;
+  margin-top: 5vh;
   margin-bottom: 2vh;
   transition: transform 0.5s ease-in-out;
 }
@@ -478,6 +508,26 @@
     position: absolute;
     bottom: 12vh;
     right: 10%;
+  }
+
+  .chatListContainer .tabs {
+    width: 90%;
+    height: 6vh;
+    background-color: #eee;
+    border-radius: 2vh;
+    display: flex;
+    align-items: center;
+    font-weight: 300;
+    font-size: 2vh;
+  }
+  
+  .tabs .chatTab , .groupTab{
+    width: 50%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 1vh;
   }
 }
 

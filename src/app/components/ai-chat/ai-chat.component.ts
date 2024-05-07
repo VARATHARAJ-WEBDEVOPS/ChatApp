@@ -1,7 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { FirebaseService } from 'src/app/services/firebase.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
 import { async } from 'rxjs';
@@ -42,7 +41,6 @@ export class AiChatComponent {
   AIUpdateKey!: any;
 
   constructor(private title: Title,
-    private firebaseService: FirebaseService,
     private formBuilder: FormBuilder,
     private router: Router,
     private toastService: ToastService,
@@ -71,7 +69,6 @@ export class AiChatComponent {
       this.CheckCredentials = "";
     } else {
       this.showError = true;
-      this.firebaseService.createNotification(this.userData.key, { time: String(new Date()), message: `Someone tried to open AmorChat AI's chat` });
       this.toastService.showToast('wrong password', true);
     }
   }

@@ -37,8 +37,8 @@
             </svg>
             <i (click)="cancelSearch()" class="bi bi-arrow-left" style="margin-left: 2.9vh; font-size: 2.7vh;"
                 *ngIf="isSearchResults"></i>
-            <input type="text" (focus)="handleInputFocus()" (blur)="handleInputBlur()" (input)="changeUpper()"
-                placeholder="Search Friend's Nickname" [(ngModel)]="query" appNoCopyPaste>
+            <input autocomplete="off" type="text" name="query" (focus)="handleInputFocus()" (blur)="handleInputBlur()"
+                (input)="changeUpper()" placeholder="Search Friend's Nickname" [(ngModel)]="query" appNoCopyPaste>
         </div>
         <div *ngIf="isSearchResults" class="SearchResults">
             <h2>Search Results</h2>
@@ -74,10 +74,25 @@
                     <!-- <h4>{{result.phoneNumber}}</h4> -->
                 </div>
 
-                <div class="accept" style="  width: 13vh; height: 4.8vh; z-index: 1000;"
-                    (click)="sendFriendRequest(result._id)">
+                <!-- Assuming FriendRequestList[] is a property in your component containing an array of objects -->
+
+                <div class="accept" style="width: 13vh; height: 4.8vh; z-index: 1000;"
+                    *ngIf="!checkFriendRequest(result._id) && !checkFriend(result._id) && !findIsFriendReq( result._id )" (click)="sendFriendRequest(result._id)">
                     <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
                     <h2>Request</h2>
+                </div>
+                <div class="accept" (click)="createContact(result, result._id)" *ngIf="checkFriendRequest(result._id)">
+                    <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
+                    <h2>Accept</h2>
+                </div>
+                
+                <div class="accept" *ngIf="checkFriend(result._id)">
+                    <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
+                    <h2>Friends</h2>
+                </div>
+                <div class="accept" *ngIf="findIsFriendReq( result._id )">
+                    <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
+                    <h2>send</h2>
                 </div>
             </div>
         </div>

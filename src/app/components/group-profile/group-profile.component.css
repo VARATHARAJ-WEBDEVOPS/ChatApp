@@ -1,0 +1,144 @@
+.groupProfile {
+    width: 100%;
+    height: 100vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nav {
+    width: 100%;
+    height: 12.5vh;
+    position: relative;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.nav .pageTitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.groupNameContainer {
+    position: relative;
+    width: 90%;
+    height: 20vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.groupNameContainer p {
+    position: absolute;
+    bottom: 2vh;
+    left: 0;
+}
+
+.peopleContainer {
+    height: 57.5vh;
+    width: 100%;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.chatsContact {
+    width: 90%;
+    height: 11vh;
+    box-shadow:
+      -1px 1px 5px rgba(0, 0, 0, 0.2),
+      1px -1px 5px #fff;
+    margin-block: 1vh;
+    border-radius: 3vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .friendProfile {
+    width: 8.5vh;
+    height: 8.5vh;
+    background-color: #66a9e0;
+    margin: 2vh;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffff;
+    font-size: 3vh;
+    box-shadow:
+      inset 1px -1px 5px rgba(0, 0, 0, 0.2),
+      inset -1px 1px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .friendName {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  
+  .friendName h2 {
+    font-size: 2.5vh;
+    padding-block: 1vh;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .friendName h6 {
+    font-size: 1.7vh;
+    padding-block: 1vh;
+    font-weight: 100;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .time {
+    position: absolute;
+    right: 5%;
+    transform: translate(-5%, -50%);
+    top: 50%;
+    font-size: 1.2vh;
+  }
+
+  .buttonsContainer {
+    height: 10vh;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .buttonsContainer button {
+    padding: 2vh;
+    border-radius: 1vh;
+    border: none;
+    background: none;
+    color: #fff;
+    background-color: red;
+  }
+
+@media (min-width: 992px) {
+    .groupProfile {
+        position: relative;
+        width: 50%;
+        height: 100vh;
+        border-radius: 2vh;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+    .overAll {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #eee;
+    }
+}

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CouchService } from 'src/app/services/couch.service';
-import { FirebaseService } from 'src/app/services/firebase.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -16,7 +15,6 @@ export class FriendProfileComponent {
   conformDelete: boolean = false;
 
   constructor(private router: Router,
-    private firebaseService: FirebaseService,
     private title: Title,
     private route: ActivatedRoute,
     private couchService: CouchService
@@ -73,20 +71,5 @@ export class FriendProfileComponent {
         });
       });
     });
-  }
-
-  isFriendThere(key: string, phoneNumber: any) {
-    this.firebaseService.isFriendThere(key, phoneNumber).subscribe(res => {
-      this.removeFriendListonSender(key, res[0].key);
-      console.log(res[0].key);
-
-    });
-  }
-
-  async removeFriendListonSender(data: string, removekey: string) {
-    this.firebaseService.removeFriend(data, removekey);
-    await this.firebaseService.createUnreadNotification(data, { time: String(new Date()), message: `${this.UserList.userName} has Removed you from his  Friend List 💔` });
-    await localStorage.removeItem('currectChattingFriend');
-    await window.location.reload();
   }
 }

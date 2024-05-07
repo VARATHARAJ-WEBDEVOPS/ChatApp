@@ -15,9 +15,12 @@ import { FriendProfileComponent } from './components/friend-profile/friend-profi
 import { AiChatComponent } from './components/ai-chat/ai-chat.component';
 import { GroupCreationComponent } from './components/group-creation/group-creation.component';
 import { AuthRouteService } from './auth-route.service';
+import { WildcardComponent } from './components/wildcard/wildcard.component';
+import { GroupProfileComponent } from './components/group-profile/group-profile.component';
 
 const routes: Routes = [
-  { path: '', component: SplashComponent },
+  { path: '', redirectTo: 'splashScreen', pathMatch: 'full' },
+  { path: 'splashScreen', component: SplashComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'chat', component: ChatComponent, canActivate: [AuthRouteService] },
@@ -29,8 +32,10 @@ const routes: Routes = [
   { path: 'message', component: MesssageComponent, canActivate: [AuthRouteService] },
   { path: 'notification', component: NotificationComponent, canActivate: [AuthRouteService] },
   { path: 'editprofile', component: EditpageComponent, canActivate: [AuthRouteService] },
+  { path: 'groupprofile/:data', component: GroupProfileComponent, canActivate: [AuthRouteService] },
   { path: 'friendprofile/:data', component: FriendProfileComponent, canActivate: [AuthRouteService] },
   { path: 'group-creation', component: GroupCreationComponent },
+  { path: '**', component: WildcardComponent },
   // { path: 'group-creation', component: GroupCreationComponent, canActivate: [AuthRouteService] },
 ];
 

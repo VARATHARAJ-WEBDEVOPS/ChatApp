@@ -1,0 +1,72 @@
+<div class="overAll">
+    <div class="groupProfile">
+        <div class="nav">
+            <svg routerLink="/chat" xmlns="http://www.w3.org/2000/svg"
+                style="width: 3vh; height: 3vh; position: absolute; top: 5vh; left: 5vh;" fill="#000"
+                class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                <path
+                    d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
+            </svg>
+            <div class="pageTitle">
+                <p>Group Details</p>
+            </div>
+        </div>
+
+        <div class="groupNameContainer">
+            <h3 style="color: #66a9e0">{{this.paramValue.data.groupName}}</h3>
+            <p>Peoples</p>
+        </div>
+
+        <div class="peopleContainer">
+            <div class="chatsContact" *ngFor="let req of peoples">
+                <div class="friendProfile" >
+                    <h3>{{req.data.userName.charAt(0) | uppercase}}</h3>
+                </div>
+                <div class="friendName">
+                    <h2 style="color: #525252e5;">{{req.data.userName}}
+                        <span *ngIf="req.gender === 'female'; else maleIcon">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke: #ff00ea; stroke-width: 1.5;"
+                                class="bi bi-gender-female" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z" />
+                            </svg>
+                        </span>
+                        <ng-template #maleIcon>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke:  #66a9e0; stroke-width: 1.5;"
+                                class="bi bi-gender-male" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+                            </svg>
+                        </ng-template>
+                    </h2>
+                    <h6 *ngIf="req._id === paramValue.data.admin[0]" style="color: #66a9e0; font-size: 2.5vh;">Admin</h6>
+                    <h6 *ngIf="req._id !== paramValue.data.admin[0]" style="color: #525252b4; font-size: 2.5vh;">Member</h6>
+                </div>
+                <div class="time" style="color: #525252;">{{req.lasttime}}</div>
+                <!--     <div class="count" *ngIf="req.count > 0">{{req.count}}</div>   -->
+            </div>
+
+        <div class="buttonsContainer">
+            <button *ngIf="checkIsAdmin()">Delete Group</button>
+            <button *ngIf="!checkIsAdmin()">Leave Group</button>
+        </div>
+
+        <!-- <div class="logoutdialog" *ngIf="conformlogout">
+            <div class="dialogBg">
+                <i class="bi bi-exclamation-triangle"></i>
+                <h2>Are you sure?</h2>
+                <p>Do You want to logout?</p>
+                <div class="conformButtons">
+                    <button id="cancelBtn" >Cancel</button>
+                    <button id="okBtn" >Yes!</button>
+                </div>
+            </div>
+        </div> -->
+
+
+
+
+    </div>
+</div>

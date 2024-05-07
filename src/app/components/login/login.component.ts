@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FirebaseService } from 'src/app/services/firebase.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Title } from '@angular/platform-browser';
 import { CouchService } from 'src/app/services/couch.service';
@@ -22,13 +21,13 @@ export class LoginComponent implements OnInit {
   showTip: boolean = false;
   message: string = '';
 
-  constructor(private title: Title, private couchService: CouchService, public router: Router, private firebase: FirebaseService) { }
+  constructor(private title: Title, private couchService: CouchService, public router: Router) { }
 
   ngOnInit(): void {
     this.title.setTitle("AmorChat | Login");
-    if (localStorage.getItem('token')) {
-      this.router.navigateByUrl('chat');
-    }
+    // if (localStorage.getItem('token')) {
+    //   this.router.navigateByUrl('chat');
+    // }
   }
 
   navigate() {

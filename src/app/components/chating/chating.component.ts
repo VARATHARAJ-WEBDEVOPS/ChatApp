@@ -1,7 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { FirebaseService } from 'src/app/services/firebase.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -45,7 +44,6 @@ export class ChatingComponent implements OnInit {
   Frienddata!: FormGroup;
 
   constructor(private title: Title,
-    private firebaseService: FirebaseService,
     private formBuilder: FormBuilder,
     private router: Router,
     private toastService: ToastService,
@@ -113,8 +111,9 @@ export class ChatingComponent implements OnInit {
       this.CheckPassword = "";
     } else {
       this.showError = true;
-      this.firebaseService.createUnreadNotification(this.userData.key, { time: String(new Date()), message: `Someone tried to open ${this.paramValue.userName}'s chat` });
-      this.toastService.showToast('wrong password', true);
+      console.log(this.paramValue.data.userName);
+      
+    this.toastService.showToast('wrong password', true);
     }
   }
 
@@ -199,27 +198,6 @@ export class ChatingComponent implements OnInit {
         }
       });
       // console.log(this.Conversation);
-    });
-  }
-
-  exchangeFriendListKey() {
-    this.firebaseService.searchFriendListKey(this.paramValue.userKey, this.userData.phoneNumber).subscribe((res) => {
-      this.friendPath = res[0].key;
-      console.log(this.friendPath);
-    });
-  }
-
-  exchangeMyFriendListKey() {
-    this.firebaseService.searchFriendListKey(this.userData.key, this.paramValue.phoneNumber).subscribe((res) => {
-      this.myPath = res[0].key;
-      console.log(this.myPath);
-      this.firebaseService.changeCount(this.userData.key, this.myPath);
-      this.fetchMessages();
-      this.firebaseService.getUserDetails(this.paramValue.userKey).subscribe((data: any) => {
-        localStorage.setItem('currectChattingFriend', JSON.stringify(data));
-        console.log("changed", data);
-
-      });
     });
   }
 
@@ -320,38 +298,6 @@ export class ChatingComponent implements OnInit {
           });
         });
       });
-
-
-    }
-  }
-
-  async searchIsChatList() {
-    const existsInBothPaths = await this.firebaseService.searchIsChatList(this.paramValue.userKey, this.userData.phoneNumber);
-
-    if (existsInBothPaths === true) {
-      // do update codes
-      await this.firebaseService.searchChatkey(this.paramValue.userKey, this.userData.phoneNumber).subscribe((res) => {
-        console.log("his id", res[0].key);
-        this.firebaseService.updateChatlist(this.paramValue.userKey, res[0].key, this.hisChatListForm.value);
-      });
-      await this.firebaseService.searchChatkey(this.userData.key, this.paramValue.phoneNumber).subscribe((res) => {
-        console.log("my id", res[0].key);
-        this.firebaseService.updateChatlist(this.userData.key, res[0].key, this.hisChatListForm.value);
-        this.message = "";
-      });
-      console.log("---update performed----");
-
-      console.log(this.myChatListForm.value);
-      console.log(this.hisChatListForm.value);
-    } if (existsInBothPaths === false) {
-      // do create codes
-      this.firebaseService.createChatList(this.paramValue.userKey, this.hisChatListForm.value);
-      this.firebaseService.createChatList(this.userData.key, this.myChatListForm.value);
-      console.log("---create performed----");
-
-      console.log(this.myChatListForm.value);
-      console.log(this.hisChatListForm.value);
-      this.message = "";
     }
   }
 
@@ -363,35 +309,7 @@ export class ChatingComponent implements OnInit {
     const ampm = hours >= 12 ? 'pm' : 'am';
 
     return `${hours % 12 || 12}:${minutes < 10 ? '0' : ''}${minutes} ${ampm}`;
-
-    // console.log('Current Time:', currentTime);
-    // this.myMessageForm.value.time = formattedTime;
-    // this.sendMessageForm.value.time = formattedTime;
-
-    // this.myMessageForm.value.currentTime = String(currentTime);
-    // this.sendMessageForm.value.currentTime = String(currentTime);
-
-    // this.myChatListForm.value.lasttime = formattedTime;
-    // this.myChatListForm.value.date = currentTime;
-    // this.hisChatListForm.value.date = currentTime;
-    // this.hisChatListForm.value.lasttime = formattedTime;
-
-    // this.myMessageForm.value.isEdited = false;
-    // this.myMessageForm.value.isDeleted = false;
-
-    // this.sendMessageForm.value.isEdited = false;
-    // this.sendMessageForm.value.isDeleted = false;
-
   }
-
-  fetchMessages() {
-    this.firebaseService.getMessages(this.userData.key, this.myPath).subscribe((res) => {
-      this.Conversation = res;
-      console.log(this.Conversation);
-
-    });
-  }
-
 
 
   resetSelection() {
@@ -413,7 +331,6 @@ export class ChatingComponent implements OnInit {
     this.myMessageForm.value.isEdited = false;
     this.myMessageForm.value.isDeleted = true;
     this.myMessageForm.value.myMgs = true;
-    this.firebaseService.updateMessage(this.userData.key, this.myPath, this.temp[0].key, this.myMessageForm.value);
     this.deleteHisMgs();
   }
 
@@ -425,14 +342,8 @@ export class ChatingComponent implements OnInit {
     this.sendMessageForm.value.hisMgs = true;
     this.sendMessageForm.value.send = '';
 
-    await this.firebaseService.searchMessageKey(this.paramValue.userKey, this.friendPath, this.temp[0].currentTime)
-      .subscribe((res) => {
-        this.firebaseService.updateMessage(this.paramValue.userKey, this.friendPath, res[0].key, this.sendMessageForm.value);
-      });
     this.myChatListForm.value.lastmessage = "this message has been deleted by you";
     this.hisChatListForm.value.lastmessage = `this message has been deleted by ${this.userData.userName}`;
-    await this.firebaseService.sendquires(this.userData.key, this.myPath, this.myChatListForm.value);
-    await this.firebaseService.sendquires(this.paramValue.userKey, this.friendPath, this.hisChatListForm.value);
     this.deleteDiolog = false;
   }
 
@@ -440,33 +351,6 @@ export class ChatingComponent implements OnInit {
     this.temp[0] = mgs;
     this.editedMessage = mgs.send;
     this.editDiolog = true;
-  }
-
-  changesMyMgs() {
-    this.myMessageForm.patchValue(this.temp[0]);
-    this.myMessageForm.value.send = this.editedMessage
-    this.myMessageForm.value.isEdited = true;
-    this.firebaseService.updateMessage(this.userData.key, this.myPath, this.temp[0].key, this.myMessageForm.value);
-    this.changesHisMgs();
-  }
-
-  async changesHisMgs() {
-    this.sendMessageForm.patchValue(this.temp[0]);
-    this.sendMessageForm.value.received = this.editedMessage;
-    this.sendMessageForm.value.isEdited = true;
-    this.sendMessageForm.value.send = '';
-
-    await this.firebaseService.searchMessageKey(this.paramValue.userKey, this.friendPath, this.temp[0].currentTime)
-      .subscribe((res) => {
-        this.firebaseService.updateMessage(this.paramValue.userKey, this.friendPath, res[0].key, this.sendMessageForm.value);
-
-      });
-    this.myChatListForm.value.lastmessage = this.editedMessage;
-    this.hisChatListForm.value.lastmessage = this.editedMessage;
-    await this.firebaseService.sendquires(this.userData.key, this.myPath, this.myChatListForm.value);
-    await this.firebaseService.sendquires(this.paramValue.userKey, this.friendPath, this.hisChatListForm.value);
-    this.editDiolog = false;
-    this.editedMessage = '';
   }
 
   openProfile(res: any) {
