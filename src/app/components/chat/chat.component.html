@@ -174,38 +174,43 @@
                     </div>
 
 
-                    <div class="noFriends" *ngIf="!isloading && groupsList.length === 0">
+                    <div class="noFriends"
+                        *ngIf="!isloading && groupsList.length === 0">
                         <p>No groups found</p>
                     </div>
-                    <div class="chatsContact" *ngFor="let req of groupsList" (click)="openGroupProfile(req)">
-                        <div class="friendProfile" (click)="openGroupProfile(req)">
-                            <h3>{{req.data.groupName.charAt(0) | uppercase}}</h3>
+                    <div *ngIf="groupsList.length >= 1 && userdata.data.groups.length >= 1"
+                        style="width: 100%; height: auto; display: flex; align-items: center; justify-content: center;">
+                        <div class="chatsContact" *ngFor="let req of groupsList" (click)="openGroupChatting(req)">
+                            <div class="friendProfile" (click)="openGroupProfile(req)">
+                                <h3>{{req.data.groupName.charAt(0) | uppercase}}</h3>
+                            </div>
+                            <div class="friendName">
+                                <h2 style="color: #525252e5;">{{req.data.groupName}}
+                                    <span *ngIf="req.gender === 'female'; else maleIcon">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke: #ff00ea; stroke-width: 1.5;"
+                                            class="bi bi-gender-female" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z" />
+                                        </svg>
+                                    </span>
+                                    <ng-template #maleIcon>
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke:  #66a9e0; stroke-width: 1.5;"
+                                            class="bi bi-gender-male" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
+                                        </svg>
+                                    </ng-template>
+                                </h2>
+                                <h6 *ngIf="!req.lastmessage" style="color: #525252b4;">No messages</h6>
+                                <h6 *ngIf="req.lastmessage" style="color: #525252b4; filter: blur(3px);">
+                                    {{req.lastmessage}}
+                                </h6>
+                            </div>
+                            <div class="time" style="color: #525252;">{{req.lasttime}}</div>
+                            <!--     <div class="count" *ngIf="req.count > 0">{{req.count}}</div>   -->
                         </div>
-                        <div class="friendName">
-                            <h2 style="color: #525252e5;">{{req.data.groupName}}
-                                <span *ngIf="req.gender === 'female'; else maleIcon">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke: #ff00ea; stroke-width: 1.5;"
-                                        class="bi bi-gender-female" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5z" />
-                                    </svg>
-                                </span>
-                                <ng-template #maleIcon>
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        style="padding-left: 1vh; padding-top: 1vh; width: 1.5vh; height: 1.5vh; stroke:  #66a9e0; stroke-width: 1.5;"
-                                        class="bi bi-gender-male" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2H9.5zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" />
-                                    </svg>
-                                </ng-template>
-                            </h2>
-                            <h6 *ngIf="!req.lastmessage" style="color: #525252b4;">No messages</h6>
-                            <h6 *ngIf="req.lastmessage" style="color: #525252b4; filter: blur(3px);">{{req.lastmessage}}
-                            </h6>
-                        </div>
-                        <div class="time" style="color: #525252;">{{req.lasttime}}</div>
-                        <!--     <div class="count" *ngIf="req.count > 0">{{req.count}}</div>   -->
                     </div>
                 </div>
             </div>

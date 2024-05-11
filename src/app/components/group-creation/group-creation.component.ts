@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CouchService } from 'src/app/services/couch.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -18,8 +19,9 @@ export class GroupCreationComponent implements OnInit {
   selectedContacts: any[] = [];
   query: string = "";
   userdata: any;
+  isLoader: boolean = false;
 
-  constructor(private couchService: CouchService) { }
+  constructor(private couchService: CouchService, public toast: ToastService) { }
 
   ngOnInit(): void {
     const userDataFromLocalStorage = localStorage.getItem('userList');
@@ -50,9 +52,9 @@ export class GroupCreationComponent implements OnInit {
         this.searchResults = this.searchResults.filter(item => item._id !== this.userdata._id);
         let compareIDs = this.selectedContacts.map((ids: any) => ids._id);
         // console.log(compareIDs);
-        
+
         for (let i = 0; i < this.selectedContacts.length; i++) {
-        this.searchResults = this.searchResults.filter(item => item._id !== compareIDs[i]);
+          this.searchResults = this.searchResults.filter(item => item._id !== compareIDs[i]);
         }
       })
     }
@@ -64,37 +66,62 @@ export class GroupCreationComponent implements OnInit {
     this.isSearchContact = !this.isSearchContact;
     this.selectedContacts.push(data);
     // console.log(JSON.stringify(this.selectedContacts));
-    }
+  }
 
-    createGroup() {
-     let couchFromat = {
-        _id: '',
-        data: {
-          groupName: this.Query,
-          admin: [this.userdata._id],
-          peoples: [this.userdata._id],
-          lastmessage: "",
-          lasttime: "",
-          type: "group",
-          user: ''
-        }
-      }
-      this.selectedContacts.forEach(id => couchFromat.data.peoples.push(id._id))
-      // console.log(couchFromat);
-      // console.log(this.selectedContacts);
-      for(let i = 0; i < couchFromat.data.peoples.length; i++) {       
-        couchFromat.data.user = couchFromat.data.peoples[i];
-        console.log(couchFromat.data.user)
-        couchFromat._id = "group_2_" + uuidv4();
-        // console.log(couchFromat);
-        this.couchService.createAccount(couchFromat).subscribe((res: any) => {
-          console.log("good :)");
-        })
+  createGroup() {
+    this.isLoader = true;
+    let couchFormat = {
+      _id: "group_2_" + uuidv4(),
+      data: {
+        groupName: this.Query,
+        admin: [this.userdata._id],
+        peoples: [this.userdata._id],
+        lastmessage: "",
+        lasttime: "",
+        type: "group",
       }
     }
 
-    removeContact(name: string){
-      this.selectedContacts.splice(this.selectedContacts.findIndex(item => item.data.nickname === name),1)
+    this.selectedContacts.forEach(id => couchFormat.data.peoples.push(id._id));
+
+    if (couchFormat.data.peoples.length === this.selectedContacts.length + 1) {
+      this.couchService.createAccount(couchFormat).subscribe((res: any) => {
+        console.log(res);
+        this.pushGroupIdToUSerData(couchFormat, res.id);
+      });
     }
-      
+  }
+
+  pushGroupIdToUSerData(couchFormat: any, groupId: string) {   //pushing group id into user table (master) <- (lookup)
+
+    let usersForUpdateGroup: any[] = [];
+
+    this.couchService.getPeoples(couchFormat.data.peoples.join('","')).subscribe((res: any) => {
+      console.log(res);
+      usersForUpdateGroup = res.rows.map((res: any) => res.doc);
+
+      for (let i = 0; i < usersForUpdateGroup.length; i++) {
+
+        usersForUpdateGroup[i].data.groups.push(groupId);
+
+        this.couchService.
+          updateUserProfile(usersForUpdateGroup[i]._id, usersForUpdateGroup[i]._rev,
+            usersForUpdateGroup[i]
+          ).subscribe((res) => {
+            console.log(i, 'completed', res);
+            this.isLoader = false;
+            this.toast.showToast('Group created', true);
+            this.Query = '';
+            this.selectedContacts = [];
+          });
+      }
+    });
+
+
+  }
+
+  removeContact(name: string) {
+    this.selectedContacts.splice(this.selectedContacts.findIndex(item => item.data.nickname === name), 1)
+  }
+
 }

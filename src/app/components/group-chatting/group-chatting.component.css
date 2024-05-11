@@ -1,0 +1,467 @@
+/* Toggle container */
+.mode-toggle {
+    position: fixed;
+    top: 2.1vh;
+    right: 3vh;
+    display: inline-block;
+
+}
+
+.toggle-input {
+    display: none;
+
+}
+
+.toggle-label {
+    width: 8vh;
+    height: 4vh;
+    background-color: #697c7ba2;
+    border-radius: 2vh;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    box-shadow: 
+    -5px -5px 8px #fff,
+    5px 5px 8px #fff,
+    inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+    inset -5px -5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.sun,
+.moon {
+    width: 4vh;
+    height: 4vh;
+    position: absolute;
+    top: 0;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 
+    5px 5px 10px #00000065, 
+    -5px -5px 10px #fff;
+    border-radius: 50%;
+}
+
+.moon {
+    opacity: 0;
+}
+
+.toggle-input:checked+.toggle-label {
+    background-color: #697c7ba2;
+}
+
+.toggle-input:checked+.toggle-label .sun {
+    opacity: 0;
+    transform: translateX(100%);
+}
+
+.toggle-input:checked+.toggle-label .moon {
+    opacity: 1;
+    transform: translateX(100%);
+}
+
+.topText {
+    display: none;
+}
+
+.chatting {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background-color: #ecf1fa;
+}
+
+.header {
+    position: fixed!important;
+    top: 0;
+    z-index: 100;
+    background-color: #fff;
+    width: 100%;
+    padding-bottom: 5px;
+    height: 9vh;
+    display: flex;
+    align-items: center;
+    box-shadow: 
+     0px 5px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.backIcon {
+    width: 10vh;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.backIcon i {
+    font-size: 3vh;
+    font-weight: bolder;
+    color: #000000a2;
+}
+
+.profile {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.profileRound {
+    position: relative;
+    width: 6.5vh;
+    height: 6.5vh;
+    border-radius: 50%;
+    background-color: #66a9e0;
+    box-shadow:
+    inset 1px -1px 5px rgba(0, 0, 0, 0.2),
+    inset -1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.profileRound h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5vh;
+    color: #fff;
+}
+
+
+.textBox {
+    width: 70%;
+    height: 6vh;
+    border-radius: 1vh;
+    border: 0.2vh solid #66a9e0;
+}
+
+.textBox input::placeholder {
+    color: #66a9e0;
+    font-weight: 100;
+}
+
+.textBox input {
+    background: transparent;
+    border: none;
+    width: 90%;
+    height: 100%;
+    padding-inline: 5%;
+    font-size: 2vh;
+}
+
+.sendButton {
+    margin-left: 2vh;
+    width: 6vh;
+    height: 6vh;
+    border-radius: 1vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #66a9e0;
+    box-shadow: 
+    -5px 5px 10px rgba(0, 0, 0, 0.2), 
+    5px -5px 8px #fff,
+    inset 5px -5px 10px #00000048;
+}
+
+.sendButton i {
+    font-size: 3vh;
+    color: #fff;
+}
+
+.sendButton p {
+    color: #fff;
+    font-size: 1.5vh;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 
+    0px -5px 8px rgba(0, 0, 0, 0.2);
+}
+
+.messageContainer {
+    min-height: 88%;
+    width: 100%;
+    margin-top: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+
+
+.messages {
+    position: relative;
+    width: 100%;
+    background-color: #ecf1fa;
+}
+
+.sendMessageContainer,
+.myMessageContainer {
+    width: 100%;
+    position: relative;
+}
+
+.myMessageContainer {
+    justify-content: flex-end;
+    display: flex;
+}
+
+.sendTime, .sendIsEdit {
+    font-size: 1.2vh;
+    color: #000000a2;
+    position: absolute;
+    bottom: -0.1vh;
+    left: 2.4vh;
+}
+
+.sendIsEdit {
+    left: 7.9vh !important;
+}
+
+.myTime, .myIsEdit {
+    font-size: 1.2vh;
+    color: #000000a2;
+    position: absolute;
+    bottom: -0.1vh;
+    right: 2.4vh;
+}
+
+.myIsEdit {
+    right: 7.9vh !important;
+}
+
+.myMessage, .myDeleteMessage {
+    margin: 5%;
+    max-width: 45%;
+    padding: 5%;
+    background-color: rgb(253, 130, 151);
+    color: #fff;
+    font-size: 1.5vh;
+    border-radius: 3vh;
+    line-height: 2.4vh;
+    overflow-wrap: break-word;
+    /* Handles word wrap */
+    word-wrap: break-word;
+    border-bottom-right-radius: 0;
+    display: flex;
+    justify-content: flex-end;
+    box-shadow: 
+    5px 5px 10px rgba(0, 0, 0, 0.2), 
+    -5px -5px 8px #fff,
+    inset -5px -5px 10px #00000048;
+    position: relative;
+}
+
+.myDeleteMessage {
+    background-color: #eee !important;
+    color: #000000b7 !important;
+}
+
+.sendMessage , .sendDeleteMessage{
+    margin: 5%;
+    max-width: 45%;
+    padding: 5%;
+    background-color: #66a9e0;
+    color: #fff;
+    font-size: 1.5vh;
+    border-radius: 3vh;
+    line-height: 2.4vh;
+    word-wrap: break-word;
+    overflow-wrap: break-word; /* Use overflow-wrap to break words */
+    border-bottom-left-radius: 0;
+    display: flex;
+    justify-content: flex-start;
+    box-shadow: 
+        -5px 5px 10px rgba(0, 0, 0, 0.2), 
+        5px -5px 8px #fff,
+        inset 5px -5px 10px #00000048;
+    position: relative;
+}
+
+.sendDeleteMessage {
+    background-color: #eee !important;
+    color: #000000b7 !important;
+}
+
+
+
+.tickContainer {
+    position: absolute;
+    bottom: 1.9vh;
+    right: 2.4vh;
+    border-radius: 50%;
+}
+
+.profile .name {
+    color: #000000a2;
+    margin-left: 5%;
+}
+
+.profile .name h1 {
+    font-size: 2.5vh;
+}
+
+.profile .name p {
+    font-size: 1.5vh;
+}
+
+.passwordDiolog {
+    width: 70%;
+    padding: 5%;
+    background-color: #fff;
+    border-radius: 2vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    color: #000000a2;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 
+    5px 5px 10px rgba(0, 0, 0, 0.2),
+   -5px -5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.passwordDiolog i{
+    font-size: 10vh;
+    color: #66a9e0;
+}
+
+.passwordDiolog .dividerContainer hr{
+    width: 40%;
+}
+
+.dividerContainer {
+    display: flex;
+    margin-block: 3vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.passwordDiolog input {
+    margin-top: 1vh;
+    font-size: 1.4vh;
+    width: 80%;
+    padding: 2vh;
+    height: 1.2vh;
+    border: 2px solid #66a9e0;
+    border-radius: 1vh;
+    box-shadow:  
+    inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+     5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.passwordDiolog button {
+    padding: 1.5vh;
+    margin: 2vh;
+    background-color: #66a9e0;
+    border-radius: 1vh;
+    border: none;
+    color: #fff;
+    font-size: 1.5vh;
+    box-shadow: 
+    -5px 5px 10px rgba(0, 0, 0, 0.2), 
+    5px -5px 8px #fff,
+    inset 5px -5px 10px #00000048;
+}
+
+.editDeldteContainer {
+    z-index: 1001;
+    width: 13vh;
+    height: 5vh;
+    background-color: #fff;
+    border-radius: 5vh;
+    position: absolute;
+    right: 0;
+    top: -50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow: 
+    -5px 5px 10px rgba(0, 0, 0, 0.2), 
+    5px -5px 8px #fff,
+    inset 5px -5px 10px #00000048;
+}   
+
+.editDeldteContainer i{
+    font-size: 2.5vh;
+    font-weight: 900;
+    z-index: 100;
+}
+
+.editButtons {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+ .editButtons button{
+    width: 40% !important;
+}
+
+@media (min-width: 992px) {
+.header{
+    width: 50%;
+    position: relative;
+}
+
+.mode-toggle {
+    position: absolute;
+   }
+
+   .chatting{
+    width: 50%;
+    box-shadow: 0px 0px 10px rgba(0,0,0, 0.2);
+   }
+
+   .footer{
+    width: 50%;
+    position: fixed;
+   }
+
+.passwordDiolog {
+    position: fixed;
+    width: 20%;
+}
+
+
+.myMessage, .myDeleteMessage {
+    padding: 2%;
+}
+
+.sendMessage , .sendDeleteMessage{
+    padding: 2%;
+}
+
+.messageContainer {
+    margin-top: 10%;
+}
+
+.header{
+    border-top-left-radius: 2vh;
+    border-top-right-radius: 2vh;
+}
+
+}  
+
+.overAll {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

@@ -32,6 +32,7 @@ import { NoCopyPasteDirective } from './directives/no-copy-paste.directive';
 import { GroupCreationComponent } from './components/group-creation/group-creation.component';
 import { GroupProfileComponent } from './components/group-profile/group-profile.component';
 import { GroupChattingComponent } from './components/group-chatting/group-chatting.component';
+import { PracticeComponent } from './components/practice/practice.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBnqwvPQV9ZyuTpM6qZJlLxH1uQr8b4XKo",
@@ -67,6 +68,7 @@ const firebaseConfig = {
     GroupCreationComponent,
     GroupProfileComponent,
     GroupChattingComponent,
+    PracticeComponent,
   ],
   imports: [
     BrowserModule,

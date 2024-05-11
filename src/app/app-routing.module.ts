@@ -17,6 +17,8 @@ import { GroupCreationComponent } from './components/group-creation/group-creati
 import { AuthRouteService } from './auth-route.service';
 import { WildcardComponent } from './components/wildcard/wildcard.component';
 import { GroupProfileComponent } from './components/group-profile/group-profile.component';
+import { GroupChattingComponent } from './components/group-chatting/group-chatting.component';
+import { PracticeComponent } from './components/practice/practice.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'splashScreen', pathMatch: 'full' },
@@ -35,6 +37,8 @@ const routes: Routes = [
   { path: 'groupprofile/:data', component: GroupProfileComponent, canActivate: [AuthRouteService] },
   { path: 'friendprofile/:data', component: FriendProfileComponent, canActivate: [AuthRouteService] },
   { path: 'group-creation', component: GroupCreationComponent },
+  { path: 'practice', component: PracticeComponent },
+  { path: 'group-chatting/:data', component: GroupChattingComponent },
   { path: '**', component: WildcardComponent },
   // { path: 'group-creation', component: GroupCreationComponent, canActivate: [AuthRouteService] },
 ];

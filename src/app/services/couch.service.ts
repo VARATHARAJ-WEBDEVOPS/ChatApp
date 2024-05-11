@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -13,23 +14,13 @@ export class CouchService {
   couchPassword: string = 'Welcome#2';
   header = {
     headers: {
-      'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword)
+      'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword),
+      'Content-Type': 'multipart/form-data'
     }
   }
 
   constructor(private http: HttpClient) { }
 
-  callRealtime(id: string): Observable<any> {
-    const realtimeUrl = `${this.CouchURL}/${this.databaseName}/_changes?include_docs=true&filter=mydesign/myfilter&user=${id}`   //include_docs=true`;
-    return this.http.get(realtimeUrl, {
-      headers: {
-        "Authorization": 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword),
-        "Accept": 'application/json',
-        "Content-Type": 'application/json',
-
-      }
-    });
-  }
   //create Process
 
   createAccount(document?: any) {
@@ -57,10 +48,19 @@ export class CouchService {
     return this.http.post(createUrl, doc, this.header);
   }
 
+  createGroupChat(doc: any) {
+    const createUrl = `${this.CouchURL}/${this.databaseName}`;
+    return this.http.post(createUrl, doc, this.header);
+  }
 
   // getUsingAllDocs
 
   getContactUserDetails(doc: string[]) {
+    const url = `${this.CouchURL}/${this.databaseName}/_all_docs?include_docs=true&keys=["${doc}"]`
+    return this.http.get(url, this.header);
+  }
+
+  getGroup(doc: string[]) {
     const url = `${this.CouchURL}/${this.databaseName}/_all_docs?include_docs=true&keys=["${doc}"]`
     return this.http.get(url, this.header);
   }
@@ -117,7 +117,12 @@ export class CouchService {
     return this.http.get(url, this.header);
   }
 
-  findIsFriendReq( user: string ) {
+  getGroupChat(group: string) {
+    const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/get_group_chats?key="${group}"`
+    return this.http.get(url, this.header);
+  }
+
+  findIsFriendReq(user: string) {
     const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/findIsFriend?key="${user}"&include_docs=true`
     return this.http.get(url, this.header);
   }
@@ -134,7 +139,17 @@ export class CouchService {
     return this.http.put(url, doc, this.header); ``
   }
 
+  updateGroup(_id: string, _rev: string, doc: any) {
+    const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
+    return this.http.put(url, doc, this.header); ``
+  }
+
   updatecontact(_id: string, _rev: string, doc: any) {
+    const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
+    return this.http.put(url, doc, this.header); ``
+  }
+
+  pushGroupIdToUSerData(_id: string, _rev: string, doc: any) {
     const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
     return this.http.put(url, doc, this.header); ``
   }
@@ -165,6 +180,32 @@ export class CouchService {
         endkey: `"${startkey}\ufff0"`
       }
     });
+  }
+
+
+  callRealtime(id: string): Observable<any> {
+    const realtimeUrl = `${this.CouchURL}/${this.databaseName}/_changes?include_docs=true&filter=mydesign/myfilter&user=${id}`   //include_docs=true`;
+    return this.http.get(realtimeUrl, {
+      headers: {
+        "Authorization": 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword),
+        "Accept": 'application/json',
+        "Content-Type": 'application/json',
+      }
+    });
+  }
+
+  uploadFiles(files: File) {
+
+    let basic = "Basic " + btoa(`${this.couchUserName}:${this.couchPassword}`);
+
+    let headers = new HttpHeaders({
+      'Content-Type': files.type,
+      'Authorization': basic,
+    });
+
+    let options = { headers: headers };
+
+    return this.http.put(`${this.CouchURL}/${this.databaseName}/${uuidv4()}/${files.name}`, files, options)
   }
 }
 

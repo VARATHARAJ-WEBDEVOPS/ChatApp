@@ -42,6 +42,7 @@ export class ChatingComponent implements OnInit {
   showError: boolean = false;
   private pressTimeout: any;
   Frienddata!: FormGroup;
+  selectedImage!: File;
 
   constructor(private title: Title,
     private formBuilder: FormBuilder,
@@ -52,6 +53,21 @@ export class ChatingComponent implements OnInit {
     private couchService: CouchService
   ) {
     this.isEditontainer = new Array().fill(false);
+  }
+
+  selectedSendFile(event: any) {
+
+    this.selectedImage = event.target.files[0];
+    console.log(this.selectedImage);
+    this.sendImage();
+  }
+
+  sendImage() {
+    if (this.selectedImage) {
+      this.couchService.uploadFiles(this.selectedImage).subscribe((res: any) => {
+        console.log(res);
+      })
+    }
   }
 
 
@@ -112,14 +128,12 @@ export class ChatingComponent implements OnInit {
     } else {
       this.showError = true;
       console.log(this.paramValue.data.userName);
-      
-    this.toastService.showToast('wrong password', true);
+
+      this.toastService.showToast('wrong password', true);
     }
   }
 
   ngOnInit() {
-
-
 
     this.title.setTitle("AmorChat | chatting");
 
@@ -134,7 +148,6 @@ export class ChatingComponent implements OnInit {
       if (encodedData) {
         this.paramValue = JSON.parse(decodeURIComponent(encodedData));
         // console.log(this.paramValue);
-
       }
     });
     const userdataGetting = localStorage.getItem('userList');
@@ -178,6 +191,10 @@ export class ChatingComponent implements OnInit {
       isDeleted: ['']
     });
 
+    this.getChat();
+  }
+
+  getChat() {
     this.couchService.getChat(this.userData._id, this.paramValue.for).subscribe((res: any) => {
       // console.log(res.rows.map((res: any) => res.value));
       this.Conversation = res.rows.map((res: any) => res.value).sort((a: any, b: any) => {
@@ -223,8 +240,8 @@ export class ChatingComponent implements OnInit {
 
       this.getCurrentTime();
 
-      console.log(" Send Form", this.sendMessageForm.value);
-      console.log(" my Form", this.myMessageForm.value);
+      // console.log(" Send Form", this.sendMessageForm.value);
+      // console.log(" my Form", this.myMessageForm.value);
 
       const sendMessageFormat = {
         _id: "chats_2_" + uuidv4(),
@@ -233,6 +250,7 @@ export class ChatingComponent implements OnInit {
           currentTime: new Date(),
           isDelete: false,
           isEdited: false,
+          isFile: false,
           received: '',
           send: this.message,
           user: this.userData._id,
@@ -291,6 +309,7 @@ export class ChatingComponent implements OnInit {
                 console.log(couchFormat);
                 this.couchService.updatecontact(res.rows[0].value._id, res.rows[0].value._rev, couchFormat).subscribe((res) => {
                   this.message = "";
+                  this.getChat();
                   console.log("done");
                 });
               });

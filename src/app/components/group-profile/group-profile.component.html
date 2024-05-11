@@ -1,5 +1,18 @@
 <div class="overAll">
     <div class="groupProfile">
+
+        <div class="logoutdialog" *ngIf="isConformLeave">
+            <div class="dialogBg">
+                <i class="bi bi-exclamation-triangle"></i>
+                <h2>Are you sure?</h2>
+                <p>Do You want to Exit?</p>
+                <div class="conformButtons">
+                    <button id="cancelBtn" (click)="toggleLeaveGroupDialog()">Cancel</button>
+                    <button id="okBtn" (click)="leaveGroup()">Yes!</button>
+                </div>
+            </div>
+        </div>
+
         <div class="nav">
             <svg routerLink="/chat" xmlns="http://www.w3.org/2000/svg"
                 style="width: 3vh; height: 3vh; position: absolute; top: 5vh; left: 5vh;" fill="#000"
@@ -50,7 +63,7 @@
 
         <div class="buttonsContainer">
             <button *ngIf="checkIsAdmin()">Delete Group</button>
-            <button *ngIf="!checkIsAdmin()">Leave Group</button>
+            <button *ngIf="!checkIsAdmin()" (click)="toggleLeaveGroupDialog()">Exit Group</button>
         </div>
 
         <!-- <div class="logoutdialog" *ngIf="conformlogout">

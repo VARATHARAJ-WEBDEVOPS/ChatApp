@@ -1,5 +1,9 @@
 <div class="overAll">
     <div class="groupCreation">
+
+        <div class="loaderContainer" *ngIf="isLoader">
+            <div class="loader"></div>
+        </div>
         <div class="floatingButton" *ngIf="selectedContacts.length >= 2 && errorColor === 'green'"
             style="color: #fff; background-color: #66a9e0" (click)="createGroup()">
             Create

@@ -61,16 +61,16 @@ export class SignupComponent implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
-onSubmit() {
+  onSubmit() {
 
-    const customId = 'user_2_' + uuidv4();   
+    const customId = 'user_2_' + uuidv4();
 
     this.addItemForm.value._id = customId;
     this.addItemForm.value.userName = this.userName;
     this.addItemForm.value.phoneNumber = this.phoneNumber;
     this.addItemForm.value.password = this.password;
 
-   const encryptedPassword = CryptoJS.AES.encrypt(this.password, 'secret key').toString();
+    const encryptedPassword = CryptoJS.AES.encrypt(this.password, 'secret key').toString();
 
     const couchFormat = {
       _id: 'user_2_' + uuidv4(),
@@ -82,6 +82,7 @@ onSubmit() {
         age: null,
         gender: null,
         dob: null,
+        groups: [],
         type: "user"
       }
     }
@@ -97,17 +98,17 @@ onSubmit() {
   checkUserExistence() {
     const phoneNumber = this.phoneNumber;
     this.couchService.checkExistingUser(phoneNumber).subscribe((response: any) => {
-      
-        if (response.rows.length != 0) {
-            this.toastService.showToast('Phone Number Already used', true);
-          // console.log('Phone Number Already used');
-          
-        } else {
-            // console.log('User does not exist');
-            this.onSubmit();
-        }
+
+      if (response.rows.length != 0) {
+        this.toastService.showToast('Phone Number Already used', true);
+        // console.log('Phone Number Already used');
+
+      } else {
+        // console.log('User does not exist');
+        this.onSubmit();
+      }
     });
-}
+  }
 
   // ngOnDestroy() {
   //   this.unsubscribe$.next();

@@ -132,6 +132,7 @@
     height: 6vh;
     border-radius: 1vh;
     border: 0.2vh solid #66a9e0;
+    display: flex;
 }
 
 .textBox input::placeholder {
@@ -146,6 +147,19 @@
     height: 100%;
     padding-inline: 5%;
     font-size: 2vh;
+}
+
+.textBox .fileButton {
+    background: transparent;
+    border: none;
+    width: 10%;
+    height: 100%;
+    padding-inline: 5%;
+    font-size: 5vh;
+    justify-content: flex-end;
+    align-items: center;
+    display: flex;
+    color: #66a9e0;
 }
 
 .sendButton {

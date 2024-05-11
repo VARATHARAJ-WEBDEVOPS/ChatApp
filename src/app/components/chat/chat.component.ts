@@ -123,6 +123,8 @@ export class ChatComponent implements OnInit {
     //   this.router.navigateByUrl('login');
     // } else {
 
+
+
     this.tempPhone = localStorage.getItem('token');
     this.getUser(this.tempPhone);
 
@@ -287,6 +289,10 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  openGroupChatting(data: any) {
+    this.router.navigate(['/group-chatting', encodeURIComponent(JSON.stringify(data))], { skipLocationChange: true });
+  }
+
   navigateMyFriends() {
     this.router.navigateByUrl('myfriend');
   }
@@ -311,7 +317,7 @@ export class ChatComponent implements OnInit {
 
   getContacts() {
     this.couchService.getContacts(this.userKey).subscribe((res: any) => {
-      console.log(res);
+      // console.log(res);
 
       if (res.rows.length) {
         let for_ids = res.rows.map((row: any) => row.value[1]);
@@ -352,14 +358,13 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  getGroup() {
-    this.couchService.getGroups(this.userKey).subscribe((res: any) => {
-      console.log(res);
-      this.groupsList = res.rows.map((res: any) => res.value);
+  getGroup() {    
+    this.couchService.getGroup(this.userdata.data.groups.join('","')).subscribe((res: any) => {      
+      this.groupsList = res.rows.map((res: any) => res.doc);
+      this.groupsList = this.groupsList.filter((data: any) => data !== null );
+      // console.log(this.groupsList);
     });
   }
-
-
 
   handleInputFocus() {
     this.isSearchResults = true;
