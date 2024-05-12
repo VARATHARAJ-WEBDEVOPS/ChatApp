@@ -39,7 +39,6 @@
                     </div>
 
                     <p class="sendTime">{{mgs.data.time}}</p>
-                    <!-- <p class="sendIsEdit" *ngIf="mgs.isEdited  && secure">| Edited</p> -->
                     <p class="sendIsEdit">| {{mgs.data.senderName}}</p>
 
                 </div>
@@ -114,7 +113,7 @@
             <input type="text" placeholder="Edit your Message..." [(ngModel)]="editedMessage">
             <div class="editButtons">
                 <button (click)="editDiolog = false" style="background-color: rgb(253, 130, 151);">Cancel</button>
-                <!-- <button (click)="changesMyMgs()">Edit</button> -->
+  
             </div>
         </div>
 

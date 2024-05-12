@@ -28,7 +28,6 @@
         </div>
         <div class="validation" *ngIf="!isSearchContact">
             <p>{{showError}}</p>
-            <!-- <p>Group Name Already Exists</p> -->
         </div>
         <div class="contactsContainer" *ngIf="!isSearchContact">
 
@@ -37,8 +36,6 @@
                 <i class="bi bi-x-lg" id="TrashIcon" style="font-size: 3vh; color: red;"
                     (click)="removeContact(data.data.nickname)"></i>
                 <p>@{{data.data.nickname}}</p>
-                <!-- <app-url-dialog [data]="data" (urlEvent)="handleurlEvent($event)" (cancelDiolog)="toggleDialog()"
-                        *ngIf="isDialog"></app-url-dialog> -->
             </div>
 
             <button class="plusButton" [style.margin-left]="selectedContacts.length >= 1 ? '3vh': '' "
@@ -83,7 +80,6 @@
                         </h4>
 
                         <h4>@{{result.data.nickname}}</h4>
-                        <!-- <h4>{{result.phoneNumber}}</h4> -->
                     </div>
 
                     <div class="accept" style="  width: 13vh; height: 4.8vh; z-index: 1000;"

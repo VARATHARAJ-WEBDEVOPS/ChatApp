@@ -25,8 +25,6 @@
             <div class="nav" [ngClass]="{'custom-border-radius': ismenu}">
                 <div style="display: flex; align-items: center;">
                     <div class="amorLogo" (click)="toggleMenu()"></div>
-                    <!-- <i class="bi bi-list" id="menu" ></i> -->
-                    <!-- <i class="bi bi-x-lg" id="menu" (click)="toggleManu()" *ngIf="ismenu"></i> -->
 
                     <h2 style="color: #525252;" (click)="toggleMenu()">ChatApp</h2>
                 </div>
@@ -208,7 +206,6 @@
                                 </h6>
                             </div>
                             <div class="time" style="color: #525252;">{{req.lasttime}}</div>
-                            <!--     <div class="count" *ngIf="req.count > 0">{{req.count}}</div>   -->
                         </div>
                     </div>
                 </div>
@@ -218,15 +215,7 @@
             <div class="myfriendButton" (click)="navigateAddfriend()">
                 <i style="font-size: 3vh; color: #fff;" class="bi bi-person-fill-add"></i>
             </div>
-            <!-- <div class="TipTour"  *ngIf="!isloading && chatContact.length === 0">
-            <h1>
-                New User Tour <i class="bi bi-lightbulb"></i>!
-            </h1>
-            <p>
-                Experience a journey of friendship by clicking this button to  adding new friends.
-            </p>
-           
-        </div> -->
+
         </div>
     </div>
 </div>

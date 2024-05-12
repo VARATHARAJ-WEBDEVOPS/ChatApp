@@ -1,4 +1,3 @@
-/* Toggle container */
 .mode-toggle {
     position: fixed;
     top: 2.1vh;
@@ -251,7 +250,6 @@
     border-radius: 3vh;
     line-height: 2.4vh;
     overflow-wrap: break-word;
-    /* Handles word wrap */
     word-wrap: break-word;
     border-bottom-right-radius: 0;
     display: flex;
@@ -278,7 +276,7 @@
     border-radius: 3vh;
     line-height: 2.4vh;
     word-wrap: break-word;
-    overflow-wrap: break-word; /* Use overflow-wrap to break words */
+    overflow-wrap: break-word;
     border-bottom-left-radius: 0;
     display: flex;
     justify-content: flex-start;

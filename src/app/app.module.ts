@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { NgToastModule } from 'ng-angular-popup';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { AngularFireAnalyticsModule, CONFIG , ScreenTrackingService, UserTrackingService } from '@angular/fire/compat/analytics';
 
 import { AppRoutingModule } from './app-routing.module';

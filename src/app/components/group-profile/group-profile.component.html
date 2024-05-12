@@ -58,7 +58,6 @@
                     <h6 *ngIf="req._id !== paramValue.data.admin[0]" style="color: #525252b4; font-size: 2.5vh;">Member</h6>
                 </div>
                 <div class="time" style="color: #525252;">{{req.lasttime}}</div>
-                <!--     <div class="count" *ngIf="req.count > 0">{{req.count}}</div>   -->
             </div>
 
         <div class="buttonsContainer">
@@ -66,18 +65,7 @@
             <button *ngIf="!checkIsAdmin()" (click)="toggleLeaveGroupDialog()">Exit Group</button>
         </div>
 
-        <!-- <div class="logoutdialog" *ngIf="conformlogout">
-            <div class="dialogBg">
-                <i class="bi bi-exclamation-triangle"></i>
-                <h2>Are you sure?</h2>
-                <p>Do You want to logout?</p>
-                <div class="conformButtons">
-                    <button id="cancelBtn" >Cancel</button>
-                    <button id="okBtn" >Yes!</button>
-                </div>
-            </div>
-        </div> -->
-
+      
 
 
 

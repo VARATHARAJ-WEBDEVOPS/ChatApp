@@ -1,9 +1,8 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
-import { async } from 'rxjs';
 
 @Component({
   selector: 'app-ai-chat',
@@ -18,7 +17,7 @@ export class AiChatComponent {
   data!: any;
   sendMessageForm!: FormGroup;
   myMessageForm!: FormGroup;
-  message!: String;
+  message!: string;
   userData: any;
   myPath!: string;
   friendPath!: string;
@@ -129,7 +128,7 @@ export class AiChatComponent {
   resetSelection() {
     for (const key in this.isEditontainer) {
       if (this.isEditontainer.hasOwnProperty(key)) {
-        this.isEditontainer[key] = false;
+   
       }
     }
   }

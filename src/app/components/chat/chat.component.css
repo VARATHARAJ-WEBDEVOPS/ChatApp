@@ -398,27 +398,6 @@
   font-size: 1.2vh;
 }
 
-/* .count {
-  position: absolute;
-  right: 5%;
-  transform: translate(-5%, -90%);
-  top: 90%;
-  font-size: 1.2vh;
-  width: 2.5vh;
-  height: 2.5vh;
-  background-color: rgb(253, 130, 151);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  box-shadow:
-  -5px 5px 10px rgba(0, 0, 0, 0.2),
-  5px -5px 8px #fff,
-  inset 5px -5px 10px #00000048;
-} */
-
-
 .searchBar {
   width: 91%;
   height: 6vh;

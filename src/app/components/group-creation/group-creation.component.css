@@ -27,7 +27,6 @@
 
 .GroupNameInput {
     width: 80%;
-    /* background-color: #eee; */
     height: 5vh;
     border-radius: 1vh;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
@@ -227,7 +226,6 @@ input {
   @keyframes l3 {to{transform: rotate(1turn)}}
 
 @media (min-width: 992px) {
-    /* for pc screen*/
 
     .searchResultscontainer {
         height: 79vh;

@@ -97,9 +97,7 @@
     position: absolute;
     top: 33vh;
     left: 50%;
-    /* Set left to 50% */
     transform: translateX(-50%);
-    /* Use transform to center */
     display: flex;
     justify-content: center;
     align-items: center;

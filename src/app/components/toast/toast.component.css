@@ -52,19 +52,16 @@
 }
 
 
-/* Progress bar container */
 .toast-progress-bar {
   min-height: 5px;
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Progress bar */
 .progress {
   height: 100%;
   margin: 0;
 }
 
-/* Progress bar fill color (success) */
 .progress-bar {
   background-color: #28a745;
   transition: width 0.5s;

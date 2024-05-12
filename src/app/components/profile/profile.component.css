@@ -96,8 +96,8 @@
     border-radius: 2vh;
     position: absolute;
     top: 33vh;
-    left: 50%; /* Set left to 50% */
-    transform: translateX(-50%); /* Use transform to center */
+    left: 50%; 
+    transform: translateX(-50%);
     display: flex;
     justify-content: center;
     align-items: center;

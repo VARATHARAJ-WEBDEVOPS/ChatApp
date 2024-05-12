@@ -1,4 +1,3 @@
-/* Toggle container */
 .mode-toggle {
     position: fixed;
     top: 2.1vh;
@@ -21,11 +20,11 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    box-shadow: 
-    -5px -5px 8px #fff,
-    5px 5px 8px #fff,
-    inset 5px 5px 10px rgba(0, 0, 0, 0.2),
-    inset -5px -5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        -5px -5px 8px #fff,
+        5px 5px 8px #fff,
+        inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+        inset -5px -5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .sun,
@@ -35,9 +34,9 @@
     position: absolute;
     top: 0;
     transition: transform 0.3s ease-in-out;
-    box-shadow: 
-    5px 5px 10px #00000065, 
-    -5px -5px 10px #fff;
+    box-shadow:
+        5px 5px 10px #00000065,
+        -5px -5px 10px #fff;
     border-radius: 50%;
 }
 
@@ -71,7 +70,7 @@
 }
 
 .header {
-    position: fixed!important;
+    position: fixed !important;
     top: 0;
     z-index: 100;
     background-color: #fff;
@@ -80,8 +79,8 @@
     height: 9vh;
     display: flex;
     align-items: center;
-    box-shadow: 
-     0px 5px 8px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        0px 5px 8px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -113,8 +112,8 @@
     border-radius: 50%;
     background-color: #66a9e0;
     box-shadow:
-    inset 1px -1px 5px rgba(0, 0, 0, 0.2),
-    inset -1px 1px 5px rgba(0, 0, 0, 0.2);
+        inset 1px -1px 5px rgba(0, 0, 0, 0.2),
+        inset -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 .profileRound h1 {
@@ -158,10 +157,10 @@
     align-items: center;
     flex-direction: column;
     background-color: #66a9e0;
-    box-shadow: 
-    -5px 5px 10px rgba(0, 0, 0, 0.2), 
-    5px -5px 8px #fff,
-    inset 5px -5px 10px #00000048;
+    box-shadow:
+        -5px 5px 10px rgba(0, 0, 0, 0.2),
+        5px -5px 8px #fff,
+        inset 5px -5px 10px #00000048;
 }
 
 .sendButton i {
@@ -185,8 +184,8 @@
     justify-content: center;
     align-items: center;
     background-color: #fff;
-    box-shadow: 
-    0px -5px 8px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        0px -5px 8px rgba(0, 0, 0, 0.2);
 }
 
 .messageContainer {
@@ -217,7 +216,8 @@
     display: flex;
 }
 
-.sendTime, .sendIsEdit {
+.sendTime,
+.sendIsEdit {
     font-size: 1.2vh;
     color: #000000a2;
     position: absolute;
@@ -229,7 +229,8 @@
     left: 7.9vh !important;
 }
 
-.myTime, .myIsEdit {
+.myTime,
+.myIsEdit {
     font-size: 1.2vh;
     color: #000000a2;
     position: absolute;
@@ -241,7 +242,8 @@
     right: 7.9vh !important;
 }
 
-.myMessage, .myDeleteMessage {
+.myMessage,
+.myDeleteMessage {
     margin: 5%;
     max-width: 45%;
     padding: 5%;
@@ -251,15 +253,14 @@
     border-radius: 3vh;
     line-height: 2.4vh;
     overflow-wrap: break-word;
-    /* Handles word wrap */
     word-wrap: break-word;
     border-bottom-right-radius: 0;
     display: flex;
     justify-content: flex-end;
-    box-shadow: 
-    5px 5px 10px rgba(0, 0, 0, 0.2), 
-    -5px -5px 8px #fff,
-    inset -5px -5px 10px #00000048;
+    box-shadow:
+        5px 5px 10px rgba(0, 0, 0, 0.2),
+        -5px -5px 8px #fff,
+        inset -5px -5px 10px #00000048;
     position: relative;
 }
 
@@ -268,7 +269,8 @@
     color: #000000b7 !important;
 }
 
-.sendMessage , .sendDeleteMessage{
+.sendMessage,
+.sendDeleteMessage {
     margin: 5%;
     max-width: 45%;
     padding: 5%;
@@ -278,12 +280,12 @@
     border-radius: 3vh;
     line-height: 2.4vh;
     word-wrap: break-word;
-    overflow-wrap: break-word; /* Use overflow-wrap to break words */
+    overflow-wrap: break-word;
     border-bottom-left-radius: 0;
     display: flex;
     justify-content: flex-start;
-    box-shadow: 
-        -5px 5px 10px rgba(0, 0, 0, 0.2), 
+    box-shadow:
+        -5px 5px 10px rgba(0, 0, 0, 0.2),
         5px -5px 8px #fff,
         inset 5px -5px 10px #00000048;
     position: relative;
@@ -330,9 +332,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 
-    5px 5px 10px rgba(0, 0, 0, 0.2),
-   -5px -5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        5px 5px 10px rgba(0, 0, 0, 0.2),
+        -5px -5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .passwordDiolog input {
@@ -343,9 +345,9 @@
     height: 1.2vh;
     border: 2px solid #66a9e0;
     border-radius: 1vh;
-    box-shadow:  
-    inset 5px 5px 10px rgba(0, 0, 0, 0.2),
-     5px 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+        5px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .passwordDiolog button {
@@ -356,10 +358,10 @@
     border: none;
     color: #fff;
     font-size: 1.5vh;
-    box-shadow: 
-    -5px 5px 10px rgba(0, 0, 0, 0.2), 
-    5px -5px 8px #fff,
-    inset 5px -5px 10px #00000048;
+    box-shadow:
+        -5px 5px 10px rgba(0, 0, 0, 0.2),
+        5px -5px 8px #fff,
+        inset 5px -5px 10px #00000048;
 }
 
 .editDeldteContainer {
@@ -374,13 +376,13 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    box-shadow: 
-    -5px 5px 10px rgba(0, 0, 0, 0.2), 
-    5px -5px 8px #fff,
-    inset 5px -5px 10px #00000048;
-}   
+    box-shadow:
+        -5px 5px 10px rgba(0, 0, 0, 0.2),
+        5px -5px 8px #fff,
+        inset 5px -5px 10px #00000048;
+}
 
-.editDeldteContainer i{
+.editDeldteContainer i {
     font-size: 2.5vh;
     font-weight: 900;
     z-index: 100;
@@ -393,61 +395,64 @@
     align-items: center;
 }
 
- .editButtons button{
+.editButtons button {
     width: 40% !important;
 }
 
 @media (min-width: 992px) {
 
-    .myMessage,p {
+    .myMessage,
+    p {
         font-size: 2vh;
     }
-    .sendMessage , p{
+
+    .sendMessage,
+    p {
         font-size: 2vh;
     }
-.header{
-    width: 50%;
-    position: relative;
+
+    .header {
+        width: 50%;
+        position: relative;
+        border-top-left-radius: 2vh;
+        border-top-right-radius: 2vh;
+    }
+
+    .mode-toggle {
+        position: absolute;
+    }
+
+    .chatting {
+        width: 50%;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .footer {
+        width: 50%;
+        position: fixed;
+    }
+
+    .passwordDiolog {
+        position: fixed;
+        width: 20%;
+    }
+
+
+    .myMessage,
+    .myDeleteMessage {
+        padding: 2%;
+    }
+
+    .sendMessage,
+    .sendDeleteMessage {
+        padding: 2%;
+    }
+
+    .messageContainer {
+        margin-top: 10%;
+    }
+
 }
-
-.mode-toggle {
-    position: absolute;
-   }
-
-   .chatting{
-    width: 50%;
-    box-shadow: 0px 0px 10px rgba(0,0,0, 0.2);
-   }
-
-   .footer{
-    width: 50%;
-    position: fixed;
-   }
-
-.passwordDiolog {
-    position: fixed;
-    width: 20%;
-}
-
-
-.myMessage, .myDeleteMessage {
-    padding: 2%;
-}
-
-.sendMessage , .sendDeleteMessage{
-    padding: 2%;
-}
-
-.messageContainer {
-    margin-top: 10%;
-}
-
-.header{
-    border-top-left-radius: 2vh;
-    border-top-right-radius: 2vh;
-}
-
-}  
 
 .overAll {
     width: 100%;
@@ -455,4 +460,4 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}

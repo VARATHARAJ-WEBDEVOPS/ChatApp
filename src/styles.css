@@ -36,6 +36,6 @@ body {
 }
 
 .slide-in-from-right {
-    right: 0; /* The final position, animating from right to left */
+    right: 0; 
   }
   

@@ -71,10 +71,7 @@
                     </h4>
 
                     <h4>@{{result.data.nickname}}</h4>
-                    <!-- <h4>{{result.phoneNumber}}</h4> -->
                 </div>
-
-                <!-- Assuming FriendRequestList[] is a property in your component containing an array of objects -->
 
                 <div class="accept" style="width: 13vh; height: 4.8vh; z-index: 1000;"
                     *ngIf="!checkFriendRequest(result._id) && !checkFriend(result._id) && !findIsFriendReq( result._id )" (click)="sendFriendRequest(result._id)">
@@ -129,7 +126,6 @@
                         </ng-template>
                     </h4>
                     <h4>@{{req.data.nickname}}</h4>
-                    <!--   <h4>{{req.phoneNumber}}</h4>  -->
                 </div>
                 <div class="accept" (click)="createContact(req)">
                     <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
