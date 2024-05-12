@@ -71,10 +71,9 @@ export class ChatingComponent implements OnInit {
   }
 
 
-  onMouseDown(event: MouseEvent, index: any) {   //for desktop
+  onMouseDown(event: MouseEvent, index: any) {  
     this.pressTimeout = setTimeout(() => {
-      // alert('Edit and Delete Support Only Mobile Browsers');
-      if (this.secure) { // Check if secure is true
+      if (this.secure) { 
         this.pressTimeout = setTimeout(() => {
           this.resetSelection();
           this.isEditontainer[index] = true;
@@ -85,7 +84,7 @@ export class ChatingComponent implements OnInit {
   }
 
   onTouchStart(event: TouchEvent, index: any) {
-    if (this.secure) { // Check if secure is true
+    if (this.secure) { 
       this.pressTimeout = setTimeout(() => {
         this.resetSelection();
         this.isEditontainer[index] = true;
@@ -147,7 +146,6 @@ export class ChatingComponent implements OnInit {
       const encodedData = params['data'];
       if (encodedData) {
         this.paramValue = JSON.parse(decodeURIComponent(encodedData));
-        // console.log(this.paramValue);
       }
     });
     const userdataGetting = localStorage.getItem('userList');
@@ -155,7 +153,6 @@ export class ChatingComponent implements OnInit {
     if (userdataGetting !== null) {
 
       this.userData = JSON.parse(userdataGetting);
-      // console.log(this.userData);
     }
 
     this.Frienddata = this.fb.group({
@@ -196,7 +193,6 @@ export class ChatingComponent implements OnInit {
 
   getChat() {
     this.couchService.getChat(this.userData._id, this.paramValue.for).subscribe((res: any) => {
-      // console.log(res.rows.map((res: any) => res.value));
       this.Conversation = res.rows.map((res: any) => res.value).sort((a: any, b: any) => {
         try {
           const dateA = new Date(a.data.currentTime);
@@ -214,7 +210,6 @@ export class ChatingComponent implements OnInit {
           return 0;
         }
       });
-      // console.log(this.Conversation);
     });
   }
 
@@ -239,9 +234,6 @@ export class ChatingComponent implements OnInit {
       this.hisChatListForm.value.count = Number(this.hisChatListForm.value.count) + Number(1);
 
       this.getCurrentTime();
-
-      // console.log(" Send Form", this.sendMessageForm.value);
-      // console.log(" my Form", this.myMessageForm.value);
 
       const sendMessageFormat = {
         _id: "chats_2_" + uuidv4(),

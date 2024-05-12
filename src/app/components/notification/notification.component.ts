@@ -20,14 +20,14 @@ export class NotificationComponent implements OnInit {
     if (userdataGetting !== null) {
 
       this.userData = JSON.parse(userdataGetting);
-      // console.log(this.userData);
+
     }
     await this.getNotifications(); 
   }
 
   getNotifications() {
     this.couchService.getNotifications(this.userData._id).subscribe((res: any) => {
-      // console.log(res.rows.map((row: any)=>row.value));
+ 
 
       
            this.notifications = res.rows.map((row: any)=>row.value).sort((a: any, b: any) => {
@@ -47,26 +47,11 @@ export class NotificationComponent implements OnInit {
           return 0;
         }
       });
-    // console.log(this.notifications);
 
     });
     
   }
 
-  // gettingUnreadedNotifications() {
-  //   this.firebaseService.gettingUnreadedNotifications(this.key).subscribe((res) => {
-  //     this.unreadedMessages = res;
-  //     this.putNotifyIntoNotification();
-  //   })
-  // }
-
-  // async putNotifyIntoNotification() {
-  //   for (let i = 0; i <= this.unreadedMessages.length; i++) {
-  //     await this.firebaseService.createNotification(this.userData.key, this.unreadedMessages[i]);
-  //     this.firebaseService.removeUnreadNotification(this.userData.key, this.unreadedMessages[i].key);
-  //   }
-  //   this.unreadedMessages = [];
-  // }
 
   clearingUnreadMessages(key: string) {
    

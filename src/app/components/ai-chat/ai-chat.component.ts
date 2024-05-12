@@ -94,7 +94,7 @@ export class AiChatComponent {
       isEdited: [''],
       isDeleted: ['']
     });
-    // this.fetchMessages();
+  
   }
 
   backToChat() {
@@ -102,11 +102,6 @@ export class AiChatComponent {
     this.router.navigateByUrl('chat');
   }
 
-  // scrollToContent() {
-  //   if (this.content && this.content.nativeElement) {
-  //     window.scrollTo(0, this.content.nativeElement.scrollHeight);
-  //   }
-  // }
 
   async sendMessage() {
     if (this.message) {
@@ -115,11 +110,6 @@ export class AiChatComponent {
 
       this.getCurrentTime();
       console.log(" my Form", this.myMessageForm.value);
-      // await this.firebaseService.sendAIMessage(this.userData.key, this.myMessageForm.value).then((key) => {
-      //   this.AIUpdateKey = key.key;
-      //   console.log(this.AIUpdateKey);
-      //   this.connectWebSocket(this.message);
-      // });
     }
   }
 
@@ -135,14 +125,6 @@ export class AiChatComponent {
     console.log('Current Time:', currentTime);
     this.myMessageForm.value.time = formattedTime;
   }
-
-  // fetchMessages() {
-  //   this.firebaseService.getAIMessages(this.userData.key).subscribe((res) => {
-  //     this.Conversation = res;
-  //     console.log(this.Conversation);
-
-  //   });
-  // }
 
   resetSelection() {
     for (const key in this.isEditontainer) {
@@ -166,7 +148,6 @@ export class AiChatComponent {
     websocket.addEventListener("open", () => {
       websocket.send(
         JSON.stringify({
-          // chatId: crypto.randomUUID(),
           appId: "environment-event",
           systemPrompt: this.systemPrompt,
           message: message,
@@ -174,12 +155,6 @@ export class AiChatComponent {
       );
     });
 
-    // websocket.onmessage = async (event) => {
-    //   this.receivedMessage += event.data;
-    //   await this.firebaseService.updateAIMssage(this.userData.key,this.AIUpdateKey,{ received: this.receivedMessage } );
-    //   this.message = "";
-    
-    // };
 
     websocket.onclose = (event) => {
       if (event.code === 1000) {
@@ -189,16 +164,5 @@ export class AiChatComponent {
       }
     };
   }
-
-  // messageInput.addEventListener("keydown", (event) => {
-  //   if (
-  //     event.key === "Enter" &&
-  //     !receiving &&
-  //     messageInput.value.trim() !== ""
-  //   ) {
-  //     event.preventDefault();
-  //     sendButton.click();
-  //   }
-  // });
 
 }

@@ -290,13 +290,6 @@ export class EditpageComponent implements OnInit {
       this.showErrorNickName = true;
       this.showErrorNickNameMessage = '( nickname ) Need Atleast 6 charecters';
     } 
-    // else if (usernamePattern) {
-    //   this.showErrorNickNameMessage = 'Nickname Support underscore ( _ ) only other symbols not valid';
-    //   this.showErrorNickName = true;
-    // } else if (!/[_]/.test(this.nickname)) {
-    //   this.showErrorNickName = true;
-    //   this.showErrorNickNameMessage = 'use At least 1 underscore ( _ ) for Nick Name';
-    // } 
     else if (this.checkExistingUserName() && this.userName && this.phoneNumber && phoneNumberPattern.test(this.phoneNumber)) {
       this.showErrorUserName = false;
       this.showErrorPhnNO = false;

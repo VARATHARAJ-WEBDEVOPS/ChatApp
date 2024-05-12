@@ -25,9 +25,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle("AmorChat | Login");
-    // if (localStorage.getItem('token')) {
-    //   this.router.navigateByUrl('chat');
-    // }
   }
 
   navigate() {
@@ -49,12 +46,10 @@ export class LoginComponent implements OnInit {
         } else {
           this.password = "";
           console.log('Incorrect password');
-          //   this.toastService.showToast('Incorrect password', false);
           this.showError = true;
         }
       } else {
         console.log('User not found');
-        //     this.toastService.showToast('User not found', false);
         this.clearData();
       }
     });
@@ -68,7 +63,6 @@ export class LoginComponent implements OnInit {
   openPhnTip() {
     this.message = 'It must need 10 numbers'
     this.showTip = true;
-    // console.log(this.showTip);
   }
 
   validatePhn() {
@@ -99,11 +93,9 @@ export class LoginComponent implements OnInit {
 
 
   validation() {
-    // Reset error flags initially
     this.showErrorPhnNO = false;
     this.showError = false;
 
-    // Define a regular expression pattern for 10 digits
     const phoneNumberPattern = /^[0-9]{10}$/;
 
     if (this.phoneNumber == null || !phoneNumberPattern.test(this.phoneNumber)) {

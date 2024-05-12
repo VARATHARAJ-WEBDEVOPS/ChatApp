@@ -119,11 +119,6 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle("chatApp | chat");
 
-    // if (!localStorage.getItem('token')) {
-    //   this.router.navigateByUrl('login');
-    // } else {
-
-
 
     this.tempPhone = localStorage.getItem('token');
     this.getUser(this.tempPhone);
@@ -144,7 +139,7 @@ export class ChatComponent implements OnInit {
       this.years.push(i.toString());
     }
 
-    // }
+
 
     this.contactFormat = this.fb.group({
       for: "",
@@ -163,7 +158,6 @@ export class ChatComponent implements OnInit {
       _rev: '',
       data: {}
     });
-    // this.gettingUnreadedNotifications();
 
   }
 
@@ -180,7 +174,7 @@ export class ChatComponent implements OnInit {
       this.userName = this.userdata.data.userName;
       this.nickNameForm.patchValue(this.userdata);
 
-      // console.log(this.userdata.userName);
+
 
       if (response) {
         if (!this.userdata.data.nickname) {
@@ -219,7 +213,6 @@ export class ChatComponent implements OnInit {
 
   checkExistingUserName() {
     this.couchService.checkExistingUserName(this.nickname).subscribe((res: any) => {
-      // return !!res.rows.length;
       if (res.rows.length === 1) {
         this.toastService.showToast('Nick Name Already used', true);
       } else {
@@ -233,10 +226,6 @@ export class ChatComponent implements OnInit {
     this.nickNameForm.value.data.gender = this.gender;
     this.nickNameForm.value.data.age = this.age;
     this.nickNameForm.value.data.dob = this.birthdate;
-
-    // console.log(this.nickNameForm.value);
-
-    // console.log(this.userdata._id);
 
 
     await this.couchService.updateNickName(this.userdata._id, this.userdata._rev, this.nickNameForm.value).subscribe(() => {
@@ -259,7 +248,6 @@ export class ChatComponent implements OnInit {
   }
 
   async nickNameValidation() {
-    // console.log(this.userdata);
     this.nickNameForm.patchValue(this.userdata);
 
     this.calculateAge()
@@ -311,13 +299,11 @@ export class ChatComponent implements OnInit {
 
   openProfile(res: any) {
     this.router.navigate(['/friendprofile', encodeURIComponent(JSON.stringify(res))], { skipLocationChange: true });
-    // const encodedUserData = encodeURIComponent(JSON.stringify(res));
-    // this.router.navigate(['/friendprofile'], { queryParams: { encodedUserData }, replaceUrl: true });
   }
 
   getContacts() {
     this.couchService.getContacts(this.userKey).subscribe((res: any) => {
-      // console.log(res);
+
 
       if (res.rows.length) {
         let for_ids = res.rows.map((row: any) => row.value[1]);
@@ -347,11 +333,9 @@ export class ChatComponent implements OnInit {
                 this.contactFormat.value.to_name = this.userdata.data.userName;
                 this.chatContact.push(this.contactFormat.value);
                 this.contactFormat.reset();
-                // console.log(contactFormat);
               }
             }
           }
-          //  console.log(this.chatContact);
         });
       }
       this.isloading = false;
@@ -362,7 +346,6 @@ export class ChatComponent implements OnInit {
     this.couchService.getGroup(this.userdata.data.groups.join('","')).subscribe((res: any) => {      
       this.groupsList = res.rows.map((res: any) => res.doc);
       this.groupsList = this.groupsList.filter((data: any) => data !== null );
-      // console.log(this.groupsList);
     });
   }
 

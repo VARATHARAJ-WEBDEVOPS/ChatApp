@@ -33,7 +33,6 @@ export class MyFriendsComponent implements OnInit {
     this.title.setTitle("AmorChat | MyFriends");
 
     this.route.params.subscribe(params => {
-      // Decode JSON data
       const encodedData = params['data'];
       if (encodedData) {
           this.userdata = JSON.parse(decodeURIComponent(encodedData));
@@ -42,7 +41,6 @@ export class MyFriendsComponent implements OnInit {
     this.userKey = this.userdata.key;
     this.userphoneNumber = this.userdata.phoneNummber;
 
-    // this.getFriends();
     this.sendFriendReqForm = this.formBuilder.group({
       userName: [''],
       phoneNumber: [''],

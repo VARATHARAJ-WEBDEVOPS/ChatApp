@@ -51,7 +51,7 @@ export class GroupProfileComponent implements OnInit {
 
   getPeople() {
     const data = this.paramValue.data.peoples.join('","');
-    // console.log(data);
+
 
     this.couchService.getPeoples(data).subscribe((res: any) => {
       this.peoples = res.rows.map((res: any) => res.doc);

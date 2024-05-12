@@ -21,7 +21,7 @@ export class CouchService {
 
   constructor(private http: HttpClient) { }
 
-  //create Process
+
 
   createAccount(document?: any) {
     const createUrl = `${this.CouchURL}/${this.databaseName}`;
@@ -53,7 +53,7 @@ export class CouchService {
     return this.http.post(createUrl, doc, this.header);
   }
 
-  // getUsingAllDocs
+
 
   getContactUserDetails(doc: string[]) {
     const url = `${this.CouchURL}/${this.databaseName}/_all_docs?include_docs=true&keys=["${doc}"]`
@@ -70,7 +70,7 @@ export class CouchService {
     return this.http.get(url, this.header);
   }
 
-  //read process
+
 
   checkExistingUser(phoneNumber: string) {
     const url = `${this.CouchURL}/${this.databaseName}/_design/view/_view/phoneNumberSearch?key=${phoneNumber}`
@@ -127,34 +127,34 @@ export class CouchService {
     return this.http.get(url, this.header);
   }
 
-  //update process
+
 
   updateNickName(_id: string, _rev: string, doc: any) {
     const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
-    return this.http.put(url, doc, this.header); ``
+    return this.http.put(url, doc, this.header);
   }
 
   updateUserProfile(_id: string, _rev: string, doc: any) {
     const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
-    return this.http.put(url, doc, this.header); ``
+    return this.http.put(url, doc, this.header);
   }
 
   updateGroup(_id: string, _rev: string, doc: any) {
     const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
-    return this.http.put(url, doc, this.header); ``
+    return this.http.put(url, doc, this.header);
   }
 
   updatecontact(_id: string, _rev: string, doc: any) {
     const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
-    return this.http.put(url, doc, this.header); ``
+    return this.http.put(url, doc, this.header);
   }
 
   pushGroupIdToUSerData(_id: string, _rev: string, doc: any) {
     const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
-    return this.http.put(url, doc, this.header); ``
+    return this.http.put(url, doc, this.header);
   }
 
-  //delete process...
+
 
   cancelFriendRequest(_id: string, _rev: string) {
     const url = `${this.CouchURL}/${this.databaseName}/${_id}?rev=${_rev}`;
@@ -166,7 +166,7 @@ export class CouchService {
     return this.http.delete(url, this.header);
   }
 
-  //search process
+
 
   searchUsersByName(name: string) {
     const startkey = name.toLowerCase();
@@ -184,7 +184,7 @@ export class CouchService {
 
 
   callRealtime(id: string): Observable<any> {
-    const realtimeUrl = `${this.CouchURL}/${this.databaseName}/_changes?include_docs=true&filter=mydesign/myfilter&user=${id}`   //include_docs=true`;
+    const realtimeUrl = `${this.CouchURL}/${this.databaseName}/_changes?include_docs=true&filter=mydesign/myfilter&user=${id}`  
     return this.http.get(realtimeUrl, {
       headers: {
         "Authorization": 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword),

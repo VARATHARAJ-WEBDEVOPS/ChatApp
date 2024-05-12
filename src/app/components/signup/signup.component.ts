@@ -26,7 +26,6 @@ export class SignupComponent implements OnInit {
   showErrorPhnNO: boolean = false;
   showErrorUserName: boolean = false;
   isScanContainer: boolean = false;
-  // private unsubscribe$ = new Subject<void>();
 
   constructor(
     private couchService: CouchService,
@@ -101,19 +100,14 @@ export class SignupComponent implements OnInit {
 
       if (response.rows.length != 0) {
         this.toastService.showToast('Phone Number Already used', true);
-        // console.log('Phone Number Already used');
+  
 
       } else {
-        // console.log('User does not exist');
         this.onSubmit();
       }
     });
   }
 
-  // ngOnDestroy() {
-  //   this.unsubscribe$.next();
-  //   this.unsubscribe$.complete();
-  // }
 
   validation() {
     this.showErrorUserName = false;

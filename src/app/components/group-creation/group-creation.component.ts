@@ -51,7 +51,6 @@ export class GroupCreationComponent implements OnInit {
         this.searchResults = res.rows.map((row: any) => row.value);
         this.searchResults = this.searchResults.filter(item => item._id !== this.userdata._id);
         let compareIDs = this.selectedContacts.map((ids: any) => ids._id);
-        // console.log(compareIDs);
 
         for (let i = 0; i < this.selectedContacts.length; i++) {
           this.searchResults = this.searchResults.filter(item => item._id !== compareIDs[i]);
@@ -65,7 +64,6 @@ export class GroupCreationComponent implements OnInit {
     this.searchResults = [];
     this.isSearchContact = !this.isSearchContact;
     this.selectedContacts.push(data);
-    // console.log(JSON.stringify(this.selectedContacts));
   }
 
   createGroup() {
@@ -92,7 +90,7 @@ export class GroupCreationComponent implements OnInit {
     }
   }
 
-  pushGroupIdToUSerData(couchFormat: any, groupId: string) {   //pushing group id into user table (master) <- (lookup)
+  pushGroupIdToUSerData(couchFormat: any, groupId: string) { 
 
     let usersForUpdateGroup: any[] = [];
 

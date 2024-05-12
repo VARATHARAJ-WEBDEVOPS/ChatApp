@@ -40,7 +40,6 @@ const routes: Routes = [
   { path: 'practice', component: PracticeComponent },
   { path: 'group-chatting/:data', component: GroupChattingComponent },
   { path: '**', component: WildcardComponent },
-  // { path: 'group-creation', component: GroupCreationComponent, canActivate: [AuthRouteService] },
 ];
 
 @NgModule({

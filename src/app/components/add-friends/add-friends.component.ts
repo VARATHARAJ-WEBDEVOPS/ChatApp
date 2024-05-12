@@ -107,15 +107,8 @@ export class AddFriendsComponent implements OnInit {
       friendListPathKey: ['']
     });
 
-    //_changes calling...
-    // this.couchService.callRealtime(this.userdata._id).subscribe((res: any) => {
-    //   console.log(res);
-    // });
+ 
   }
-
-  // ngOnDestroy() {
-  //   this.changesSubscription.unsubscribe();
-  // }
 
 
 
@@ -178,15 +171,8 @@ export class AddFriendsComponent implements OnInit {
     this.sendFriendReqForm.value.age = this.userdata.age;
     this.sendFriendReqForm.value.dob = this.userdata.dob;
     this.sendFriendReqForm.value.count = 0;
-     // this.isReqThere(data.userKey, requestKey);
+    
   }
-
-  // isReqThere(key: string, requestKey: any) {
-  //   this.firebaseService.isReqThere(key, this.userdata.phoneNumber).subscribe(res => {
-  //     this.removeFriendReqonSender(key, res[0].key);
-  //   });
-  //   this.removeFriendReq(requestKey);
-  // }
 
 
   cancelFriendRequest(data: any) {
@@ -259,7 +245,7 @@ export class AddFriendsComponent implements OnInit {
     }
   }
 
-  firstPersion(data: any) {          //my contact page
+  firstPersion(data: any) {         
     const couchFormat = {
       _id: "contacts_2_" + uuidv4(),
       data: {
@@ -274,7 +260,7 @@ export class AddFriendsComponent implements OnInit {
       this.secondPersion(data);
     });
   }
-  secondPersion(data: any) {        //second persion contact page
+  secondPersion(data: any) {       
     const couchFormat = {
       _id: "contacts_2_" + uuidv4(),
       data: {

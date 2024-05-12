@@ -35,7 +35,6 @@ export class ProfileComponent implements OnInit {
       this.router.navigateByUrl('login');
     } 
     
-    // console.log(localStorage.getItem('userList'));
     const userListString = localStorage.getItem('userList');
 
     if (userListString !== null) {

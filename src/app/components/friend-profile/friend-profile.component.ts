@@ -27,10 +27,9 @@ export class FriendProfileComponent {
       const encodedData = param['data'];
       if (encodedData) {
         this.paramValue = JSON.parse(decodeURIComponent(encodedData));
-        // console.log(this.paramValue);
+
       }
     });
-    // console.log(this.paramValue);
   }
 
   conformDeleteToggle() {
@@ -48,9 +47,6 @@ export class FriendProfileComponent {
   }
 
   removeFriend() {
-    // console.log(this.paramValue);
-    // this.couchService.getContactForDelete()
-    // console.log(this.paramValue.for);
     
 
     this.couchService.deleteFriend(this.paramValue.contact_id, this.paramValue.contact_rev).subscribe((res) => {

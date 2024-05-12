@@ -55,10 +55,9 @@ export class GroupChattingComponent implements OnInit {
   }
 
 
-  onMouseDown(event: MouseEvent, index: any) {   //for desktop
+  onMouseDown(event: MouseEvent, index: any) { 
     this.pressTimeout = setTimeout(() => {
-      // alert('Edit and Delete Support Only Mobile Browsers');
-      if (this.secure) { // Check if secure is true
+      if (this.secure) { 
         this.pressTimeout = setTimeout(() => {
           this.resetSelection();
           this.isEditontainer[index] = true;
@@ -69,7 +68,7 @@ export class GroupChattingComponent implements OnInit {
   }
 
   onTouchStart(event: TouchEvent, index: any) {
-    if (this.secure) { // Check if secure is true
+    if (this.secure) { 
       this.pressTimeout = setTimeout(() => {
         this.resetSelection();
         this.isEditontainer[index] = true;
@@ -131,7 +130,7 @@ export class GroupChattingComponent implements OnInit {
       const encodedData = params['data'];
       if (encodedData) {
         this.paramValue = JSON.parse(decodeURIComponent(encodedData));
-        // console.log(this.paramValue);
+      
       }
     });
     const userdataGetting = localStorage.getItem('userList');
@@ -139,7 +138,6 @@ export class GroupChattingComponent implements OnInit {
     if (userdataGetting !== null) {
 
       this.userData = JSON.parse(userdataGetting);
-      // console.log(this.userData);
     }
 
     this.Frienddata = this.fb.group({
@@ -180,7 +178,6 @@ export class GroupChattingComponent implements OnInit {
 
   getChats() {
     this.couchService.getGroupChat(this.paramValue._id).subscribe((res: any) => {
-      // console.log(res.rows.map((res: any) => res.value));
       this.Conversation = res.rows.map((res: any) => res.value).sort((a: any, b: any) => {
         try {
           const dateA = new Date(a.data.currentTime);
@@ -240,63 +237,6 @@ export class GroupChattingComponent implements OnInit {
         this.message = "";
         this.getChats();
       })
-
-      // this.couchService.createChat(sendMessageFormat).subscribe((res) => {
-      //   const sendMessageFormat = {
-      //     _id: "groupchats_2_" + uuidv4(),
-      //     data: {
-      //       time: this.getCurrentTime(),
-      //       currentTime: new Date(),
-      //       isDelete: false,
-      //       isEdited: false,
-      //       received: this.message,
-      //       send: '',
-      //       user: this.paramValue.for,
-      //       with: this.userData._id,
-      //       type: 'groupchats'
-      //     }
-      //   }
-      //   this.couchService.createChat(sendMessageFormat).subscribe((res) => {
-
-      //     this.couchService.getContactForDelete(this.paramValue.for, this.userData._id).subscribe((res: any) => {
-      //       console.log(res);
-      //       const couchFormat = {
-      //         _id: res.rows[0].value._id,
-      //         _rev: res.rows[0].value._rev,
-      //         data: {
-      //           for: res.rows[0].value.data.for,
-      //           lastmessage: this.message,
-      //           lasttime: this.getCurrentTime(),
-      //           type: "contacts",
-      //           user: res.rows[0].value.data.user
-      //         }
-      //       }
-      //       console.log(couchFormat);
-      //       this.couchService.updatecontact(res.rows[0].value._id, res.rows[0].value._rev, couchFormat).subscribe((res) => {
-
-      //         this.couchService.getContactForDelete(this.userData._id, this.paramValue.for).subscribe((res: any) => {
-      //           console.log(res);
-      //           const couchFormat = {
-      //             _id: res.rows[0].value._id,
-      //             _rev: res.rows[0].value._rev,
-      //             data: {
-      //               for: res.rows[0].value.data.for,
-      //               lastmessage: this.message,
-      //               lasttime: this.getCurrentTime(),
-      //               type: "contacts",
-      //               user: res.rows[0].value.data.user
-      //             }
-      //           }
-      //           console.log(couchFormat);
-      //           this.couchService.updatecontact(res.rows[0].value._id, res.rows[0].value._rev, couchFormat).subscribe((res) => {
-      //             this.message = "";
-      //             console.log("done");
-      //           });
-      //         });
-      //       });
-      //     });
-      //   });
-      // });
     }
   }
 
