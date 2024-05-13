@@ -256,11 +256,9 @@ handleKeyPress($event: KeyboardEvent) {
 
 
   resetSelection() {
-    for (const key in this.isEditontainer) {
-      if (this.isEditontainer.hasOwnProperty(key)) {
-        this.isEditontainer[key] = false;
-      }
-    }
+    for (let i = 0; i < this.isEditontainer.length; i++) {
+      this.isEditontainer[i] = false;
+    }    
   }
 
   deleteAction(mgs: any) {
