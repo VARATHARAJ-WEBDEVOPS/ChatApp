@@ -157,15 +157,6 @@ throw new Error('Method not implemented.');
         })
       );
     });
-
-
-    websocket.onclose = (event) => {
-      if (event.code === 1000) {
-        this.receiving = false;
-      } else {
-        this.receiving = false;
-      }
-    };
   }
 
 }
