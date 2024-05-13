@@ -14,6 +14,7 @@ import * as CryptoJS from 'crypto-js';
 })
 export class GroupChattingComponent implements OnInit {
 handleKeyPress($event: KeyboardEvent) {
+  console.log('test');
 }
 
   @ViewChild('contentsss') content!: ElementRef;
