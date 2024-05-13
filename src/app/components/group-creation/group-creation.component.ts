@@ -10,6 +10,9 @@ import { v4 as uuidv4 } from 'uuid';
   styleUrls: ['./group-creation.component.css']
 })
 export class GroupCreationComponent implements OnInit {
+handleKeyPress($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
 
   Query: string = '';
   showError!: string;

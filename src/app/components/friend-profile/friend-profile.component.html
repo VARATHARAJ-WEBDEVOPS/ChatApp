@@ -6,8 +6,8 @@
                 <h2>Are you sure?</h2>
                 <p>Once deleted, your friend will be removed from your contact.</p>
                 <div class="conformButtons">
-                    <button id="cancelBtn" (click)="conformDeleteToggle()">Cancel</button>
-                    <button id="okBtn" (click)="removeFriend()" >Yes!</button>
+                    <button id="cancelBtn" (click)="conformDeleteToggle()" (keypress)="handleKeyPress($event)">Cancel</button>
+                    <button id="okBtn" (click)="removeFriend()" (keypress)="handleKeyPress($event)" >Yes!</button>
                 </div>
             </div>
         </div>
@@ -72,7 +72,7 @@
                 <div class="inviteLove" style="width: 40%;   background-color: rgb(253, 130, 151);   box-shadow:
   -5px 5px 10px rgba(0, 0, 0, 0.2),
   5px -5px 8px #fff;
-  " (click)="conformDeleteToggle()">
+  " (click)="conformDeleteToggle()" (keypress)="handleKeyPress($event)">
 
                     <i class="bi bi-heartbreak" style="color: #fff; font-size: 2vh;"></i>
                     <p style="margin-left: 1vh; font-size: 1.8vh; color: #fff;  ">Delete Friend</p>

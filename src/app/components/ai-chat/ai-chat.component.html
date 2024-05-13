@@ -1,7 +1,7 @@
 <div class="overAll">
 
     <div class="header">
-        <div class="backIcon" (click)="backToChat()">
+        <div class="backIcon" (click)="backToChat()" (keypress)="handleKeyPress($event)">
             <i class="bi bi-caret-left-fill"></i>
         </div>
         <div class="profile">
@@ -24,7 +24,7 @@
 
     <div class="chatting" #contentsss style="margin-top: 9vh; margin-bottom: 10vh;">
         <div class="messageContainer">
-            <div class="messages"    *ngFor="let mgs of Conversation " (click)="resetSelection(); isShowEditContainer = false">
+            <div class="messages"    *ngFor="let mgs of Conversation " (click)="resetSelection();  isShowEditContainer = false" (keypress)="handleKeyPress($event)">
                 <div class="myMessageContainer" [style]="mgs.send === '' ? 'display: none' : 'display: flex'">
                     <div class="myMessage">
                         <p *ngIf="!secure">{{mgs.key}}</p>
@@ -40,14 +40,14 @@
                     <p class="sendTime">{{mgs.time}}</p>
                 </div>
             </div>
-            <div (click)="resetSelection(); isShowEditContainer = false"
+            <div (click)="resetSelection(); isShowEditContainer = false" (keypress)="handleKeyPress($event)"
                 style="width: 100%; height: 100vh; background-color: #ecf1fa;"></div>
         </div>
 
         <div class="footer">
             <div class="textBox">
             </div>
-            <div class="sendButton" (click)="sendMessage()">
+            <div class="sendButton" (click)="sendMessage()" (keypress)="handleKeyPress($event)">
                 <i class="bi bi-chat-heart-fill"></i>
                 <p>send</p>
             </div>

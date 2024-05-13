@@ -11,6 +11,9 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 
 export class AiChatComponent {
+handleKeyPress($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
   @ViewChild('contentsss') content!: ElementRef;
 
   paramValue: any;
@@ -128,7 +131,8 @@ export class AiChatComponent {
   resetSelection() {
     for (const key in this.isEditontainer) {
       if (this.isEditontainer.hasOwnProperty(key)) {
-   
+        console.log('yes');
+        
       }
     }
   }

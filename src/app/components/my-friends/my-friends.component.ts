@@ -11,6 +11,9 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
   styleUrls: ['./my-friends.component.css']
 })
 export class MyFriendsComponent implements OnInit {
+handleKeyPress($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
 
   isFriendRequest = true;
   FriendsList: any[] = [];

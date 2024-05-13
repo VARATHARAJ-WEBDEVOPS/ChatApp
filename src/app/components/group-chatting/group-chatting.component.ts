@@ -14,6 +14,8 @@ import { group } from '@angular/animations';
   styleUrls: ['./group-chatting.component.css']
 })
 export class GroupChattingComponent implements OnInit {
+handleKeyPress($event: KeyboardEvent) {
+}
 
   @ViewChild('contentsss') content!: ElementRef;
 

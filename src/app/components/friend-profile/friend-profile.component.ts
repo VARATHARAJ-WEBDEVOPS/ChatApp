@@ -10,6 +10,9 @@ import { v4 as uuidv4 } from 'uuid';
   styleUrls: ['./friend-profile.component.css']
 })
 export class FriendProfileComponent {
+handleKeyPress($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
   UserList: any;
   paramValue: any;
   conformDelete: boolean = false;

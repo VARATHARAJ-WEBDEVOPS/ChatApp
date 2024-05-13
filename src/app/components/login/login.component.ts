@@ -12,6 +12,9 @@ import * as CryptoJS from 'crypto-js';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+handleKeyPress($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
 
   phoneNumber!: any;
   password!: any;

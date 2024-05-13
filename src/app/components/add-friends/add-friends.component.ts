@@ -13,6 +13,9 @@ import { Router } from '@angular/router';
 })
 
 export class AddFriendsComponent implements OnInit {
+handleKeyPress($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
   isFriendRequest = true;
   FriendRequestList: any[] = [];
   isSearchResults: boolean = false;

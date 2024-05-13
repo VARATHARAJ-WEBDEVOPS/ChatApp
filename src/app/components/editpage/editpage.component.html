@@ -7,17 +7,17 @@
             <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
                 placeholder="Enter your current password" autocomplete="new-password" [(ngModel)]="CurrentPassword">
             <div class="editButtons">
-                <button (click)="passwordDiolog = false" style="background-color: rgb(253, 130, 151);">Cancel</button>
-                <button (click)="conformPassword()">Conform</button>
+                <button (click)="passwordDiolog = false" (keypress)="handleKeyPress($event)" style="background-color: rgb(253, 130, 151);">Cancel</button>
+                <button (click)="conformPassword()" (keypress)="handleKeyPress($event)">Conform</button>
             </div>
         </div>
 
         <div class="header">
             <i *ngIf="Edited" routerLink="/profile" class="bi bi-arrow-left"></i>
-            <i *ngIf="!Edited" (click)="isunsaveDiolog = true" class="bi bi-arrow-left"></i>
+            <i *ngIf="!Edited" (click)="isunsaveDiolog = true" (keypress)="handleKeyPress($event)" class="bi bi-arrow-left"></i>
             <p>Edit profile</p>
             <i *ngIf="!Edited" style="position: absolute; right: 3vh; color: #0c91ea; font-size: 3.3vh;"
-                class="bi bi-check-lg" (click)="passwordDiolog = true"></i>
+                class="bi bi-check-lg" (click)="passwordDiolog = true" (keypress)="handleKeyPress($event)"></i>
         </div>
 
         <div class="inputDiv" [style.border-bottom]="showErrorUserName ? '0.5px solid red' : '0.5px solid #fff'">
@@ -55,10 +55,10 @@
         <div class="gendderContainer">
             <p class="GenderName">Gender</p>
             <div class="gender" [style.border]="showErrorGender ? '0.2vh solid red' : '0.5px solid #fff'">
-                <div class="male" (click)="toggleMale()" [style.background-color]="isGenderMale ? '#0099ff' : ''">
+                <div class="male" (click)="toggleMale()" (keypress)="handleKeyPress($event)" [style.background-color]="isGenderMale ? '#0099ff' : ''">
                     <p [style.color]="isGenderMale ? '#fff' : '#767676'">Male</p>
                 </div>
-                <div class="female" (click)="toggleFemale() " [style.background-color]="isGenderFemale ? '#ff00ea' : ''"
+                <div class="female" (click)="toggleFemale() " (keypress)="handleKeyPress($event)" [style.background-color]="isGenderFemale ? '#ff00ea' : ''"
                     [style.border-left]="showErrorGender ? '0.2vh solid red' : '0.5px solid #fff'">
                     <p [style.color]="isGenderFemale ? '#fff' : '#767676'">Female</p>
                 </div>
@@ -100,7 +100,7 @@
         <div class="yesButton" routerLink="/profile">
             Yes
         </div>
-        <div class="noButton" (click)="isunsaveDiolog = false">
+        <div class="noButton" (click)="isunsaveDiolog = false" (keypress)="handleKeyPress($event)">
             No
         </div>
     </div>

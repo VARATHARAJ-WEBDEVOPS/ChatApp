@@ -12,6 +12,9 @@ import * as CryptoJS from 'crypto-js';
   styleUrls: ['./editpage.component.css']
 })
 export class EditpageComponent implements OnInit {
+handleKeyPress($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
 
   showErrorGender: boolean = false;
   gender: string = '';

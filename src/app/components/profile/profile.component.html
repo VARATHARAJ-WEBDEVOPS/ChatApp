@@ -8,8 +8,8 @@
                 <h2>Are you sure?</h2>
                 <p>Do You want to logout?</p>
                 <div class="conformButtons">
-                    <button id="cancelBtn" (click)="conformlogoutToggle()">Cancel</button>
-                    <button id="okBtn" (click)="logOut()">Yes!</button>
+                    <button id="cancelBtn" (click)="conformlogoutToggle()" (keypress)="handleKeyPress($event)">Cancel</button>
+                    <button id="okBtn" (click)="logOut()" (keypress)="handleKeyPress($event)">Yes!</button>
                 </div>
             </div>
         </div>

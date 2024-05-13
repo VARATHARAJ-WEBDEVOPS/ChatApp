@@ -5,7 +5,7 @@
             <div class="loader"></div>
         </div>
         <div class="floatingButton" *ngIf="selectedContacts.length >= 2 && errorColor === 'green'"
-            style="color: #fff; background-color: #66a9e0" (click)="createGroup()">
+            style="color: #fff; background-color: #66a9e0" (click)="createGroup()" (keypress)="handleKeyPress($event)">
             Create
         </div>
         <div class="floatingButton" *ngIf="selectedContacts.length < 2 && !isSearchContact"
@@ -34,13 +34,13 @@
             <div class="displayNames" *ngFor="let data of selectedContacts">
 
                 <i class="bi bi-x-lg" id="TrashIcon" style="font-size: 3vh; color: red;"
-                    (click)="removeContact(data.data.nickname)"></i>
+                    (click)="removeContact(data.data.nickname)" (keypress)="handleKeyPress($event)"></i>
                 <p>@{{data.data.nickname}}</p>
             </div>
 
             <button class="plusButton" [style.margin-left]="selectedContacts.length >= 1 ? '3vh': '' "
                 *ngIf="errorColor === 'green' && Query.length >= 1" style="color: #fff; background-color: #66a9e0;"
-                (click)="isSearchContact = !isSearchContact">
+                (click)="isSearchContact = !isSearchContact" (keypress)="handleKeyPress($event)">
                 <i class="bi bi-plus"></i>
             </button>
             <button class="plusButton" [style.margin-left]="selectedContacts.length >= 1 ? '3vh': '' "
@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="accept" style="  width: 13vh; height: 4.8vh; z-index: 1000;"
-                        (click)="addToSelectedContact(result)">
+                        (click)="addToSelectedContact(result)" (keypress)="handleKeyPress($event)">
                         <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
                         <h2>Add</h2>
                     </div>

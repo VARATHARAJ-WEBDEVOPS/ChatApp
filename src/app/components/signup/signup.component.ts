@@ -17,6 +17,9 @@ import * as CryptoJS from 'crypto-js';
 
 })
 export class SignupComponent implements OnInit {
+handleKeyPress($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
 
   userName: string = "";
   phoneNumber: string = "";

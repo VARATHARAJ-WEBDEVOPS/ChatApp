@@ -19,6 +19,9 @@ export class User {
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+handleKeyPress($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
 
   UserList: User[] = [];
   conformlogout: boolean = false;
