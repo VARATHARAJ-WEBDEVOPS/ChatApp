@@ -1,12 +1,11 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
 import { v4 as uuidv4 } from 'uuid';
 import { CouchService } from 'src/app/services/couch.service';
 import * as CryptoJS from 'crypto-js';
-import { group } from '@angular/animations';
 
 @Component({
   selector: 'app-group-chatting',
@@ -23,7 +22,7 @@ handleKeyPress($event: KeyboardEvent) {
   data!: any;
   sendMessageForm!: FormGroup;
   myMessageForm!: FormGroup;
-  message!: String;
+  message!: string;
   userData: any;
   myPath!: string;
   friendPath!: string;
@@ -82,12 +81,15 @@ handleKeyPress($event: KeyboardEvent) {
   onMouseUp(event: MouseEvent) {
     if (this.pressTimeout) {
       clearTimeout(this.pressTimeout);
-    }
+    }  
   }
 
-  onTouchEnd(event: TouchEvent, index: number) {
+  onTouchEnd(event?: TouchEvent, index?: number) {
     if (this.pressTimeout) {
       clearTimeout(this.pressTimeout);
+    }
+    else {
+      console.log(`Touched at index ${index}`);
     }
   }
 
@@ -207,7 +209,7 @@ handleKeyPress($event: KeyboardEvent) {
   }
 
   scrollToContent() {
-    if (this.content && this.content.nativeElement) {
+    if (this.content?.nativeElement) {
       window.scrollTo(0, this.content.nativeElement.scrollHeight);
     }
   }
