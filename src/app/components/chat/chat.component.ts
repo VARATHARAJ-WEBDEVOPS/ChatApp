@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AngularFireAnalytics } from '@angular/fire/compat/analytics';
@@ -29,6 +28,7 @@ export class User {
 
 export class ChatComponent implements OnInit {
 handleKeyPress($event: KeyboardEvent) {
+  console.log('test');
 }
   private unsubscribe$ = new Subject<void>();
   showUserProfiledDiv = false;
@@ -261,7 +261,7 @@ handleKeyPress($event: KeyboardEvent) {
     this.showErrorNickName = false;
     this.showErrorDob = false;
     this.showErrorGender = false;
-    const usernamePattern = /[!@#$%^&*()+{}\[\]:;<>,.?~\\]/.test(this.nickname);
+
 
     if (this.nickname === "") {
       this.showErrorNickName = true;
@@ -319,29 +319,30 @@ handleKeyPress($event: KeyboardEvent) {
         this.couchService.getContactUserDetails(for_ids.join('","')).subscribe((res: any) => {
           this.userData = res.rows;
 
-          for (let i = 0; i < this.userData.length; i++) {
-            for (let j = 0; j < this.userData.length; j++) {
-
-              if (this.rawContact[i].data.for === this.userData[j].id) {
-
-                this.contactFormat.value.for = this.rawContact[i].data.for;
-                this.contactFormat.value.lastmessage = this.rawContact[i].data.lastmessage;
-                this.contactFormat.value.contact_id = this.rawContact[i]._id;
-                this.contactFormat.value.contact_rev = this.rawContact[i]._rev;
-                this.contactFormat.value.lasttime = this.rawContact[i].data.lasttime;
-                this.contactFormat.value.userName = this.userData[j].doc.data.userName;
-                this.contactFormat.value.phoneNumber = this.userData[j].doc.data.phoneNumber;
-                this.contactFormat.value.nickname = this.userData[j].doc.data.nickname;
-                this.contactFormat.value.age = this.userData[j].doc.data.age;
-                this.contactFormat.value.gender = this.userData[j].doc.data.gender;
-                this.contactFormat.value.dob = this.userData[j].doc.data.dob;
-                this.contactFormat.value.to_id = this.userdata._id;
-                this.contactFormat.value.to_name = this.userdata.data.userName;
-                this.chatContact.push(this.contactFormat.value);
-                this.contactFormat.reset();
-              }
+          for (const rawContact of this.rawContact) {
+            for (const userData of this.userData) {
+                if (rawContact.data.for === userData.id) {
+                    const contactFormatValue = {
+                        for: rawContact.data.for,
+                        lastmessage: rawContact.data.lastmessage,
+                        contact_id: rawContact._id,
+                        contact_rev: rawContact._rev,
+                        lasttime: rawContact.data.lasttime,
+                        userName: userData.doc.data.userName,
+                        phoneNumber: userData.doc.data.phoneNumber,
+                        nickname: userData.doc.data.nickname,
+                        age: userData.doc.data.age,
+                        gender: userData.doc.data.gender,
+                        dob: userData.doc.data.dob,
+                        to_id: this.userdata._id,
+                        to_name: this.userdata.data.userName
+                    };
+                    this.chatContact.push(contactFormatValue);
+                }
             }
-          }
+            this.contactFormat.reset();
+        }
+        
         });
       }
       this.isloading = false;

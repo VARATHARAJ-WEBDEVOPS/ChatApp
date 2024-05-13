@@ -217,7 +217,8 @@ throw new Error('Method not implemented.');
     if (this.selectedDay || this.selectedMonth || this.selectedYear) {
       this.Validation();
       if (!this.selectedDay && !this.selectedMonth && !this.selectedYear) {
-
+        console.log('test');
+        
       } else if (this.selectedDay && this.selectedMonth && this.selectedYear) {
         this.calculateAge();
         this.EditedForm.value.age = this.age;
@@ -276,8 +277,8 @@ throw new Error('Method not implemented.');
     this.showError = false;
     this.showErrorMessage = '';
 
-    const usernamePattern = /[!@#$%^&*()+{}\[\]:;<>,.?~\\]/.test(this.nickname);
-    const phoneNumberPattern = /^[0-9]{10}$/;
+    const phoneNumberPattern = /^\d{10}$/;
+    
     const hasNumbersOrSymbols = /[0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\]/.test(this.userName);
 
     if (!this.userName || this.userName.length < 4) {

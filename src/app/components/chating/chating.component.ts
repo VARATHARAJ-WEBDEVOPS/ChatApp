@@ -15,6 +15,8 @@ import * as CryptoJS from 'crypto-js';
 })
 export class ChatingComponent implements OnInit {
 handleKeyPress($event: KeyboardEvent) {
+  console.log('test');
+  
 }
 
   @ViewChild('contentsss') content!: ElementRef;
@@ -104,6 +106,9 @@ handleKeyPress($event: KeyboardEvent) {
   onTouchEnd(event: TouchEvent, index: number) {
     if (this.pressTimeout) {
       clearTimeout(this.pressTimeout);
+    }
+    else {
+      console.log(`Touched at index ${index}`);
     }
   }
 
@@ -221,7 +226,7 @@ handleKeyPress($event: KeyboardEvent) {
   }
 
   scrollToContent() {
-    if (this.content && this.content.nativeElement) {
+    if (this.content?.nativeElement) {
       window.scrollTo(0, this.content.nativeElement.scrollHeight);
     }
   }
@@ -326,11 +331,9 @@ handleKeyPress($event: KeyboardEvent) {
 
 
   resetSelection() {
-    for (const key in this.isEditontainer) {
-      if (this.isEditontainer.hasOwnProperty(key)) {
-        this.isEditontainer[key] = false;
-      }
-    }
+    for (let i = 0; i < this.isEditontainer.length; i++) {
+      this.isEditontainer[i] = false;
+    }    
   }
 
   deleteAction(mgs: any) {
