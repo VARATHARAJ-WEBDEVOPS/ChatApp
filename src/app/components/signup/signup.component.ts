@@ -14,9 +14,9 @@ import * as CryptoJS from 'crypto-js';
 
 })
 export class SignupComponent implements OnInit {
-handleKeyPress($event: KeyboardEvent) {
-throw new Error('Method not implemented.');
-}
+  handleKeyPress($event: KeyboardEvent) {
+    throw new Error('Method not implemented.');
+  }
 
   userName: string = "";
   phoneNumber: string = "";
@@ -98,7 +98,7 @@ throw new Error('Method not implemented.');
 
       if (response.rows.length != 0) {
         this.toastService.showToast('Phone Number Already used', true);
-  
+
 
       } else {
         this.onSubmit();

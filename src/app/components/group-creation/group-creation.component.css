@@ -88,7 +88,6 @@ input {
     display: flex;
     justify-content: center;
     width: 80%;
-    height: 11vh;
     box-shadow:
       -1px 1px 5px rgba(0, 0, 0, 0.2),
       1px -1px 5px #fff;
@@ -97,7 +96,6 @@ input {
     position: relative;
     margin-top: 2vh;
     height: 8vh;
-    display: flex;
     align-items: center;
 }
 
