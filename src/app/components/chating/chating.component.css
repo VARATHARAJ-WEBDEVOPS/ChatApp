@@ -429,6 +429,8 @@
 .header{
     width: 50%;
     position: relative;
+    border-top-left-radius: 2vh;
+    border-top-right-radius: 2vh;
 }
 
 .mode-toggle {
@@ -461,11 +463,6 @@
 
 .messageContainer {
     margin-top: 10%;
-}
-
-.header{
-    border-top-left-radius: 2vh;
-    border-top-right-radius: 2vh;
 }
 
 }  

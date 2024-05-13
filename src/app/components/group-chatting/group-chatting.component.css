@@ -81,6 +81,8 @@
     align-items: center;
     box-shadow: 
      0px 5px 8px rgba(0, 0, 0, 0.2);
+     border-top-left-radius: 2vh;
+     border-top-right-radius: 2vh;
 }
 
 
@@ -447,11 +449,6 @@
 
 .messageContainer {
     margin-top: 10%;
-}
-
-.header{
-    border-top-left-radius: 2vh;
-    border-top-right-radius: 2vh;
 }
 
 }  

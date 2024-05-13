@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
   templateUrl: './friend-profile.component.html',
   styleUrls: ['./friend-profile.component.css']
 })
-export class FriendProfileComponent {
+export class FriendProfileComponent implements OnInit {
 handleKeyPress($event: KeyboardEvent) {
 throw new Error('Method not implemented.');
 }
@@ -30,7 +30,6 @@ throw new Error('Method not implemented.');
       const encodedData = param['data'];
       if (encodedData) {
         this.paramValue = JSON.parse(decodeURIComponent(encodedData));
-
       }
     });
   }
@@ -50,8 +49,6 @@ throw new Error('Method not implemented.');
   }
 
   removeFriend() {
-    
-
     this.couchService.deleteFriend(this.paramValue.contact_id, this.paramValue.contact_rev).subscribe((res) => {
       this.couchService.getContactForDelete(this.paramValue.for, this.paramValue.to_id).subscribe((res: any) => {
         this.couchService.deleteFriend(res.rows[0].value._id, res.rows[0].value._rev).subscribe((res) => {
@@ -65,6 +62,7 @@ throw new Error('Method not implemented.');
             }
           }
           this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
+            console.log(res);
             this.router.navigateByUrl('chat');
           });
         });

@@ -14,7 +14,7 @@ export class NotificationComponent implements OnInit {
   constructor( private couchService: CouchService
   ) { }
 
-  async ngOnInit() {
+  ngOnInit() {
     const userdataGetting = localStorage.getItem('userList');
 
     if (userdataGetting !== null) {
@@ -22,7 +22,7 @@ export class NotificationComponent implements OnInit {
       this.userData = JSON.parse(userdataGetting);
 
     }
-    await this.getNotifications(); 
+   this.getNotifications(); 
   }
 
   getNotifications() {
@@ -54,6 +54,6 @@ export class NotificationComponent implements OnInit {
 
 
   clearingUnreadMessages(key: string) {
-   
+   console.log(key);
   }
 }

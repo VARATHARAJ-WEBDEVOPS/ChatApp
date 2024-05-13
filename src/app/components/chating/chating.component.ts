@@ -276,6 +276,7 @@ handleKeyPress($event: KeyboardEvent) {
         }
         this.couchService.createChat(sendMessageFormat).subscribe((res) => {
 
+
           this.couchService.getContactForDelete(this.paramValue.for, this.userData._id).subscribe((res: any) => {
             console.log(res);
             const couchFormat = {
@@ -291,7 +292,8 @@ handleKeyPress($event: KeyboardEvent) {
             }
             console.log(couchFormat);
             this.couchService.updatecontact(res.rows[0].value._id, res.rows[0].value._rev, couchFormat).subscribe((res) => {
-
+                     
+                      
               this.couchService.getContactForDelete(this.userData._id, this.paramValue.for).subscribe((res: any) => {
                 console.log(res);
                 const couchFormat = {

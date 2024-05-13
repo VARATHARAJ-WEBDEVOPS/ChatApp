@@ -9,7 +9,7 @@ export class MesssageComponent {
   @ViewChild('content') content!: ElementRef;
 
   scrollToContent() {
-    if (this.content && this.content.nativeElement) {
+    if (this.content?.nativeElement) {
       window.scrollTo(0, this.content.nativeElement.scrollHeight);
     }
   }

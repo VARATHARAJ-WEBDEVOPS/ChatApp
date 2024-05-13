@@ -40,8 +40,7 @@ export class GroupProfileComponent implements OnInit {
   leaveGroup() {
     this.paramValue.data.peoples.splice(this.paramValue.data.peoples.findIndex((item: any) => item === this.userData._id), 1);
     this.couchService.updateGroup(this.paramValue._id, this.paramValue._rev, this.paramValue).subscribe((res: any) => {
-
-      let removedGroupData = this.userData.data.groups.splice(this.userData.data.groups.findIndex((item: any) => item === this.paramValue._id), 1);
+      console.log(res);
       this.couchService.updateUserProfile(this.userData._id, this.userData._rev, this.userData).subscribe((res: any) => {
         this.toggleLeaveGroupDialog();
         this.router.navigateByUrl('chat');
