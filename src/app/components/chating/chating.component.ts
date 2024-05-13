@@ -15,7 +15,6 @@ import * as CryptoJS from 'crypto-js';
 })
 export class ChatingComponent implements OnInit {
 handleKeyPress($event: KeyboardEvent) {
-throw new Error('Method not implemented.');
 }
 
   @ViewChild('contentsss') content!: ElementRef;

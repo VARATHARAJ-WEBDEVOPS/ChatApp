@@ -28,6 +28,8 @@ export class User {
 })
 
 export class ChatComponent implements OnInit {
+handleKeyPress($event: KeyboardEvent) {
+}
   private unsubscribe$ = new Subject<void>();
   showUserProfiledDiv = false;
   showErrorNickName: boolean = false;

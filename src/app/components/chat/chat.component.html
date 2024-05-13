@@ -2,7 +2,7 @@
 
     <div class="background">
         <div class="menuContainer">
-            <i class="bi bi-x-lg" id="menu" (click)="toggleMenu()" *ngIf="ismenu"></i>
+            <i class="bi bi-x-lg" id="menu" (click)="toggleMenu()" (keypress)="handleKeyPress($event)" *ngIf="ismenu"></i>
             <div class="logo">
                 <img src="./assets/images/chainsyslogo.png" alt="chainsyslogo" class="logo">
             </div>
@@ -24,19 +24,19 @@
 
             <div class="nav" [ngClass]="{'custom-border-radius': ismenu}">
                 <div style="display: flex; align-items: center;">
-                    <div class="amorLogo" (click)="toggleMenu()"></div>
+                    <div class="amorLogo" (click)="toggleMenu()" (keypress)="handleKeyPress($event)"></div>
 
-                    <h2 style="color: #525252;" (click)="toggleMenu()">ChatApp</h2>
+                    <h2 style="color: #525252;" (click)="toggleMenu()" (keypress)="handleKeyPress($event)">ChatApp</h2>
                 </div>
 
                 <div class="side">
-                    <div class="addFriends" (click)="navigateNotification()">
+                    <div class="addFriends" (click)="navigateNotification()" (keypress)="handleKeyPress($event)">
                         <div class="notifyTab" *ngIf="unReadNotify > 0">
                             <p>{{unReadNotify}}</p>
                         </div>
                         <i style="color: #525252b9; font-size: 3vh;" class="bi bi-bell-fill"></i>
                     </div>
-                    <div class="profile" (click)=" navigateProfile()">
+                    <div class="profile" (click)=" navigateProfile()" (keypress)="handleKeyPress($event)">
                         <p *ngIf="userName">{{ userName.charAt(0).toUpperCase() }}
                         </p>
                     </div>
@@ -51,11 +51,11 @@
                     <p style="font-size: 1.8vh;padding: 1vh;">Gender</p>
 
                     <div class="gender" [style.border]="showErrorGender ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
-                        <div class="male" (click)="toggleMale()"
+                        <div class="male" (click)="toggleMale()" (keypress)="handleKeyPress($event)"
                             [style.background-color]="isGenderMale ? '#0099ff' : ''">
                             <p [style.color]="isGenderMale ? '#fff' : '#767676'">Male</p>
                         </div>
-                        <div class="female" (click)="toggleFemale() "
+                        <div class="female" (click)="toggleFemale() " (keypress)="handleKeyPress($event)"
                             [style.background-color]="isGenderFemale ? '#ff00ea' : ''"
                             [style.border-left]="showErrorGender ? '0.2vh solid red' : '0.2vh solid #66a9e0'">
                             <p [style.color]="isGenderFemale ? '#fff' : '#767676'">Female</p>
@@ -87,7 +87,7 @@
                     </div>
 
 
-                    <button (click)="nickNameValidation()">Conform</button>
+                    <button (click)="nickNameValidation()" (keypress)="handleKeyPress($event)">Conform</button>
                 </div>
             </div>
 
@@ -95,11 +95,11 @@
 
                 <div class="tabs">
                     <div class="chatTab" [style.color]="isGroupTab ? '' : '#fff' "
-                        [style.background-color]="isGroupTab ? '' : '#66a9e0' " (click)="toggleChatTab()">
+                        [style.background-color]="isGroupTab ? '' : '#66a9e0' " (click)="toggleChatTab()" (keypress)="handleKeyPress($event)">
                         <p>Chat</p>
                     </div>
                     <div class="groupTab" [style.color]="!isGroupTab ? '' : '#fff' "
-                        [style.background-color]="!isGroupTab ? '' : '#66a9e0' " (click)="toggleGroupTab()">
+                        [style.background-color]="!isGroupTab ? '' : '#66a9e0' " (click)="toggleGroupTab()" (keypress)="handleKeyPress($event)">
                         <p>Group</p>
                     </div>
                 </div>
@@ -119,8 +119,8 @@
                     <div class="noFriends" *ngIf="!isloading && chatContact.length === 0">
                         <p>No friends</p>
                     </div>
-                    <div class="chatsContact" *ngFor="let req of chatContact" (click)="openChatingpage(req)">
-                        <div class="friendProfile" (click)="openProfile(req)">
+                    <div class="chatsContact" *ngFor="let req of chatContact" (click)="openChatingpage(req)" (keypress)="handleKeyPress($event)">
+                        <div class="friendProfile" (click)="openProfile(req)" (keypress)="handleKeyPress($event)">
                             <h3>{{req.userName.charAt(0) | uppercase}}</h3>
                         </div>
                         <div class="friendName">
@@ -169,8 +169,8 @@
                     </div>
                     <div *ngIf="groupsList.length >= 1 && userdata.data.groups.length >= 1"
                         style="width: 100%; height: auto; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                        <div class="chatsContact" *ngFor="let req of groupsList" (click)="openGroupChatting(req)">
-                            <div class="friendProfile" (click)="openGroupProfile(req)">
+                        <div class="chatsContact" *ngFor="let req of groupsList" (click)="openGroupChatting(req)" (keypress)="handleKeyPress($event)">
+                            <div class="friendProfile" (click)="openGroupProfile(req)" (keypress)="handleKeyPress($event)">
                                 <h3>{{req.data.groupName.charAt(0) | uppercase}}</h3>
                             </div>
                             <div class="friendName">
@@ -204,7 +204,7 @@
             </div>
 
 
-            <div class="myfriendButton" (click)="navigateAddfriend()">
+            <div class="myfriendButton" (click)="navigateAddfriend()" (keypress)="handleKeyPress($event)">
                 <i style="font-size: 3vh; color: #fff;" class="bi bi-person-fill-add"></i>
             </div>
 
