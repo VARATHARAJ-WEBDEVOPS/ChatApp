@@ -2,7 +2,7 @@
 
 
     <div class="header">
-        <div class="backIcon" (click)="backToChat()" (keypress.enter)="backToChat()" tabindex="0">
+        <div class="backIcon" (click)="backToChat()" id="backButton" (keypress.enter)="backToChat()" tabindex="0">
             <i class="bi bi-caret-left-fill"></i>
         </div>
         <div class="profile">
@@ -112,7 +112,7 @@
             </div>
             <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
                 placeholder="Enter your password" autocomplete="new-password" [(ngModel)]="CheckPassword">
-            <button (click)="conformPassword()" (keypress.enter)="conformPassword()" tabindex="7">Conform</button>
+            <button (click)="conformPassword()" id="conformPassword" (keypress.enter)="conformPassword()" tabindex="7">Conform</button>
         </div>
 
         <div class="passwordDiolog" *ngIf="editDiolog" style="z-index: 1000;">
