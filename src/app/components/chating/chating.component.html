@@ -2,7 +2,7 @@
 
 
     <div class="header">
-        <div class="backIcon" (click)="backToChat()" id="backButton" >
+        <div class="backIcon" (click)="backToChat()" id="backButton" (keypress)="handleKeyPress($event)"  tabindex="0">
             <i class="bi bi-caret-left-fill"></i>
         </div>
         <div class="profile">
