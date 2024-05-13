@@ -21,7 +21,7 @@
         <div class="top">
             <p [style.color]="showError ? 'red' : '#66a9e0'">Password</p>
         </div>
-        <input type="password" id="password" [(ngModel)]="password">
+        <input type="password" id="password" [(ngModel)]="password" autocomplete="new-password">
     </div>
     <div class="ScannerContainer" (click)="toggleScanContainer()">
         <p>Scan Your Finger Print</p>

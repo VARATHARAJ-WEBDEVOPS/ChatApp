@@ -119,6 +119,10 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle("chatApp | chat");
 
+    if (!localStorage.getItem('token')) {
+      this.router.navigateByUrl('login');
+    }
+
 
     this.tempPhone = localStorage.getItem('token');
     this.getUser(this.tempPhone);
@@ -236,7 +240,7 @@ export class ChatComponent implements OnInit {
       _id: 'notification_2_' + uuidv4(),
       data: {
         time: String(new Date()),
-        message: `Hai 🙋‍♂️ ${this.userdata.userName} Welcome to AmorChat .`,
+        message: `Hai 🙋‍♂️ ${this.nickname} Welcome to AmorChat .`,
         type: 'notification',
         user: this.userdata._id
       }
@@ -343,10 +347,12 @@ export class ChatComponent implements OnInit {
   }
 
   getGroup() {    
-    this.couchService.getGroup(this.userdata.data.groups.join('","')).subscribe((res: any) => {      
-      this.groupsList = res.rows.map((res: any) => res.doc);
-      this.groupsList = this.groupsList.filter((data: any) => data !== null );
-    });
+    if (this.userdata.data.groups) {
+      this.couchService.getGroup(this.userdata.data.groups.join('","')).subscribe((res: any) => {      
+        this.groupsList = res.rows.map((res: any) => res.doc);
+        this.groupsList = this.groupsList.filter((data: any) => data !== null );
+      });
+    }
   }
 
   handleInputFocus() {

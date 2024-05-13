@@ -56,8 +56,6 @@ export class AddFriendsComponent implements OnInit {
       this.couchService.searchUsersByName(this.query).subscribe((res: any) => {
         this.searchResults = res.rows.map((row: any) => row.value);
         this.searchResults = this.searchResults.filter(item => item.data.phoneNumber !== this.userphoneNumber);
-        console.log('friendRequest', this.searchResults);
-
       })
     }
   }
@@ -114,8 +112,7 @@ export class AddFriendsComponent implements OnInit {
 
   getSentFriendReq() {
     this.couchService.findIsFriendReq(this.userdata._id).subscribe((res: any)=> {
-      this.getSentFriendReqs = res.rows.map((data: any) => data.doc)
-      console.log(this.getSentFriendReqs);
+      this.getSentFriendReqs = res.rows.map((data: any) => data.doc);
     })
   }
 
@@ -285,7 +282,6 @@ export class AddFriendsComponent implements OnInit {
         this.couchService.createNotification(notificationFormat).subscribe((res: any) => {
           console.log("done");
           this.getFriendReq();
-         
         });
       })
     });

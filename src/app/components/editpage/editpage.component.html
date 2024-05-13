@@ -5,7 +5,7 @@
 
         <div class="passwordDiolog" *ngIf="passwordDiolog" style="z-index: 1000;">
             <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
-                placeholder="Enter your current password" [(ngModel)]="CurrentPassword">
+                placeholder="Enter your current password" autocomplete="new-password" [(ngModel)]="CurrentPassword">
             <div class="editButtons">
                 <button (click)="passwordDiolog = false" style="background-color: rgb(253, 130, 151);">Cancel</button>
                 <button (click)="conformPassword()">Conform</button>

@@ -35,7 +35,7 @@
                 <path
                     d="M13 6.5a6.471 6.471 0 0 1-1.258 3.844c.04.03.078.062.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1.007 1.007 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5ZM6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z" />
             </svg>
-            <i (click)="cancelSearch()" class="bi bi-arrow-left" style="margin-left: 2.9vh; font-size: 2.7vh;"
+            <i (click)="cancelSearch()" (keypress.enter)="cancelSearch()" tabindex="1" class="bi bi-arrow-left" style="margin-left: 2.9vh; font-size: 2.7vh;"
                 *ngIf="isSearchResults"></i>
             <input autocomplete="off" type="text" name="query" (focus)="handleInputFocus()" (blur)="handleInputBlur()"
                 (input)="changeUpper()" placeholder="Search Friend's Nickname" [(ngModel)]="query" appNoCopyPaste>
@@ -73,12 +73,12 @@
                     <h4>@{{result.data.nickname}}</h4>
                 </div>
 
-                <div class="accept" style="width: 13vh; height: 4.8vh; z-index: 1000;"
-                    *ngIf="!checkFriendRequest(result._id) && !checkFriend(result._id) && !findIsFriendReq( result._id )" (click)="sendFriendRequest(result._id)">
+                <div class="accept"  *ngIf="!checkFriendRequest(result._id) && !checkFriend(result._id) && !findIsFriendReq( result._id )" style="width: 13vh; height: 4.8vh; z-index: 1000;"
+                    (keypress.enter)="sendFriendRequest(result._id)" tabindex="2" (click)="sendFriendRequest(result._id)">
                     <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
                     <h2>Request</h2>
                 </div>
-                <div class="accept" (click)="createContact(result, result._id)" *ngIf="checkFriendRequest(result._id)">
+                <div class="accept" (click)="createContact(result, result._id)"  (keypress.enter)="createContact(result, result._id)" tabindex="3" *ngIf="checkFriendRequest(result._id)">
                     <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
                     <h2>Accept</h2>
                 </div>
@@ -87,13 +87,13 @@
                     <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
                     <h2>Friends</h2>
                 </div>
-                <div class="accept" *ngIf="findIsFriendReq( result._id )">
+                <div class="accept" *ngIf="!checkFriend(result._id) && findIsFriendReq( result._id )">
                     <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
                     <h2>send</h2>
                 </div>
             </div>
         </div>
-        <div class="inviteLove" (click)="share()" *ngIf="!isSearchResults">
+        <div class="inviteLove" (click)="share()" (keypress.enter)="share()" tabindex="4" *ngIf="!isSearchResults">
             <i class="bi bi-whatsapp" style="font-size: 3vh; color: #fff;"></i>
             <p style="margin-left: 1vh;">Invite your buddy! via whatsApp</p>
         </div>
@@ -127,11 +127,11 @@
                     </h4>
                     <h4>@{{req.data.nickname}}</h4>
                 </div>
-                <div class="accept" (click)="createContact(req)">
+                <div class="accept" (click)="createContact(req)" (keypress.enter)="createContact(req)" tabindex="5">
                     <i class="bi bi-person-fill-add" style="color: #fff; font-size: 2vh; padding: 0.5vh;"></i>
                     <h2>Accept</h2>
                 </div>
-                <div class="cancel" (click)="cancelFriendRequest(req)">
+                <div class="cancel" (click)="cancelFriendRequest(req)" (keypress.enter)="cancelFriendRequest(req)" tabindex="6">
                     <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x"
                         style="width:2vh; height: 2vh; stroke-width: 1.5; stroke:  #b4b6b8 ;" viewBox="0 0 16 16">
                         <path

@@ -18,13 +18,17 @@ export class LoginComponent implements OnInit {
   users!: any[];
   showError: boolean = false;
   showErrorPhnNO: boolean = false;
+  
   showTip: boolean = false;
   message: string = '';
 
-  constructor(private title: Title, private couchService: CouchService, public router: Router) { }
+  constructor( private toastService: ToastService,private title: Title, private couchService: CouchService, public router: Router) { }
 
   ngOnInit(): void {
     this.title.setTitle("AmorChat | Login");
+    if (localStorage.getItem('token')) {
+      this.router.navigateByUrl('chat');
+    }
   }
 
   navigate() {
@@ -43,14 +47,16 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token', this.phoneNumber);
           this.clearData();
           this.router.navigateByUrl('chat');
+
         } else {
           this.password = "";
           console.log('Incorrect password');
+          this.toastService.showToast('Incorrect password', true);
           this.showError = true;
         }
       } else {
         console.log('User not found');
-        this.clearData();
+        this.toastService.showToast('User not found', true);
       }
     });
   }

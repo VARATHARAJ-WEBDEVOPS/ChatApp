@@ -87,11 +87,9 @@ export class SignupComponent implements OnInit {
     }
 
     this.couchService.createAccount(couchFormat).subscribe(res => {
-
+      localStorage.setItem('token', this.phoneNumber);
+      this.router.navigateByUrl("chat");
     });
-
-    localStorage.setItem('token', this.phoneNumber);
-    this.router.navigateByUrl("chat");
   }
 
   checkUserExistence() {

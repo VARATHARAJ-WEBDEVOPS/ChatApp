@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit {
   }
 
   logOut() {
-    localStorage.setItem('token', "");
+    localStorage.removeItem('token');
     localStorage.removeItem('userList');
     this.router.navigateByUrl('login');
   }

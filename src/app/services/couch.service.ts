@@ -15,7 +15,6 @@ export class CouchService {
   header = {
     headers: {
       'Authorization': 'Basic ' + btoa(this.couchUserName + ':' + this.couchPassword),
-      'Content-Type': 'multipart/form-data'
     }
   }
 

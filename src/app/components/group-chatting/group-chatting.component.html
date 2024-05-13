@@ -1,6 +1,5 @@
 <div class="overAll">
 
-
     <div class="header">
         <div class="backIcon" (click)="backToChat()">
             <i class="bi bi-caret-left-fill"></i>
@@ -94,8 +93,8 @@
         </div>
 
         <div class="passwordDiolog" *ngIf="passwordDiolog" style="z-index: 1000;">
-            <i class="bi bi-fingerprint"></i>
-            <div class="dividerContainer">
+            <!-- <i class="bi bi-fingerprint"></i> -->
+            <!-- <div class="dividerContainer">
                 <div>
                     <hr>
                 </div>
@@ -103,9 +102,9 @@
                 <div>
                     <hr>
                 </div>
-            </div>
+            </div> -->
             <input type="password" [style.border]="showError ? '0.2vh solid red' : '0.2vh solid #66a9e0'"
-                placeholder="Enter your password" autocomplete='off' [(ngModel)]="CheckPassword">
+                placeholder="Enter your password" autocomplete="new-password" [(ngModel)]="CheckPassword">
             <button (click)="conformPassword()">Conform</button>
         </div>
 

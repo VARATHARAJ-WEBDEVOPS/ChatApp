@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastService } from 'src/app/services/toast.service';
@@ -21,7 +21,7 @@ export class ChatingComponent implements OnInit {
   data!: any;
   sendMessageForm!: FormGroup;
   myMessageForm!: FormGroup;
-  message!: String;
+  message!: string;
   userData: any;
   myPath!: string;
   friendPath!: string;
